@@ -23,10 +23,10 @@ const Links = () => {
 
     return (
         <nav className="flex items-center justify-center gap-8 font-light text-sm text-[var(--txt-color)]">
-            <Link href="#" className={linkStyle}>Šta je nauciProgramiranje.ba?</Link>
-            <Link href="#" className={linkStyle}>Kursevi</Link>
-            <Link href="#" className={linkStyle}>Tim</Link>
-            <Link href="#" className={linkStyle}>Kontakt</Link>
+            <Link href="/" className={linkStyle}>Šta je nauciProgramiranje.ba?</Link>
+            <Link href="/kursevi" className={linkStyle}>Kursevi</Link>
+            <Link href="/tim" className={linkStyle}>Tim</Link>
+            <Link href="/kontakt" className={linkStyle}>Kontakt</Link>
         </nav>
     );
 }

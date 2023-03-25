@@ -1,27 +1,75 @@
-import Link from "next/link";
-import { ReactNode } from "react";
+import { Source_Code_Pro } from 'next/font/google'
+import { TypeAnimation } from 'react-type-animation';
+import { BtnType } from "@/lib/types/BtnType";
+import RedButton from './RedButton';
 
 interface DetailsProps {
     title: string;
     description: string;
-    btnText: string;
-    btnIcon: ReactNode;
-    btnAction: string;
+    btn: BtnType
     hasCode: boolean;
 }
 
+const sourceCodePro = Source_Code_Pro({
+    weight: '400',
+    subsets: ['latin'],
+})
+
+const Terminal = () => {
+    const date = new Date();
+    const codeLines = [
+        "python",
+        3000,
+        `python 
+        Python 3.9.7 (${date.toDateString()})
+        >>> vi = motivisan_buduci_programer()
+        >>>
+        >>> print(vi.znate_programirati)
+        False
+        >>>
+        >>> vi.upisi_kurs_programiranja()
+        >>>
+        >>> while vi.ucite_programirati():
+        .... vi.koristite("nauciProgramiranje.ba")
+        >>>
+        >>> print(vi.znate_programirati)
+        True
+        >>> exit()`
+    ]
+
+
+    return (
+        <div className={`${sourceCodePro.className} bg-[var(--bg-ter-editor)] w-[680px] h-[370px] py-1 px-2 border-white border-[1px] rounded-md shadow-md text-[var(--editor-txt-color)]`}> 
+            <TypeAnimation
+                sequence={codeLines}
+                wrapper="span"
+                cursor={true}
+                deletionSpeed={0}
+                speed={5}
+                repeat={0}
+                style={{ 
+                    whiteSpace: 'pre-line', 
+                    fontSize: '1em', 
+                    display: 'inline-block', 
+                }}
+            />
+        </div>
+    );
+}
+
 const PageDetails = (props: DetailsProps) => {
-    const { title, description, btnText, btnIcon, btnAction, hasCode } = props;
+    const { title, description, btn, hasCode } = props;
 
     return ( 
-        <div>
-            <h1>{title}</h1>
-            <p>{description}</p>
+        <div className="bg-[var(--bg-color)] px-36 py-16 grid grid-cols-2 place-items-center">
+            <div className="text-white flex flex-col gap-8 justify-center w-[500px]">
+                <h1 className="text-4xl font-semibold">{title}</h1>
+                <p>{description}</p>
 
-            <Link href={btnAction}>
-                {btnIcon}
-                {btnText}
-            </Link>
+                <RedButton btnIcon={btn.btnIcon} btnAction={btn.btnAction} btnText={btn.btnText} />
+            </div>
+
+            {hasCode && <Terminal />}
         </div> 
     );
 }
