@@ -8,7 +8,6 @@ const ubuntu = Ubuntu({
     subsets: ['latin'],
 })
 
-
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <main className={ubuntu.className}>
