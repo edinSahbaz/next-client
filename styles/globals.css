@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Jura:wght@400;600&display=swap");
+
+:root {
+    --bg-color: #304057;
+    --sec-bg-color: #fff;
+    --ter-bg-color: #405978;
+    --ter-bg-hover-color: #1c2736;
+    --editor-bg: #1c2736;
+    
+    --logo-font: "Jura", Helvetica, Arial, sans-serif;
+    --main-font: 'Ubuntu', sans-serif;
+    --editor-font: "Source Code Pro", monospace;
+    
+    --txt-color: #fff;
+    --sec-txt-color: #f21b3f;
+    --ter-txt-color: #ce0c2c;
+    --title-txt-color: #07203C;
+    --p-txt-color: #445d6e;
+    --editor-txt-color: #2bff4b;
+    
+    --bg-sec-editor: #405978;
+    --bg-ter-editor: #1D2736;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: var(--bg-color);
+    font-family: $main-font;
+    color: $txt-color;
+}
