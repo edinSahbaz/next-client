@@ -2,6 +2,7 @@ import { Source_Code_Pro } from 'next/font/google'
 import { TypeAnimation } from 'react-type-animation';
 import { BtnType } from "@/lib/types/BtnType";
 import RedButton from '../general/RedButton';
+import Header from './Header';
 
 interface DetailsProps {
     title: string;
@@ -62,6 +63,7 @@ const PageDetails = (props: DetailsProps) => {
 
     return ( 
         <div className={`headerBg px-36 py-16 grid ${hasCode && "grid-cols-2"} place-items-center pt-36`}>
+            <Header />
             <div className={`text-white flex flex-col gap-8 justify-center w-[540px] ${!hasCode && "items-center h-[320px]"}`}>
                 <h1 className="text-4xl font-semibold">{title}</h1>
                 <p className='text-lg'>{description}</p>
