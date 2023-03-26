@@ -37,13 +37,9 @@ const Links = () => {
 const LoginBtn = () => {
     const popupManager = usePopupManager();
 
-    const openModal = () => {
-        popupManager.open(LoginModal); 
-    }
-
     return (
         <div className="flex items-center justify-center">
-            <button onClick={openModal}
+            <button onClick={() => popupManager.open(LoginModal)}
             className="text-[var(--txt-color)] text-sm hover:border-2 border-[var(--sec-txt-color)] p-2 rounded-md">
                 Prijavi se
             </button>
