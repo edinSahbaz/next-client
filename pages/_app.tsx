@@ -3,6 +3,7 @@ import 'animate.css';
 import Header from '@/components/header/Header';
 import type { AppProps } from 'next/app'
 import { Ubuntu } from 'next/font/google'
+import { PopupProvider } from 'react-popup-manager';
 
 const ubuntu = Ubuntu({
     weight: ['300', '400'],
@@ -11,9 +12,11 @@ const ubuntu = Ubuntu({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <main className={ubuntu.className}>
-      <Header />
-      <Component {...pageProps} />
-    </main>
+    <PopupProvider>
+        <main className={ubuntu.className}>
+            <Header />
+            <Component {...pageProps} />
+        </main>
+    </PopupProvider>
   );
 }

@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { Jura } from 'next/font/google'
 import Link from "next/link";
+import { usePopupManager } from "react-popup-manager";
+import LoginModal from "./LoginModal";
 
 const jura = Jura({
     weight: '400',
@@ -8,7 +10,7 @@ const jura = Jura({
 })
 
 const Logo = () => (
-    <div className={`${jura.className} flex items-center justify-center gap-1 text-white`}>
+    <Link href="/" className={`${jura.className} flex items-center justify-center gap-1 text-white`}>
         <Image className="hover:transform hover:rotate-90 transition-all duration-[800ms]"
             src="/transparent-logo.png" height={80} width={80} alt="logo" />
 
@@ -16,7 +18,7 @@ const Logo = () => (
             <h2 className="text-2xl">nauciProgramiranje.ba</h2>
             <p className="text-[13px]"><span className="text-[var(--sec-txt-color)]">Nauči programirati!</span> | by BitWise Solutions</p>
         </div>
-    </div>
+    </Link>
 )
 
 const Links = () => {
@@ -32,13 +34,22 @@ const Links = () => {
     );
 }
 
-const LoginBtn = () => (
-    <div className="flex items-center justify-center">
-        <button className="text-[var(--txt-color)] text-sm hover:border-2 border-[var(--sec-txt-color)] p-2 rounded-md">
-            Prijavi se
-        </button>
-    </div>
-)
+const LoginBtn = () => {
+    const popupManager = usePopupManager();
+
+    const openModal = () => {
+        popupManager.open(LoginModal); 
+    }
+
+    return (
+        <div className="flex items-center justify-center">
+            <button onClick={openModal}
+            className="text-[var(--txt-color)] text-sm hover:border-2 border-[var(--sec-txt-color)] p-2 rounded-md">
+                Prijavi se
+            </button>
+        </div>
+    );
+}
 
 const Header = () => {
     return ( 
