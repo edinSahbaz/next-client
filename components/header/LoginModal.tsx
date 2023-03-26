@@ -1,23 +1,34 @@
 import { PopupProps } from "react-popup-manager";
+import Logo from "./Logo";
 
-const Modal = (props: PopupProps) => {
-    const { onClose } = props;
+const RedTop = () => (
+    <div className="w-full h-2 bg-[var(--sec-txt-color)] rounded-t-md"></div>
+)
 
-    return (
-        <div className="p-20 bg-white shadow-md rounded-md
-        animate__animated animate__zoomIn animate__faster">
+const Modal = ({ onClose } : PopupProps) => (
+    <div onClick={(e) => e.stopPropagation()}
+    className="bg-white shadow-md rounded-md animate__animated animate__slideInRight animate__faster">
+        <RedTop />
+
+        <div className="w-full p-2">
+            <h2>Prijavi se</h2>
+            <Logo simple={true} />
+            <p>Prijavite se da spremite svoj rad. Mi nećemo postavljati ništa nigdje.</p>
+            
+            
+            
             <button onClick={onClose}>Close</button>
         </div>
-    );
-}
+    </div>
+)
 
 const LoginModal = (props: PopupProps) => {
-    const { isOpen } = props;
+    const { isOpen, onClose } = props;
 
     return isOpen ? ( 
-        <div className="fixed w-full h-screen bg-black/50 z-50 grid place-items-center
-        animate__animated animate__fadeIn animate__faster">
-            <Modal onClose={props.onClose} />
+        <div onClick={onClose}
+        className="fixed w-full h-screen bg-black/50 z-50 grid place-items-center animate__animated animate__fadeIn animate__faster">
+            <Modal onClose={onClose} />
         </div>
      ) : null;
 }

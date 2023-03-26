@@ -1,25 +1,7 @@
-import Image from "next/image";
-import { Jura } from 'next/font/google'
 import Link from "next/link";
 import { usePopupManager } from "react-popup-manager";
 import LoginModal from "./LoginModal";
-
-const jura = Jura({
-    weight: '400',
-    subsets: ['latin'],
-})
-
-const Logo = () => (
-    <Link href="/" className={`${jura.className} flex items-center justify-center gap-1 text-white`}>
-        <Image className="hover:transform hover:rotate-90 transition-all duration-[800ms]"
-            src="/transparent-logo.png" height={80} width={80} alt="logo" />
-
-        <div className="font-[var(--logo-font)]">
-            <h2 className="text-2xl">nauciProgramiranje.ba</h2>
-            <p className="text-[13px]"><span className="text-[var(--sec-txt-color)]">Nauči programirati!</span> | by BitWise Solutions</p>
-        </div>
-    </Link>
-)
+import Logo from "./Logo";
 
 const Links = () => {
     const linkStyle = "hover-underline-animation";
@@ -50,7 +32,7 @@ const LoginBtn = () => {
 const Header = () => {
     return ( 
         <header className="grid grid-cols-3 p-2 absolute top-0 left-0 w-full">
-            <Logo />
+            <Logo simple={false} />
             <Links />
             <LoginBtn />
         </header>
