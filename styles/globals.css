@@ -52,3 +52,7 @@
     transform: scaleX(1);
     transform-origin: bottom left;
 }
+
+.headerBg {
+    background: linear-gradient(-45deg, #2e4057 50%, #405978)
+}

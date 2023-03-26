@@ -1,4 +1,4 @@
-import PageDetails from '@/components/PageDetails'
+import PageDetails from '@/components/header/PageDetails'
 import Head from 'next/head'
 import { FaCreditCard } from 'react-icons/fa';
 
@@ -20,7 +20,7 @@ export default function Home() {
           btn={{
             btnText: 'Upiši se na kurs',
             btnIcon: <FaCreditCard />,
-            btnAction: '/kursevi'
+            btnAction: '/kupovina'
           }}
         />
       </main>

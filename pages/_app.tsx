@@ -1,5 +1,6 @@
 import '@/styles/globals.css'
-import Header from '@/components/Header';
+import 'animate.css';
+import Header from '@/components/header/Header';
 import type { AppProps } from 'next/app'
 import { Ubuntu } from 'next/font/google'
 

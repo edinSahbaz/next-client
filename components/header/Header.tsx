@@ -9,7 +9,8 @@ const jura = Jura({
 
 const Logo = () => (
     <div className={`${jura.className} flex items-center justify-center gap-1 text-white`}>
-        <Image src="/android-chrome-192x192.png" height={80} width={80} alt="logo" />
+        <Image className="hover:transform hover:rotate-90 transition-all duration-[800ms]"
+            src="/transparent-logo.png" height={80} width={80} alt="logo" />
 
         <div className="font-[var(--logo-font)]">
             <h2 className="text-2xl">nauciProgramiranje.ba</h2>
@@ -22,11 +23,11 @@ const Links = () => {
     const linkStyle = "hover-underline-animation";
 
     return (
-        <nav className="flex items-center justify-center gap-8 font-light text-sm text-[var(--txt-color)]">
+        <nav className="flex items-center justify-center gap-8 font-[400] text-sm text-[var(--txt-color)]">
             <Link href="/" className={linkStyle}>Šta je nauciProgramiranje.ba?</Link>
-            <Link href="/kursevi" className={linkStyle}>Kursevi</Link>
+            <Link href="/sadrzaj" className={linkStyle}>Sadržaj</Link>
             <Link href="/tim" className={linkStyle}>Tim</Link>
-            <Link href="/kontakt" className={linkStyle}>Kontakt</Link>
+            <Link href="/kupovina" className={linkStyle}>Kupovina</Link>
         </nav>
     );
 }
@@ -41,7 +42,7 @@ const LoginBtn = () => (
 
 const Header = () => {
     return ( 
-        <header className="grid grid-cols-3 p-2 bg-[var(--bg-color)]">
+        <header className="grid grid-cols-3 p-2 absolute top-0 left-0 w-full">
             <Logo />
             <Links />
             <LoginBtn />

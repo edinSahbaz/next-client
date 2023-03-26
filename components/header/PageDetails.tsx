@@ -1,12 +1,12 @@
 import { Source_Code_Pro } from 'next/font/google'
 import { TypeAnimation } from 'react-type-animation';
 import { BtnType } from "@/lib/types/BtnType";
-import RedButton from './RedButton';
+import RedButton from '../general/RedButton';
 
 interface DetailsProps {
     title: string;
     description: string;
-    btn: BtnType
+    btn: BtnType | null;
     hasCode: boolean;
 }
 
@@ -61,12 +61,12 @@ const PageDetails = (props: DetailsProps) => {
     const { title, description, btn, hasCode } = props;
 
     return ( 
-        <div className="bg-[var(--bg-color)] px-36 py-16 grid grid-cols-2 place-items-center">
-            <div className="text-white flex flex-col gap-8 justify-center w-[500px]">
+        <div className={`headerBg px-36 py-16 grid ${hasCode && "grid-cols-2"} place-items-center pt-36`}>
+            <div className={`text-white flex flex-col gap-8 justify-center w-[540px] ${!hasCode && "items-center h-[320px]"}`}>
                 <h1 className="text-4xl font-semibold">{title}</h1>
-                <p>{description}</p>
+                <p className='text-lg'>{description}</p>
 
-                <RedButton btnIcon={btn.btnIcon} btnAction={btn.btnAction} btnText={btn.btnText} />
+                {btn && <RedButton btnText={btn.btnText} btnIcon={btn.btnIcon} btnAction={btn.btnAction} />}
             </div>
 
             {hasCode && <Terminal />}
