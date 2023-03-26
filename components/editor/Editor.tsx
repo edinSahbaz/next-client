@@ -1,8 +1,10 @@
 import Editor, { DiffEditor, useMonaco, loader, EditorProps } from "@monaco-editor/react";
-import { useRef } from "react";
+import { jsPython } from "jspython-interpreter";
+import { useRef, useState } from "react";
 
 const CodeEditor = () => {
-    const editorRef = useRef(null);    
+    const [code, setCode] = useState<string | undefined>('');   
+    const [output, setOutput] = useState<string | undefined>('');   
 
     function handleEditorBeforeMount(monaco) {
         monaco.editor.defineTheme('customTheme', {
@@ -15,23 +17,33 @@ const CodeEditor = () => {
         });
     }
 
-    function handleEditorDidMount(editor) {
-        editorRef.current = editor;
+    const runCode = () => {
+        jsPython()
+        .evaluate(code ? code : "")
+        .then(
+            result => console.log(result),
+            error => console.log(error)
+        );
     }
 
     return ( 
-        <Editor
-            beforeMount={handleEditorBeforeMount}
-            height="50vh"
-            defaultLanguage="python"
-            theme="customTheme"
-            options={{
-                fontSize: 14,
-                minimap: { enabled: false },
-            }}
-            className="bg-red-200"
-            onMount={handleEditorDidMount}
+        <>
+            <button onClick={runCode} className="bg-white p-2" >RUN CODE</button>
+            
+            <Editor
+                beforeMount={handleEditorBeforeMount}
+                height="50vh"
+                defaultLanguage="python"
+                theme="customTheme"
+                value={code}
+                onChange={(value) => setCode(value)}
+                options={{
+                    fontSize: 14,
+                    minimap: { enabled: false },
+                }}
+                className="bg-red-200"
             />  
+        </>
      );
 }
  
