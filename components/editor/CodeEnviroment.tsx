@@ -35,7 +35,7 @@ const Header = (props: HeaderProps) => {
         <div className="bg-[var(--bg-sec-editor)] w-full h-10 flex justify-between shadow-md rounded-t-md">
             <div className="h-full">
             { tabs.map((tab, index) => (
-                    <Tab key={index} tab={tab} first={index === 0} last={index === tabs.length - 1} />
+                <Tab key={index} tab={tab} first={index === 0} last={index === tabs.length - 1} />
             ))}
             </div>
 
