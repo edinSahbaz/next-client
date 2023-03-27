@@ -24,7 +24,7 @@ const Tab = (props: { tab: string, first: boolean, last: boolean }) => {
     const { tab, first, last } = props;
     
     return (
-        <div className={`bg-[var(--editor-bg)] w-fit px-6 h-full grid place-items-center ${first && "rounded-tl-md"} ${last && "rounded-tr-md"}`}>
+        <div className={`bg-[var(--editor-bg)] w-fit px-6 h-full cursor-pointer shadow-md grid place-items-center ${first && "rounded-tl-md"} ${last && "rounded-tr-md"}`}>
             <p>{tab}</p>
         </div>
     );
@@ -35,7 +35,7 @@ const Header = (props: HeaderProps) => {
 
     return (
         <div className="bg-[var(--bg-sec-editor)] w-full h-10 flex justify-between shadow-md rounded-t-md">
-            <div className="h-full">
+            <div className="h-full flex">
             { tabs.map((tab, index) => (
                 <Tab key={index} tab={tab} first={index === 0} last={index === tabs.length - 1} />
             ))}
