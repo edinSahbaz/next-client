@@ -1,5 +1,5 @@
-import Editor from "@monaco-editor/react";
-import { ReactNode, useRef } from "react";
+import Editor, { OnMount, BeforeMount } from "@monaco-editor/react";
+import { ReactNode, useEffect, useRef } from "react";
 import { usePython } from "react-py";
 import { BarLoader, ClipLoader } from "react-spinners";
 
@@ -53,19 +53,27 @@ const Header = (props: HeaderProps) => {
 }
 
 const Console = (props: ConsoleProps) => {
+    const bottomRef = useRef<HTMLDivElement>(null);    
     const { stdout, stderr, isLoading, isRunning } = props;
 
+    useEffect(() => {
+        if(!bottomRef.current) return;
+
+        bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    });
+
     return (
-        <div className="bg-[var(--editor-bg)] rounded-md h-[30%] shadow-md">
+        <div className="bg-[var(--editor-bg)] relative rounded-md h-[30%] shadow-md">
             <Header tabs={["Output"]} btn={null} />
             <pre className="max-h-[calc(100%-2.5rem)] h-[calc(100%-2.5rem)] overflow-y-auto py-2 px-4">
                 {
-                    isRunning && <div className="w-full h-full grid place-items-center">
-                        <BarLoader color="#f21b3f" width={"50%"} speedMultiplier={0.75} />
+                    isRunning && <div className="w-[50%] absolute top-3 grid place-items-center bg-[#1c2736] p-2 rounded-md left-[25%]">
+                        <BarLoader color="#f21b3f" width={"100%"} speedMultiplier={0.75} />
                     </div> 
                 }
                 <code>{stdout}</code>
                 <code>{stderr}</code>
+                <div ref={bottomRef} />
             </pre>
         </div>
     );
@@ -76,7 +84,7 @@ const CodeEnviroment = () => {
     
     const { runPython, stdout, stderr, isLoading, isRunning } = usePython()
 
-    function handleEditorBeforeMount(monaco) {
+    const handleEditorBeforeMount: BeforeMount = (monaco) => {
         monaco.editor.defineTheme('customTheme', {
             base: 'vs-dark',
             inherit: true,
@@ -87,7 +95,7 @@ const CodeEnviroment = () => {
         });
     }
 
-    function handleEditorDidMount(editor, monaco) {
+    const handleEditorDidMount: OnMount = (editor) => {
         editorRef.current = editor; 
     }
 
@@ -95,7 +103,7 @@ const CodeEnviroment = () => {
         if(isLoading) return;
         if(!editorRef.current) return;
 
-        const code = editorRef.current.getValue();
+        const code: string = editorRef.current.getValue();
         runPython(String(code));
     }
 
@@ -116,7 +124,7 @@ const CodeEnviroment = () => {
                         theme="customTheme"
                         loading={<ClipLoader color="#f21b3f" size={50} speedMultiplier={0.75} />}
                         options={{
-                            fontSize: 14,
+                            fontSize: 16,
                             minimap: { enabled: false },
                         }}
                     /> 
