@@ -1,6 +1,7 @@
 import Editor from "@monaco-editor/react";
 import { ReactNode, useRef } from "react";
 import { usePython } from "react-py";
+import { BarLoader, ClipLoader } from "react-spinners";
 
 interface ConsoleProps {
     stdout: string;
@@ -15,6 +16,7 @@ interface HeaderProps {
         content: ReactNode | string,
         bg: string,
         bg_hover: string,
+        action: () => void,
     } | null;
 }
 
@@ -41,7 +43,7 @@ const Header = (props: HeaderProps) => {
 
             {
                 btn && (
-                    <div className={`${btn.bg} ${btn.bg_hover} transition-all duration-300 cursor-pointer px-6 grid place-items-center rounded-tr-md`}>
+                    <div onClick={btn.action} className={`${btn.bg} ${btn.bg_hover} transition-all duration-300 cursor-pointer px-6 grid place-items-center rounded-tr-md`}>
                         {btn.content}
                     </div>
                 )
@@ -56,12 +58,15 @@ const Console = (props: ConsoleProps) => {
     return (
         <div className="bg-[var(--editor-bg)] rounded-md h-[30%] shadow-md">
             <Header tabs={["Output"]} btn={null} />
-            <pre className="max-h-[calc(100%-2.5rem)] overflow-y-auto py-2 px-4">
+            <pre className="max-h-[calc(100%-2.5rem)] h-[calc(100%-2.5rem)] overflow-y-auto py-2 px-4">
+                {
+                    isRunning && <div className="w-full h-full grid place-items-center">
+                        <BarLoader color="#f21b3f" width={"50%"} speedMultiplier={0.75} />
+                    </div> 
+                }
                 <code>{stdout}</code>
                 <code>{stderr}</code>
             </pre>
-            {isLoading && <p>Loading...</p>}
-            {isRunning && <p>Running...</p>}
         </div>
     );
 }
@@ -94,14 +99,14 @@ const CodeEnviroment = () => {
         runPython(String(code));
     }
 
-    return ( 
+    return !isLoading ? ( 
         <div className="text-white flex flex-col gap-4 h-full max-h-screen p-4">
             <div className="h-[70%] rounded-md shadow-md">
-                {/* <button onClick={runCode}>Run</button> */}
                 <Header tabs={["Input"]} btn={{
                     content: "Submit",
                     bg: "bg-[#00852a]",
                     bg_hover: "hover:bg-[#006c21]",
+                    action: runCode,
                 }} />
                 <div className="h-[calc(100%-2.5rem)]">
                     <Editor
@@ -109,6 +114,7 @@ const CodeEnviroment = () => {
                         beforeMount={handleEditorBeforeMount}
                         defaultLanguage="python"
                         theme="customTheme"
+                        loading={<ClipLoader color="#f21b3f" size={50} speedMultiplier={0.75} />}
                         options={{
                             fontSize: 14,
                             minimap: { enabled: false },
@@ -118,6 +124,10 @@ const CodeEnviroment = () => {
             </div>
 
             <Console stdout={stdout} stderr={stderr} isLoading={isLoading} isRunning={isRunning} />
+        </div>
+     ) : (
+        <div className="flex justify-center items-center h-full">
+            <ClipLoader color="#f21b3f" size={75} speedMultiplier={0.75} />
         </div>
      );
 }
