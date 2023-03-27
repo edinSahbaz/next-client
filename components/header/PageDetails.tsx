@@ -20,7 +20,7 @@ const Terminal = () => {
     const date = new Date();
     const codeLines = [
         "python",
-        3000,
+        1500,
         `python 
         Python 3.9.7 (${date.toDateString()})
         >>> vi = motivisan_buduci_programer()
