@@ -7,7 +7,6 @@
     --sec-bg-color: #fff;
     --ter-bg-color: #405978;
     --ter-bg-hover-color: #1c2736;
-    --editor-bg: #1c2736;
     
     --logo-font: "Jura", Helvetica, Arial, sans-serif;
     --main-font: 'Ubuntu', sans-serif;
@@ -20,6 +19,7 @@
     --p-txt-color: #445d6e;
     --editor-txt-color: #2bff4b;
     
+    --editor-bg: #1c2736;
     --bg-sec-editor: #405978;
     --bg-ter-editor: #1D2736;
 }

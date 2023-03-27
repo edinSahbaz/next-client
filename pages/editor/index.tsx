@@ -1,21 +1,14 @@
-import CodeEditor from "@/components/editor/Editor";
+import dynamic from "next/dynamic";
 import Head from "next/head";
+const CodeEnviroment = dynamic(() => import('@/components/editor/CodeEnviroment'), { ssr: false })
 
 const Prompt = () => {
     return (
-        <div>
-            
+        <div className="">
         </div>                       
     );
 }
 
-const Code = () => {
-    return (
-        <div>
-            <CodeEditor />
-        </div>                           
-    );
-}
 const EditorPage = () => {
     return ( 
         <>
@@ -27,9 +20,9 @@ const EditorPage = () => {
 
             <div className="bg-[var(--bg-color)] w-full h-screen">
 
-                <div className="grid grid-cols-2">
+                <div className="grid grid-cols-2 h-full">
                     <Prompt />
-                    <Code /> 
+                    <CodeEnviroment /> 
                 </div>  
             </div> 
         </>
