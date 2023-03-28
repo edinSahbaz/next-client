@@ -80,7 +80,7 @@ const Console = (props: ConsoleProps) => {
 }
 
 const CodeEnviroment = () => {
-    const editorRef = useRef(null);
+    const editorRef = useRef<any>(null);
     
     const { runPython, stdout, stderr, isLoading, isRunning } = usePython()
 
