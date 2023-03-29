@@ -1,3 +1,4 @@
+import Footer from '@/components/footer/Footer';
 import UserContext from '@/lib/context/UserContext';
 import { auth } from '@/lib/firebase/firebase';
 import UserType from '@/lib/types/UserType';
@@ -62,7 +63,16 @@ export default function App({ Component, pageProps }: AppProps) {
             <PythonProvider>
                 <PopupProvider>
                     { loading && <div className='w-full h-screen flex items-center justify-center'><ClipLoader color={"#f21b3f"} size={120} /></div> }
-                    { !loading && <Component {...pageProps} /> }
+                    { !loading && (
+                        <div className={`${ubuntu.className}`}>
+                            <Component {...pageProps} />
+                            
+                            {/* TEMP */}
+                            <div className='h-screen'></div>
+
+                            <Footer />
+                        </div>
+                    )}
                 </PopupProvider>
             </PythonProvider>
         </UserContext.Provider>
