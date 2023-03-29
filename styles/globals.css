@@ -56,3 +56,7 @@
 .headerBg {
     background: linear-gradient(-45deg, #2e4057 50%, #405978)
 }
+
+.border-inset {
+    border-bottom: 1px solid white inset;
+}
