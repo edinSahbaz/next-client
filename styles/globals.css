@@ -43,9 +43,16 @@
     height: 1px;
     bottom: 0;
     left: 0;
-    background-color: var(--txt-color);
     transform-origin: bottom right;
     transition: transform 0.25s ease-out;
+}
+
+.hover-underline-animation-light::after {
+    background-color: var(--txt-color);
+}
+
+.hover-underline-animation-dark::after {
+    background-color: var(--p-txt-color);
 }
 
 .hover-underline-animation:hover::after {

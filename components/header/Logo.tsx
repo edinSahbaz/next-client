@@ -17,7 +17,9 @@ const Logo = ({ simple } : { simple: boolean }) => {
 
             <div className="font-[var(--logo-font)]">
                 <h2 className="text-2xl">nauciProgramiranje.ba</h2>
-                { simple ? null : <p className="text-[13px]"><span className="text-[var(--sec-txt-color)]">Nauči programirati!</span> | by BitWise Solutions</p> }
+                { simple ? null : <p className="text-[13px]">
+                    <span className="text-[var(--sec-txt-color)]">Nauči programirati!</span> | 
+                    <Link href="/" className="ml-1 hover-underline-animation hover-underline-animation-light">by BitWise Solutions</Link></p> }
             </div>
         </Link>
     );

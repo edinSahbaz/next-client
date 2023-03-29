@@ -5,7 +5,7 @@ const Footer = () => {
     const year = new Date().getFullYear();
 
     const FooterLink = ({ href, text }: { href: string; text: string }) => (
-        <Link href={href} className="">{text}</Link>
+        <Link href={href} className="hover-underline-animation hover-underline-animation-dark">{text}</Link>
     )
 
     const Separator = () => (
@@ -24,7 +24,7 @@ const Footer = () => {
                 <FooterLink href="/" text="Politika privatnosti" />
             </div>
 
-            <p className="mt-1">Razvoj i dizajn: BitWise Solutions</p>
+            <p className="mt-2">Razvoj i dizajn: <FooterLink text="BitWise Solutions" href="/" /></p>
 
             <p className="mt-4">Copyright © {year} nauciProgramiranje.ba | Sva prava pridržana.</p>
         </footer>

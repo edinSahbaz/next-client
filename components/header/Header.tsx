@@ -22,7 +22,7 @@ const Links = () => {
         const activeRoute = router.pathname;
         const { href, name } = props;
      
-        return <Link href={href} className={`${activeRoute === href ? "border-b-[1px]" : "pb-[1px] hover-underline-animation"}`}>{name}</Link>
+        return <Link href={href} className={`${activeRoute === href ? "border-b-[1px]" : "pb-[1px] hover-underline-animation hover-underline-animation-light"}`}>{name}</Link>
     }
 
     return (
