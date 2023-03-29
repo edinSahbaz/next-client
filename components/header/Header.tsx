@@ -3,8 +3,12 @@ import { usePopupManager } from "react-popup-manager";
 import LoginModal from "./LoginModal";
 import Logo from "./Logo";
 import { useRouter } from "next/router";
-import React from "react";
-
+import React, { useContext } from "react";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import UserContext from "@/lib/context/UserContext";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase/firebase";
 
 const Links = () => {
     const router = useRouter();
@@ -31,7 +35,7 @@ const Links = () => {
     );
 }
 
-const LoginBtn = () => {
+const LogInBtn = () => {
     const popupManager = usePopupManager();
 
     return (
@@ -44,12 +48,24 @@ const LoginBtn = () => {
     );
 }
 
+const UserPart = () => (
+    <div className="flex items-center justify-center">
+        <button onClick={() => signOut(auth)}
+        className="text-[var(--txt-color)] text-sm hover:border-2 border-[var(--sec-txt-color)] p-2 rounded-md">
+            Odjavi se
+        </button>
+    </div>
+);
+
 const Header = () => {
+    const { user } = useContext(UserContext);
+
     return ( 
         <header className="grid grid-cols-3 px-32 py-4 absolute top-0 left-0 w-full">
             <Logo simple={false} />
             <Links />
-            <LoginBtn />
+            {user ? <UserPart /> : <LogInBtn />}
+            <ToastContainer />
         </header>
      );
 }
