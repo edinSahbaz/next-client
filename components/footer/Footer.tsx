@@ -14,10 +14,10 @@ const Footer = () => {
 
     return ( 
         <footer className="w-full p-6 flex flex-col items-center text-[var(--p-txt-color)] text-[15px]">
-            <HorizontalLine width="w-[90%]" color="bg-[#e3e3e3]" />
+            <HorizontalLine height="h-[1px]" width="w-[80%]" color="bg-[#e3e3e3]" />
         
             <div className="flex h-[18px] items-center gap-4 mt-8">
-                <FooterLink href="/" text="Kontakt" />
+                <FooterLink href="/pomoc" text="Kontakt" />
                 <Separator />
                 <FooterLink href="/" text="FAQ" />
                 <Separator />

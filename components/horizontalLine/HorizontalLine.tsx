@@ -1,16 +1,18 @@
 interface HorizontalLineProps {
     color?: string;
     width?: string;
+    height?: string;
 }
 
 const HorizontalLine = (props: HorizontalLineProps) => {
-    let { color, width } = props;
+    let { color, width, height } = props;
 
     if(!color) color = "#000";
     if(!width) color = "100%";
+    if(!height) height = "h-[1px]";
     
     return ( 
-        <div className={`${width} w-full ${color} h-[1px]`}></div>
+        <div className={`${width} w-full ${color} ${height} shadow-md`}></div>
      );
 }
  

@@ -18,7 +18,7 @@ const PythonProvider = dynamic(
 );
 
 const ubuntu = Ubuntu({
-    weight: ['300', '400'],
+    weight: ['300', '400', '500', '700'],
     subsets: ['latin'],
 })
 
@@ -67,7 +67,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 <PopupProvider>
                     { loading && <div className='w-full h-screen flex items-center justify-center'><ClipLoader color={"#f21b3f"} size={120} /></div> }
                     { !loading && (
-                        <div className={`${ubuntu.className}`}>
+                        <div className={`${ubuntu.className} bg-[var(--bg-body-color)]`}>
                             <Component {...pageProps} />
                             { router.pathname !== '/editor' && <Footer /> }
                         </div>
