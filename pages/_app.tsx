@@ -8,6 +8,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic';
 import { Ubuntu } from 'next/font/google'
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { PopupProvider } from 'react-popup-manager';
 import { ClipLoader } from 'react-spinners';
@@ -24,7 +25,9 @@ const ubuntu = Ubuntu({
 export default function App({ Component, pageProps }: AppProps) {
     const [user, setUser] = useState<UserType | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-  
+
+    const router = useRouter();
+    
     useEffect( () => { // Check if user is logged in on load
       /* States changed
         * user
@@ -66,11 +69,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     { !loading && (
                         <div className={`${ubuntu.className}`}>
                             <Component {...pageProps} />
-                            
-                            {/* TEMP */}
-                            <div className='h-screen'></div>
-
-                            <Footer />
+                            { router.pathname !== '/editor' && <Footer /> }
                         </div>
                     )}
                 </PopupProvider>
