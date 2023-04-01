@@ -4,7 +4,7 @@ import { IoClose } from "react-icons/io5";
 import { MdEmail, MdKey } from "react-icons/md";
 import { Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import capitalizeFirstLetter from "@/lib/util/capitalizeFirstLetter";
 import { auth } from "@/lib/firebase/firebase";
 import { ClipLoader } from "react-spinners";
@@ -35,10 +35,14 @@ const Input = (props: InputProps) => {
 }
 
 const Modal = ({ onClose } : PopupProps) => {
+    type AuthMethod = "login" | "register";
+
     const [email, setEmail] = useState<string>(''); // Email input
     const [password, setPassword] = useState<string>(''); // Password input
+    const [repeatPassword, setRepeatPassword] = useState<string>(''); // Repeat password input
     const [submitMessage, setSubmitMessage] = useState<string>(''); // Message text
     const [isDisabled, setIsDisabled] = useState<boolean>(false); // Button disabled
+    const [method, setMethod] = useState<AuthMethod>('login'); // Button disabled
     
     const iconClassName = "absolute top-[9px] left-2 text-xl text-[var(--bg-color)]"; // className for icons in input
 
@@ -60,27 +64,63 @@ const Modal = ({ onClose } : PopupProps) => {
         });
     }
 
+    const register = () => {
+        if(password !== repeatPassword) return setSubmitMessage("Passwords don't match");
+
+        setSubmitMessage("Processing");
+
+        createUserWithEmailAndPassword(auth, email, password)
+        .catch((error) => {
+            setSubmitMessage(capitalizeFirstLetter(error.code.substr(error.code.indexOf("/") + 1).replace(/-/g, " ")));
+            setIsDisabled(false);
+        });
+    }
+
+    const changeMethod = () => {
+        setMethod(method === "login" ? "register" : "login");
+    }
+
     return(
         <div onClick={(e) => e.stopPropagation()}
-            className="bg-white shadow-md rounded-md animate__animated animate__slideInRight animate__faster w-[380px]">
+            className="bg-white shadow-md rounded-md animate__animated animate__slideInRight animate__faster w-[420px]">
             <RedTop />
 
-            <div className="w-full p-2 flex flex-col items-center justify-center gap-4">
-                <h2 className="text-2xl">Prijavite se</h2>
+            <div className="w-full p-4 flex flex-col items-center justify-center gap-4">
+                <h2 className="text-2xl">
+                    {method === "login" ? "Prijavite se" : "Registrujte se"}
+                </h2>
+
                 <Logo simple={true} />
                 <p className="text-center text-[var(--bg-color)] text-sm font-light my-4">Prijavite se da spremite svoj rad. <br/>Mi nećemo postavljati ništa nigdje.</p>
                 
-                <div className="absolute top-2 right-2 text-xl cursor-pointer" onClick={onClose}>
+                <div className="absolute top-3 right-2 text-xl cursor-pointer" onClick={onClose}>
                     <IoClose /> 
                 </div>
 
                 <Input icon={<MdEmail className={iconClassName }/>} value={email} onChange={setEmail} placeholder="Email" type="text" />
                 <Input icon={<MdKey className={iconClassName} />} value={password} onChange={setPassword} placeholder="Password" type="password" />
+                { method === "register" &&  <Input icon={<MdKey className={iconClassName} />} value={repeatPassword} onChange={setRepeatPassword} placeholder="Potvrdi Password" type="password" /> }
+                {
+                    method === "register" && password !== repeatPassword && (
+                        <p className="text-xs -mt-3 text-[var(--sec-txt-color)] text-left w-full">Šifre se ne podudaraju.</p>
+                    )
+                }
 
-                <button onClick={login} disabled={isDisabled}
+                <button onClick={() => {
+                    if(method === "login") login();
+                    else register();
+                }} disabled={isDisabled}
                     className="w-full p-2 shadow-md rounded-md bg-[var(--ter-bg-color)] hover:bg-[var(--ter-bg-hover-color)] text-white transition-all duration-300">
-                    {submitMessage === "Processing" ? <ClipLoader color="#fff" size={14} className="mt-1" /> : "Prijavi se"}
+                    {submitMessage === "Processing" ? <ClipLoader color="#fff" size={14} className="mt-1" /> : method === "login" ? "Prijavite se" : "Registrujte se"}
                 </button>
+
+                <p className="text-sm">
+                    {method === "login" ? "Nemate račun?" : "Već imate račun?"}
+                    <span onClick={changeMethod} 
+                    className="text-[var(--sec-txt-color)] hover:text-[var(--ter-txt-color)] cursor-pointer ml-1 hover-underline-animation hover-underline-animation-red">
+                        {method === "login" ? "Registrujte se." : "Prijavite se."}
+                    </span>
+                </p>
             </div>
         </div>
     );
