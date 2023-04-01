@@ -67,8 +67,8 @@ const Modal = ({ onClose } : PopupProps) => {
     }
 
     const register = () => {
-        if(!name) return setSubmitMessage("Name is required!");
-        if(password !== repeatPassword) return setSubmitMessage("Passwords don't match!");
+        if(!name) return setSubmitMessage("Unesite puno ime!");
+        if(password !== repeatPassword) return setSubmitMessage("Lozinke se ne podudaraju!");
 
         setSubmitMessage("Processing");
 
@@ -107,10 +107,10 @@ const Modal = ({ onClose } : PopupProps) => {
                     <IoClose /> 
                 </div>
 
-                { method === "register" && <Input icon={<HiUser className={iconClassName }/>} value={name} onChange={setName} placeholder="Puno ime i prezime" type="text" /> }
+                { method === "register" && <Input icon={<HiUser className={iconClassName }/>} value={name} onChange={setName} placeholder="Ime i prezime" type="text" /> }
                 <Input icon={<MdEmail className={iconClassName }/>} value={email} onChange={setEmail} placeholder="Email" type="text" />
-                <Input icon={<MdKey className={iconClassName} />} value={password} onChange={setPassword} placeholder="Password" type="password" />
-                { method === "register" &&  <Input icon={<MdKey className={iconClassName} />} value={repeatPassword} onChange={setRepeatPassword} placeholder="Potvrdi Password" type="password" /> }
+                <Input icon={<MdKey className={iconClassName} />} value={password} onChange={setPassword} placeholder="Lozinka" type="password" />
+                { method === "register" &&  <Input icon={<MdKey className={iconClassName} />} value={repeatPassword} onChange={setRepeatPassword} placeholder="Ponovite lozinku" type="password" /> }
                 {
                     method === "register" && password !== repeatPassword && (
                         <p className="text-xs -mt-3 text-[var(--sec-txt-color)] text-left w-full">Šifre se ne podudaraju.</p>
