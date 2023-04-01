@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import UserContext from "@/lib/context/UserContext";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase/firebase";
+import { HiUser } from "react-icons/hi";
 
 const Links = () => {
     const router = useRouter();
@@ -51,8 +52,9 @@ const LogInBtn = () => {
 const UserPart = () => (
     <div className="flex items-center justify-center">
         <button onClick={() => signOut(auth)}
-        className="text-[var(--txt-color)] text-sm hover:border-2 border-[var(--sec-txt-color)] p-2 rounded-md">
-            Odjavi se
+        className="text-[var(--txt-color)] text-sm hover:border-2 border-[var(--sec-txt-color)] p-2 rounded-md flex gap-2 items-center">
+            <HiUser className="text-xl" />
+            {auth.currentUser?.displayName}
         </button>
     </div>
 );

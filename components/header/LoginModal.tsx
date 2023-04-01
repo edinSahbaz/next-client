@@ -1,10 +1,11 @@
 import { PopupProps } from "react-popup-manager";
 import Logo from "./Logo";
+import { HiUser } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
 import { MdEmail, MdKey } from "react-icons/md";
 import { Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import capitalizeFirstLetter from "@/lib/util/capitalizeFirstLetter";
 import { auth } from "@/lib/firebase/firebase";
 import { ClipLoader } from "react-spinners";
@@ -37,6 +38,7 @@ const Input = (props: InputProps) => {
 const Modal = ({ onClose } : PopupProps) => {
     type AuthMethod = "login" | "register";
 
+    const [name, setName] = useState<string>(''); // Name input
     const [email, setEmail] = useState<string>(''); // Email input
     const [password, setPassword] = useState<string>(''); // Password input
     const [repeatPassword, setRepeatPassword] = useState<string>(''); // Repeat password input
@@ -65,11 +67,17 @@ const Modal = ({ onClose } : PopupProps) => {
     }
 
     const register = () => {
-        if(password !== repeatPassword) return setSubmitMessage("Passwords don't match");
+        if(!name) return setSubmitMessage("Name is required!");
+        if(password !== repeatPassword) return setSubmitMessage("Passwords don't match!");
 
         setSubmitMessage("Processing");
 
         createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            updateProfile(userCredential.user, {
+                displayName: name
+            });
+        })
         .catch((error) => {
             setSubmitMessage(capitalizeFirstLetter(error.code.substr(error.code.indexOf("/") + 1).replace(/-/g, " ")));
             setIsDisabled(false);
@@ -91,12 +99,15 @@ const Modal = ({ onClose } : PopupProps) => {
                 </h2>
 
                 <Logo simple={true} />
-                <p className="text-center text-[var(--bg-color)] text-sm font-light my-4">Prijavite se da spremite svoj rad. <br/>Mi nećemo postavljati ništa nigdje.</p>
+                <p className="text-center text-[var(--bg-color)] text-sm font-light my-4">
+                    Prijavite se da spremite svoj rad. <br/>Mi nećemo postavljati ništa nigdje.
+                </p>
                 
                 <div className="absolute top-3 right-2 text-xl cursor-pointer" onClick={onClose}>
                     <IoClose /> 
                 </div>
 
+                { method === "register" && <Input icon={<HiUser className={iconClassName }/>} value={name} onChange={setName} placeholder="Puno ime i prezime" type="text" /> }
                 <Input icon={<MdEmail className={iconClassName }/>} value={email} onChange={setEmail} placeholder="Email" type="text" />
                 <Input icon={<MdKey className={iconClassName} />} value={password} onChange={setPassword} placeholder="Password" type="password" />
                 { method === "register" &&  <Input icon={<MdKey className={iconClassName} />} value={repeatPassword} onChange={setRepeatPassword} placeholder="Potvrdi Password" type="password" /> }
