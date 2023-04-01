@@ -65,7 +65,7 @@ const PageDetails = (props: DetailsProps) => {
         <div className={`headerBg px-36 py-16 grid ${hasCode && "grid-cols-2"} place-items-center pt-36`}>
             <Header />
             <div className={`text-white flex flex-col gap-8 justify-center w-[540px] ${!hasCode && "items-center h-[320px]"}`}>
-                <h1 className="text-4xl font-semibold">{title}</h1>
+                <h1 className="text-4xl font-[500]">{title}</h1>
                 <p className='text-lg'>{description}</p>
 
                 {btn && <RedButton btnText={btn.btnText} btnIcon={btn.btnIcon} btnAction={btn.btnAction} />}

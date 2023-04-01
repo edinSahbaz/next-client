@@ -13,15 +13,15 @@ const Footer = () => {
     );
 
     return ( 
-        <footer className="w-full p-6 flex flex-col items-center text-[var(--p-txt-color)] text-[15px]">
+        <footer className="w-full pb-12 flex flex-col items-center text-[var(--p-txt-color)] text-[15px]">
             <HorizontalLine height="h-[1px]" width="w-[80%]" color="bg-[#e3e3e3]" />
         
-            <div className="flex h-[18px] items-center gap-4 mt-8">
+            <div className="flex h-[18px] items-center gap-4 mt-12">
                 <FooterLink href="/pomoc" text="Kontakt" />
                 <Separator />
-                <FooterLink href="/" text="FAQ" />
+                <FooterLink href="/pomoc" text="FAQ" />
                 <Separator />
-                <FooterLink href="/" text="Politika privatnosti" />
+                <FooterLink href="/privatnost" text="Politika privatnosti" />
             </div>
 
             <p className="mt-2">Razvoj i dizajn: <FooterLink text="BitWise Solutions" href="/" /></p>
