@@ -50,28 +50,54 @@ const AccountData = () => {
         toast.success("Podaci računa su resetovani.");
     }
 
-    return(
+    return (
         <ContentContainer 
-        icon={<BiRefresh className="text-4xl" />} 
-        title="Podaci o računu" 
-        description="Želite li ponovo rješavati pitanja na ProgrammingExpertu? 
-        Želite li brzo proći kroz platformu? Tražite samo svježi početak?
-        <br/><br/>
-        Svoje podatke računa možete resetovati ovdje, resetovanje podataka je nepovratno.
-        <br/><br/>
-        Vaši podaci uključuju sav kod i odgovore koje ste napisali, sve videozapise koje ste označili kao pogledane u svim lekcijama na ProgrammingExpertu i sve vaše predaje za sva pitanja. Također uključuje i ostale razne podatke na ProgrammingExpertu, kao što su opcije vašeg spremljenog radnog prostora." 
-        additionalContent={<ActionButton text="Resetuj podatke" action={resetAccountData} />} />
+            icon={<BiRefresh className="text-4xl" />} 
+            title="Podaci o računu" 
+            description="Želite li ponovo rješavati pitanja na nauciProgramiranje.ba? 
+            Želite li brzo proći kroz platformu? Tražite samo svježi početak?
+            <br/><br/>
+            Svoje podatke računa možete resetovati ovdje, resetovanje podataka je nepovratno.
+            <br/><br/>
+            Vaši podaci uključuju sav kod i odgovore koje ste napisali, sve videozapise koje ste označili kao pogledane u svim lekcijama na nauciProgramiranje.ba i sve vaše predaje za sva pitanja. 
+            Također uključuje i ostale razne podatke na nauciProgramiranje.ba, kao što su opcije vašeg spremljenog radnog prostora." 
+            additionalContent={<ActionButton text="Resetuj podatke" action={resetAccountData} />} 
+        />
     );
 }
 
-const AccountDeletion = () => (
-    <ContentContainer icon={<AiFillDelete className="text-4xl" />} title="Brisanje računa" description="" additionalContent={null} />
-)
+const AccountDeletion = () => {
+    const deleteAccount = () => {
+        toast.success("Račun je uspješno izbrisan.");
+    }
 
-const LogOut = () => (
-    <ContentContainer icon={<MdLogout className="text-4xl" />} title="Odjava" description="" additionalContent={null} />
-)
+    return (
+        <ContentContainer 
+            icon={<AiFillDelete className="text-4xl" />} 
+            title="Brisanje računa" 
+            description="Ako želite izbrisati svoj račun na nauciProgramiranje.ba, to možete učiniti ovdje.
+            <br/><br/>
+            Time ćete potpuno izbrisati svoj račun na nauciProgramiranje.ba, uklanjajući sve podatke koje imate na platformi, 
+            uključujući spremljeni kod, pristup proizvodu i historiji transakcija." 
+            additionalContent={<ActionButton text="Obriši račun" action={deleteAccount} />} 
+        />
+    );
+}
 
+const LogOut = () => {
+    const logOut = () => {
+        toast.success("Odjavljeni ste.");
+    }
+
+    return (
+        <ContentContainer 
+            icon={<MdLogout className="text-4xl" />} 
+            title="Odjava" 
+            description="Ukoliko se želite odjaviti sa nauciProgramiranje.ba, to možete učiniti ovdje." 
+            additionalContent={<ActionButton text="Odjavi se" action={logOut} />} 
+        />
+    );
+}
 
 const Profile = () => {
     return ( 
