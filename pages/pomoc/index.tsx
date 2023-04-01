@@ -14,8 +14,8 @@ interface CardProps {
 
 const Heading = () => (
     <div className="flex flex-col items-center gap-4 my-12">
-        <h2 className="text-4xl">Centar za pomoć</h2>
-        <HorizontalLine height="h-[2px]" color="bg-[var(--sec-txt-color)]" width="w-[290px]" />
+        <h2 className="text-4xl text-[var(--title-txt-color)]">Centar za pomoć</h2>
+        <HorizontalLine height="h-[2px]" color="bg-[var(--sec-txt-color)]" width="w-[60%]" />
         <p className="text-[var(--p-txt-color)]">Ako imate pitanje ili neki problem, pogledajte kroz naš FAQ ispod.</p>
     </div>
 )
@@ -29,7 +29,7 @@ const Card = ({ title, icon }: CardProps) => (
 
 const Cards = ({ cards }: { cards: Array<CardProps> }) => (
     <div className="w-full grid place-items-center">
-        <h3 className="mb-12 text-2xl">Kako vam možemo pomoći?</h3>
+        <h3 className="mb-12 text-2xl text-[var(--title-txt-color)]">Kako vam možemo pomoći?</h3>
         <div className="grid grid-cols-3 gap-4">
             {
                 cards.map((card, i) => {
