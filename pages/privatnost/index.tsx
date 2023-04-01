@@ -33,8 +33,8 @@ const PersonalInfo = () => (
                 <li>1. Idite na vaš profil, odnosno 
                     <Link href="/profil" className="ml-1 text-[var(--sec-txt-color)] font-[700] hover-underline-animation hover-underline-animation-red">stranicu za profil</Link>.
                 </li>
-                <li>2. Idite do sekcije <span className="font-[700]">Brisanje profila</span>.</li>
-                <li>3. Kliknite na dugme <span className="font-[700]">Obriši profil</span>.</li>
+                <li>2. Idite do sekcije <span className="font-[700]">Brisanje računa</span>.</li>
+                <li>3. Kliknite na dugme <span className="font-[700]">Obriši račun</span>.</li>
             </ol>
         </div>
     </div>

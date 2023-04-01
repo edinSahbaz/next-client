@@ -4,10 +4,7 @@ import LoginModal from "./LoginModal";
 import Logo from "./Logo";
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from "react-toastify";
 import UserContext from "@/lib/context/UserContext";
-import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase/firebase";
 import { HiUser } from "react-icons/hi";
 
@@ -51,11 +48,11 @@ const LogInBtn = () => {
 
 const UserPart = () => (
     <div className="flex items-center justify-center">
-        <button onClick={() => signOut(auth)}
+        <Link href="/profil" 
         className="text-[var(--txt-color)] text-sm hover:border-2 border-[var(--sec-txt-color)] p-2 rounded-md flex gap-2 items-center">
             <HiUser className="text-xl" />
             {auth.currentUser?.displayName}
-        </button>
+        </Link>
     </div>
 );
 
@@ -64,10 +61,9 @@ const Header = () => {
 
     return ( 
         <header className="grid grid-cols-3 px-32 py-4 absolute top-0 left-0 w-full">
-            <Logo simple={false} />
+            <Logo simple={false} theme="light" size={null} />
             <Links />
             {user ? <UserPart /> : <LogInBtn />}
-            <ToastContainer />
         </header>
      );
 }

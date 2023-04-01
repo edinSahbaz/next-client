@@ -98,7 +98,7 @@ const Modal = ({ onClose } : PopupProps) => {
                     {method === "login" ? "Prijavite se" : "Registrujte se"}
                 </h2>
 
-                <Logo simple={true} />
+                <Logo simple={true} theme="dark" size={null} />
                 <p className="text-center text-[var(--bg-color)] text-sm font-light my-4">
                     Prijavite se da spremite svoj rad. <br/>Mi nećemo postavljati ništa nigdje.
                 </p>

@@ -72,3 +72,7 @@ html, body {
 .headerBg {
     background: linear-gradient(-45deg, #2e4057 50%, #405978)
 }
+
+p {
+    line-height: 1.6;
+}

@@ -1,19 +1,26 @@
 import { Jura } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import { FC } from "react";
 
 const jura = Jura({
     weight: '400',
     subsets: ['latin'],
 })
 
-const Logo = ({ simple } : { simple: boolean }) => {
-    const textColor = simple ? "text-[var(--title-txt-color)]" : "text-[var(--txt-color)]";
+interface LogoProps { 
+    simple: boolean
+    theme: "light" | "dark"
+    size: "small" | "normal" | null | undefined
+}
+
+const Logo: FC<LogoProps> = ({ simple, theme, size }) => {
+    const textColor = theme === "dark" ? "text-[var(--title-txt-color)]" : "text-[var(--txt-color)]";
 
     return (
-        <Link href="/" className={`${jura.className} flex items-center justify-center gap-4 ${textColor}`}>
+        <Link href="/" className={`${jura.className} ${size === "small" && "scale-75"} flex items-center justify-center gap-4 ${textColor}`}>
             <Image className="hover:transform hover:rotate-90 transition-all duration-[800ms] fill-white"
-                src={simple ? "/logo-dark.svg" : "/logo-white.svg"} height={40} width={40} alt="logo" />
+                src={theme === "dark" ? "/logo-dark.svg" : "/logo-white.svg"} height={40} width={40} alt="logo" />
 
             <div className="font-[var(--logo-font)]">
                 <h2 className="text-2xl">nauciProgramiranje.ba</h2>
