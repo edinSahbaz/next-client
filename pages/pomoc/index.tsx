@@ -6,13 +6,14 @@ import { BsGear, BsBug } from "react-icons/bs";
 import { BiPackage, BiCreditCard } from "react-icons/bi";
 import { FaCreditCard, FaRegHandshake } from "react-icons/fa";
 import { HiOutlineLightBulb } from "react-icons/hi";
+import Container from "@/components/general/Container";
 interface CardProps {
     title: string;
     icon: ReactNode;
 }
 
 const Heading = () => (
-    <div className="flex flex-col items-center gap-4 mt-20">
+    <div className="flex flex-col items-center gap-4 my-12">
         <h2 className="text-4xl">Centar za pomoć</h2>
         <HorizontalLine height="h-[2px]" color="bg-[var(--sec-txt-color)]" width="w-[290px]" />
         <p className="text-[var(--p-txt-color)]">Ako imate pitanje ili neki problem, pogledajte kroz naš FAQ ispod.</p>
@@ -27,7 +28,7 @@ const Card = ({ title, icon }: CardProps) => (
 )
 
 const Cards = ({ cards }: { cards: Array<CardProps> }) => (
-    <div className="w-full grid place-items-center my-16">
+    <div className="w-full grid place-items-center">
         <h3 className="mb-12 text-2xl">Kako vam možemo pomoći?</h3>
         <div className="grid grid-cols-3 gap-4">
             {
@@ -72,10 +73,11 @@ const Help = () => {
                     }}
                 />
                 
-                <div className="flex flex-col w-full items-center justify-center">
+                
+                <Container>
                     <Heading />
                     <Cards cards={cards} />
-                </div>
+                </Container>
             </main>
         </>
      );

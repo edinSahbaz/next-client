@@ -1,3 +1,4 @@
+import Container from "@/components/general/Container";
 import PageDetails from "@/components/header/PageDetails";
 import Head from "next/head";
 import { FaCreditCard } from "react-icons/fa";
@@ -19,6 +20,10 @@ const Purchase = () => {
                     hasCode={false}
                     btn={null}
                 />
+
+                <Container>
+                    
+                </Container>
             </main>
         </>
      );

@@ -1,3 +1,4 @@
+import Container from "@/components/general/Container";
 import PageDetails from "@/components/header/PageDetails";
 import Head from "next/head";
 import { FaCreditCard } from "react-icons/fa";
@@ -23,6 +24,10 @@ const Content = () => {
                         btnAction: '/kupovina'
                     }}
                 />
+
+                <Container>
+                
+                </Container>
             </main>
         </>
      );
