@@ -6,14 +6,18 @@ import { Elements, PaymentElement } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import Head from "next/head";
 import Link from "next/link";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import { BiBook, BiCodeBlock, BiDesktop } from "react-icons/bi";
 import { BsGearWide, BsPersonVideo2 } from "react-icons/bs";
 import { TbCertificate } from "react-icons/tb";
 import { ClipLoader } from "react-spinners";
 import { FaChalkboardTeacher, FaTasks } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { buyCourse } from "@/lib/course/course";
+import UserContext from "@/lib/context/UserContext";
 
 const PaymentForm = () => {
+    const { user } = useContext(UserContext);
     const [clientSecret, setClientSecret] = useState<string | null>(null);
 
     const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
@@ -28,6 +32,14 @@ const PaymentForm = () => {
             setClientSecret(data.clientSecret);
         });
     }, []);
+
+    const buyAction = async () => {
+        if(!user) return;
+
+        toast.success("Kupili ste nauciProgramiranje.ba kurs!")
+        buyCourse(user.uid, "python");
+    };
+
 
     const Price = () => (
         <div className="mb-8 mt-12 flex flex-col gap-2">
@@ -51,11 +63,13 @@ const PaymentForm = () => {
                 <Price/>
                 <PaymentElement />
                 <LegalInfo />
-                <ActionButton text="Kupi kurs" action={() => {}} />
+                <ActionButton text="Kupi kurs" action={buyAction} />
             </Elements>
         </div>
     ) : (
-        <ClipLoader size={70} color="#f21b3f" />
+        <div className="w-full h-full grid place-items-center">
+            <ClipLoader size={70} color="#f21b3f" />
+        </div>
     );
 }
 
@@ -68,7 +82,7 @@ const PlatformInfo = () => {
     const Feature = ({ icon, description }: Feature) => (
         <div className="flex items-center gap-4">
             {icon}
-            <p className="font-light ">{description}</p>
+            <p className="">{description}</p>
         </div>
     )
 
