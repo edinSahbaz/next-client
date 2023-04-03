@@ -12,6 +12,7 @@ import { auth } from "@/lib/firebase/firebase";
 import { useRouter } from "next/router";
 import UserContext from "@/lib/context/UserContext";
 import Forbidden from "@/components/general/Forbidden";
+import ActionButton from "@/components/general/ActionButton";
 
 interface ContainerProps {
     icon: ReactNode,
@@ -28,12 +29,6 @@ const ContentContainer: FC<ContainerProps> = ({ icon, title, description, additi
 
         { additionalContent && additionalContent }
     </div>
-)
-
-const ActionButton: FC<{ text: string, action: () => void }> = ({ text, action }) => (
-    <button onClick={action} className="w-full text-center mt-6 p-4 bg-[var(--ter-txt-color)] transition-all duration-300 cursor-pointer rounded-md shadow-md hover:shadow-xl text-white">
-        {text}
-    </button>
 )
 
 const Header = () => (

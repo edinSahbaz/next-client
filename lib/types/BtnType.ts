@@ -2,6 +2,6 @@ import { ReactNode } from "react";
 
 export type BtnType = {
     btnText: string;
-    btnIcon: ReactNode;
+    btnIcon: ReactNode | null;
     btnAction: string;
 }
