@@ -19,6 +19,7 @@
     --title-txt-color: #07203C;
     --p-txt-color: #445d6e;
     --editor-txt-color: #2bff4b;
+    --purple-txt-color: #626ee3;
     
     --editor-bg: #1c2736;
     --bg-sec-editor: #405978;
@@ -62,6 +63,11 @@ html, body {
 
 .hover-underline-animation-red::after {
     background-color: var(--sec-txt-color);
+}
+
+.hover-underline-animation-purple::after {
+    height: 3px;
+    background-color: var(--purple-txt-color);
 }
 
 .hover-underline-animation:hover::after {

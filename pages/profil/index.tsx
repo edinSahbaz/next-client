@@ -1,12 +1,17 @@
 import Container from "@/components/general/Container";
 import Logo from "@/components/header/Logo";
 import Head from "next/head";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useContext } from "react";
 import { BiPackage, BiRefresh } from "react-icons/bi";
 import { BsReceipt } from "react-icons/bs";
 import { AiFillDelete } from "react-icons/ai";
 import { MdLogout } from "react-icons/md";
 import { toast } from "react-toastify";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase/firebase";
+import { useRouter } from "next/router";
+import UserContext from "@/lib/context/UserContext";
+import Forbidden from "@/components/general/Forbidden";
 
 interface ContainerProps {
     icon: ReactNode,
@@ -85,8 +90,11 @@ const AccountDeletion = () => {
 }
 
 const LogOut = () => {
+    const router = useRouter();
+
     const logOut = () => {
-        toast.success("Odjavljeni ste.");
+        signOut(auth);
+        router.push("/");
     }
 
     return (
@@ -100,7 +108,9 @@ const LogOut = () => {
 }
 
 const Profile = () => {
-    return ( 
+    const { user } = useContext(UserContext);
+
+    return user ? ( 
         <>
             <Head>
                 <title>Profil | nauciProgramiranje.ba</title>
@@ -121,6 +131,8 @@ const Profile = () => {
                 </Container>
             </div>
         </>
+     ) : (
+        <Forbidden />
      );
 }
  

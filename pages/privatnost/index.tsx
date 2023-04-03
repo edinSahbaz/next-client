@@ -1,9 +1,13 @@
 import Container from "@/components/general/Container";
 import PageDetails from "@/components/header/PageDetails";
+import UserContext from "@/lib/context/UserContext";
+import { auth } from "@/lib/firebase/firebase";
 import Head from "next/head";
 import Link from "next/link";
+import React, { MouseEventHandler, useContext } from "react";
 import { BiInfoCircle } from "react-icons/bi";
 import { FaCreditCard } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 interface ParagrpahProps {
     title: string;
@@ -14,31 +18,42 @@ const VerticalLine = () => (
     <div className="w-1 bg-[var(--p-txt-color)] rounded-l-sm"></div>
 )
 
-const PersonalInfo = () => (
-    <div className="bg-white w-full h-fit flex gap-4 rounded-md shadow-sm text-[var(--p-txt-color)]">
-        <VerticalLine />
-        
-        <BiInfoCircle className="mt-4 text-4xl" />
+const PersonalInfo = () => {
+    const { user } = useContext(UserContext)
+ 
+    const checkIfLoggedIn = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        if (!user) {
+            e.preventDefault();
+            toast.error('Prijavite se kako bi ste pristupili stranici profila.')
+        }
+    }
 
-        <div className="py-4">
-            <div className="flex items-center text-[#445c6e] font-[500] text-xl">
-                <h2>Brisanje ličnih podataka</h2>
+    return (
+        <div className="bg-white w-full h-fit flex gap-4 rounded-md shadow-sm text-[var(--p-txt-color)]">
+            <VerticalLine />
+            
+            <BiInfoCircle className="mt-4 text-4xl" />
+
+            <div className="py-4">
+                <div className="flex items-center text-[#445c6e] font-[500] text-xl">
+                    <h2>Brisanje ličnih podataka</h2>
+                </div>
+
+                <p className="my-4">
+                    Ako želite obrisati sve lične podatke koje je prikupila stranica nauciProgramiranje.ba, slijedite sljedeće upute:
+                </p>
+
+                <ol className="flex flex-col gap-2 ml-4">
+                    <li>1. Idite na vaš profil, odnosno 
+                        <Link href="/profil" onClick={checkIfLoggedIn} className="ml-1 text-[var(--sec-txt-color)] font-[700] hover-underline-animation hover-underline-animation-red">stranicu za profil</Link>.
+                    </li>
+                    <li>2. Idite do sekcije <span className="font-[700]">Brisanje računa</span>.</li>
+                    <li>3. Kliknite na dugme <span className="font-[700]">Obriši račun</span>.</li>
+                </ol>
             </div>
-
-            <p className="my-4">
-                Ako želite obrisati sve lične podatke koje je prikupila stranica nauciProgramiranje.ba, slijedite sljedeće upute:
-            </p>
-
-            <ol className="flex flex-col gap-2 ml-4">
-                <li>1. Idite na vaš profil, odnosno 
-                    <Link href="/profil" className="ml-1 text-[var(--sec-txt-color)] font-[700] hover-underline-animation hover-underline-animation-red">stranicu za profil</Link>.
-                </li>
-                <li>2. Idite do sekcije <span className="font-[700]">Brisanje računa</span>.</li>
-                <li>3. Kliknite na dugme <span className="font-[700]">Obriši račun</span>.</li>
-            </ol>
         </div>
-    </div>
-)
+    );
+}
 
 const Paragrpah = ({ title, description }: ParagrpahProps) => (
     <div>
