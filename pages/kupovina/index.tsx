@@ -3,18 +3,34 @@ import PageDetails from "@/components/header/PageDetails";
 import { Elements, PaymentElement } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 
-const Purchase = () => {
+const PaymentForm = () => {
+    const [clientSecret, setClientSecret] = useState<string | null>(null);
+
     const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
 
-    const appearance = {
-        theme: 'stripe',
-      };
-      const options = {
-        clientSecret: "",
-        appearance,
-      };
+    useEffect(() => {
+        fetch("/api/stripe/create-payment-intent", {
+            method: "POST",
+            // headers: { "Content-Type": "application/json" },
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            setClientSecret(data.clientSecret);
+        });
+    }, []);
 
+    return clientSecret ? (
+        <Elements options={{ clientSecret: clientSecret }} stripe={stripePromise}>
+            <PaymentElement />
+        </Elements>
+    ) : null;
+}
+
+const Purchase = () => {
+
+    
     return ( 
         <>
             <Head>
@@ -33,9 +49,9 @@ const Purchase = () => {
                 />
 
                 <Container>
-                    <Elements options={options} stripe={stripePromise}>
-                        <PaymentElement />
-                    </Elements>
+                    <div className="w-full grid grid-cols-2">
+                        <PaymentForm />
+                    </div>
                 </Container>
             </main>
         </>
