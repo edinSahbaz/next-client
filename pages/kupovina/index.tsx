@@ -1,9 +1,20 @@
 import Container from "@/components/general/Container";
 import PageDetails from "@/components/header/PageDetails";
+import { Elements, PaymentElement } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import Head from "next/head";
-import { FaCreditCard } from "react-icons/fa";
 
 const Purchase = () => {
+    const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
+
+    const appearance = {
+        theme: 'stripe',
+      };
+      const options = {
+        clientSecret: "",
+        appearance,
+      };
+
     return ( 
         <>
             <Head>
@@ -22,7 +33,9 @@ const Purchase = () => {
                 />
 
                 <Container>
-                    
+                    <Elements options={options} stripe={stripePromise}>
+                        <PaymentElement />
+                    </Elements>
                 </Container>
             </main>
         </>
