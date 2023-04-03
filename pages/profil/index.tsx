@@ -7,7 +7,7 @@ import { BsReceipt } from "react-icons/bs";
 import { AiFillDelete } from "react-icons/ai";
 import { MdLogout } from "react-icons/md";
 import { toast } from "react-toastify";
-import { signOut } from "firebase/auth";
+import { deleteUser, signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase/firebase";
 import { useRouter } from "next/router";
 import UserContext from "@/lib/context/UserContext";
@@ -52,7 +52,7 @@ const Transactions = () => (
 
 const AccountData = () => {
     const resetAccountData = () => {
-        toast.success("Podaci računa su resetovani.");
+        toast.warning("TODO");
     }
 
     return (
@@ -72,8 +72,11 @@ const AccountData = () => {
 }
 
 const AccountDeletion = () => {
+    const router = useRouter();
+
     const deleteAccount = () => {
-        toast.success("Račun je uspješno izbrisan.");
+        deleteUser(auth.currentUser!);
+        router.push("/");    
     }
 
     return (
