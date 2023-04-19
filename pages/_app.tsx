@@ -14,6 +14,8 @@ import Footer from '@/components/footer/Footer';
 import UserContext from '@/lib/context/UserContext';
 import { auth } from '@/lib/firebase/firebase';
 import UserType from '@/lib/types/UserType';
+import { isCoursePaid } from '@/lib/course/course';
+import { Timestamp } from 'firebase/firestore';
 
 const PythonProvider = dynamic(
     () => import('react-py').then((module) => module.PythonProvider), { ssr: false }
@@ -36,17 +38,21 @@ export default function App({ Component, pageProps }: AppProps) {
         * loading = false (if user is not logged in)
         * loading = true (if user is logged in (MUST WAIT FOR EVERYTHING TO LOAD))
       */
-      onAuthStateChanged(auth, (userVar) => {
+      onAuthStateChanged(auth, async (userVar) => {
         if(userVar){
             //User is logged in
             setLoading(true);
+
+            const retData: {isPaid: boolean, paidDate: Timestamp | null} = await isCoursePaid(userVar.uid, 'python');
             
             const user: UserType = {
                 uid: userVar.uid,
                 email: userVar.email,
                 displayName: userVar.displayName ? userVar.displayName : userVar.email,
+                isCoursePaid: retData.isPaid,
+                coursePaidDate: retData.paidDate,
             }
-  
+
             setUser(user);
         }
         else{

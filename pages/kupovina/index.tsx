@@ -15,6 +15,7 @@ import { FaChalkboardTeacher, FaTasks } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { buyCourse } from "@/lib/course/course";
 import UserContext from "@/lib/context/UserContext";
+import { differenceInCalendarDays } from "date-fns";
 
 const PaymentForm = () => {
     const { user } = useContext(UserContext);
@@ -55,16 +56,43 @@ const PaymentForm = () => {
             <Link className="text-[var(--sec-txt-color)] font-[700] hover-underline-animation hover-underline-animation-red ml-1" href="/">uvjetima i odredbama</Link>.
         </p>
     );
+
+    const SubscriptionRemainingTime = () => {
+        const paidDateTimestamp = user?.coursePaidDate;
+
+        if(!paidDateTimestamp) return null;
+
+        const currentDate = new Date();
+        const paidDate = paidDateTimestamp.toDate();
+        const expireDate = new Date(paidDate.getFullYear() + 1, paidDate.getMonth(), paidDate.getDate());
+
+        const remainingTime = differenceInCalendarDays(expireDate, currentDate);
+
+        return (
+            <div className="h-full flex flex-col items-center justify-center">
+                <p className="text-center text-3xl text-[var(--title-txt-color)]">Kurs je plaćen!</p>
+                <p className="text-center text-lg text-[var(--sec-txt-color)]">Preostalo vrijeme: {remainingTime} dana.</p>
+            </div>
+        );
+    }
     
     return clientSecret ? (
         <div className="w-[420px]">
-            <Elements options={{ clientSecret: clientSecret }} stripe={stripePromise}>
-                <h2 className="text-center text-3xl text-[var(--title-txt-color)]">Za nevjerovatnu cijenu</h2>
-                <Price/>
-                <PaymentElement />
-                <LegalInfo />
-                <ActionButton text="Kupi kurs" action={buyAction} />
-            </Elements>
+            {
+                user?.isCoursePaid ? 
+                (
+                    <SubscriptionRemainingTime />
+                ) : 
+                (
+                    <Elements options={{ clientSecret: clientSecret }} stripe={stripePromise}>
+                        <h2 className="text-center text-3xl text-[var(--title-txt-color)]">Za nevjerovatnu cijenu</h2>
+                        <Price/>
+                        <PaymentElement />
+                        <LegalInfo />
+                        <ActionButton text="Kupi kurs" action={buyAction} />
+                    </Elements>
+                )
+            }
         </div>
     ) : (
         <div className="w-full h-full grid place-items-center">
@@ -106,7 +134,6 @@ const PlatformInfo = () => {
     );
 }
     
-
 const Purchase = () => {
     return ( 
         <>
