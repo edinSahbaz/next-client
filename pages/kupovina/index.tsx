@@ -10,7 +10,7 @@ import { ReactNode, useContext, useEffect, useState } from "react";
 import { BiBook, BiCodeBlock, BiDesktop } from "react-icons/bi";
 import { BsGearWide, BsPersonVideo2 } from "react-icons/bs";
 import { TbCertificate } from "react-icons/tb";
-import { ClipLoader } from "react-spinners";
+import { MoonLoader } from "react-spinners";
 import { FaChalkboardTeacher, FaTasks } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { buyCourse } from "@/lib/course/course";
@@ -96,7 +96,7 @@ const PaymentForm = () => {
         </div>
     ) : (
         <div className="w-full h-full grid place-items-center">
-            <ClipLoader size={70} color="#f21b3f" />
+            <MoonLoader size={70} color="#f21b3f" />
         </div>
     );
 }

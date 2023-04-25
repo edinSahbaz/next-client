@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import capitalizeFirstLetter from "@/lib/util/capitalizeFirstLetter";
 import { auth } from "@/lib/firebase/firebase";
-import { ClipLoader } from "react-spinners";
+import { MoonLoader } from "react-spinners";
 import UserContext from "@/lib/context/UserContext";
 
 const RedTop = () => (
@@ -122,7 +122,7 @@ const Modal = ({ onClose } : PopupProps) => {
                     else register();
                 }} disabled={isDisabled}
                     className="w-full p-2 shadow-md rounded-md bg-[var(--ter-bg-color)] hover:bg-[var(--ter-bg-hover-color)] text-white transition-all duration-300">
-                    {submitMessage === "Processing" ? <ClipLoader color="#fff" size={14} className="mt-1" /> : method === "login" ? "Prijavite se" : "Registrujte se"}
+                    {submitMessage === "Processing" ? <MoonLoader color="#fff" size={14} className="mt-1" /> : method === "login" ? "Prijavite se" : "Registrujte se"}
                 </button>
 
                 <p className="text-sm">

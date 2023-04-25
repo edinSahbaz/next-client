@@ -8,7 +8,7 @@ import { Ubuntu } from 'next/font/google'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { PopupProvider } from 'react-popup-manager';
-import { ClipLoader } from 'react-spinners';
+import { MoonLoader } from 'react-spinners';
 import { ToastContainer } from 'react-toastify';
 import Footer from '@/components/footer/Footer';
 import UserContext from '@/lib/context/UserContext';
@@ -73,7 +73,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <UserContext.Provider value={{ user, setUser, loading, setLoading }}>
             <PythonProvider>
                 <PopupProvider>
-                    { loading && <div className='w-full h-screen flex items-center justify-center'><ClipLoader color={"#f21b3f"} size={120} /></div> }
+                    { loading && <div className='w-full h-screen flex items-center justify-center'><MoonLoader color={"#f21b3f"} size={120} /></div> }
                     { !loading && (
                         <div className={`${ubuntu.className} bg-[var(--bg-body-color)]`}>
                             <ToastContainer />

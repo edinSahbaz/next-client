@@ -1,7 +1,7 @@
 import Editor, { OnMount, BeforeMount } from "@monaco-editor/react";
 import { ReactNode, useEffect, useRef } from "react";
 import { usePython } from "react-py";
-import { BarLoader, ClipLoader } from "react-spinners";
+import { BarLoader, MoonLoader } from "react-spinners";
 
 interface ConsoleProps {
     stdout: string;
@@ -122,7 +122,7 @@ const CodeEnviroment = () => {
                         beforeMount={handleEditorBeforeMount}
                         defaultLanguage="python"
                         theme="customTheme"
-                        loading={<ClipLoader color="#f21b3f" size={50} speedMultiplier={0.75} />}
+                        loading={<MoonLoader color="#f21b3f" size={50} speedMultiplier={0.75} />}
                         options={{
                             fontSize: 16,
                             minimap: { enabled: false },
@@ -135,7 +135,7 @@ const CodeEnviroment = () => {
         </div>
      ) : (
         <div className="flex justify-center items-center h-full">
-            <ClipLoader color="#f21b3f" size={75} speedMultiplier={0.75} />
+            <MoonLoader color="#f21b3f" size={75} speedMultiplier={0.75} />
         </div>
      );
 }
