@@ -73,7 +73,7 @@ export default function App({ Component, pageProps }: AppProps) {
       setLoading(false);
     }, [user]);
 
-    useEffect(() => {
+    useEffect(() => { // Gets Stripe client secret
         fetch("/api/stripe/create-payment-intent", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
