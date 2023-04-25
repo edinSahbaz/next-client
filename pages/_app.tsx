@@ -16,6 +16,7 @@ import { auth } from '@/lib/firebase/firebase';
 import UserType from '@/lib/types/UserType';
 import { isCoursePaid } from '@/lib/course/course';
 import { Timestamp } from 'firebase/firestore';
+import StripeContext from '@/lib/context/StripeContext';
 
 const PythonProvider = dynamic(
     () => import('react-py').then((module) => module.PythonProvider), { ssr: false }
@@ -29,6 +30,9 @@ const ubuntu = Ubuntu({
 export default function App({ Component, pageProps }: AppProps) {
     const [user, setUser] = useState<UserType | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+
+    // STRIPE
+    const [clientSecret, setClientSecret] = useState<string | null>(null);
 
     const router = useRouter();
     
@@ -69,20 +73,33 @@ export default function App({ Component, pageProps }: AppProps) {
       setLoading(false);
     }, [user]);
 
+    useEffect(() => {
+        fetch("/api/stripe/create-payment-intent", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            setClientSecret(data.clientSecret);
+        });
+    }, []);
+
     return (
-        <UserContext.Provider value={{ user, setUser, loading, setLoading }}>
-            <PythonProvider>
-                <PopupProvider>
-                    { loading && <div className='w-full h-screen flex items-center justify-center'><MoonLoader color={"#f21b3f"} size={120} /></div> }
-                    { !loading && (
-                        <div className={`${ubuntu.className} bg-[var(--bg-body-color)]`}>
-                            <ToastContainer />
-                            <Component {...pageProps} />
-                            { router.pathname !== '/editor' && <Footer /> }
-                        </div>
-                    )}
-                </PopupProvider>
-            </PythonProvider>
-        </UserContext.Provider>
+        <StripeContext.Provider value={{ clientSecret }}>
+            <UserContext.Provider value={{ user, setUser, loading, setLoading }}>
+                <PythonProvider>
+                    <PopupProvider>
+                        { loading && <div className='w-full h-screen flex items-center justify-center'><MoonLoader color={"#f21b3f"} size={120} /></div> }
+                        { !loading && (
+                            <div className={`${ubuntu.className} bg-[var(--bg-body-color)]`}>
+                                <ToastContainer />
+                                <Component {...pageProps} />
+                                { router.pathname !== '/editor' && <Footer /> }
+                            </div>
+                        )}
+                    </PopupProvider>
+                </PythonProvider>
+            </UserContext.Provider>
+        </StripeContext.Provider>
     );
 }

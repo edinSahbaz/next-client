@@ -16,23 +16,13 @@ import { toast } from "react-toastify";
 import { buyCourse } from "@/lib/course/course";
 import UserContext from "@/lib/context/UserContext";
 import { differenceInCalendarDays } from "date-fns";
+import StripeContext from "@/lib/context/StripeContext";
 
 const PaymentForm = () => {
     const { user } = useContext(UserContext);
-    const [clientSecret, setClientSecret] = useState<string | null>(null);
+    const { clientSecret } = useContext(StripeContext);
 
     const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
-
-    useEffect(() => {
-        fetch("/api/stripe/create-payment-intent", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            setClientSecret(data.clientSecret);
-        });
-    }, []);
 
     const buyAction = async () => {
         if(!user) return;
@@ -76,13 +66,14 @@ const PaymentForm = () => {
         );
     }
     
-    return clientSecret ? (
+    return user?.isCoursePaid ? (
+        <div className="w-full h-full grid place-items-center">
+            <SubscriptionRemainingTime />
+        </div>
+    ) : (
         <div className="w-[420px]">
             {
-                user?.isCoursePaid ? 
-                (
-                    <SubscriptionRemainingTime />
-                ) : 
+                clientSecret ? 
                 (
                     <Elements options={{ clientSecret: clientSecret }} stripe={stripePromise}>
                         <h2 className="text-center text-3xl text-[var(--title-txt-color)]">Za nevjerovatnu cijenu</h2>
@@ -91,12 +82,13 @@ const PaymentForm = () => {
                         <LegalInfo />
                         <ActionButton text="Kupi kurs" action={buyAction} />
                     </Elements>
+                ) : 
+                (
+                    <div className="w-full h-full grid place-items-center">
+                        <MoonLoader size={70} color="#f21b3f" />
+                    </div>
                 )
             }
-        </div>
-    ) : (
-        <div className="w-full h-full grid place-items-center">
-            <MoonLoader size={70} color="#f21b3f" />
         </div>
     );
 }
