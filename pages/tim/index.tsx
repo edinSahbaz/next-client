@@ -70,7 +70,7 @@ const Team = () => {
                         name="Edin Šahbaz" 
                         position="Osnivač i CEO" 
                         imgLink="/team/EdinSahbaz.jpeg"
-                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia anim id est laborum."
                         social={{
                             github: "https://github.com/edinSahbaz",
                             linkedin: "https://www.linkedin.com/in/edinsahbaz/"
@@ -79,9 +79,31 @@ const Team = () => {
 
                     <TeamMember 
                         name="John Doe" 
+                        position="CTO" 
+                        imgLink="/team/blank.jpeg"
+                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia anim id est laborum."
+                        social={{
+                            github: "https://github.com",
+                            linkedin: "https://www.linkedin.com"
+                        }}
+                    />
+
+                    <TeamMember 
+                        name="Sam Smith" 
+                        position="COO" 
+                        imgLink="/team/blank.jpeg"
+                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia anim id est laborum."
+                        social={{
+                            github: "https://github.com",
+                            linkedin: "https://www.linkedin.com"
+                        }}
+                    />
+
+                    <TeamMember 
+                        name="Tom Harry" 
                         position="Predavač i instruktor" 
                         imgLink="/team/blank.jpeg"
-                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia anim id est laborum."
                         social={{
                             github: "https://github.com",
                             linkedin: "https://www.linkedin.com"
