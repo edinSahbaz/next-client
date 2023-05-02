@@ -121,8 +121,8 @@ const Modal = ({ onClose } : PopupProps) => {
                     if(method === "login") login();
                     else register();
                 }} disabled={isDisabled}
-                    className="w-full p-2 shadow-md rounded-md bg-[var(--ter-bg-color)] hover:bg-[var(--ter-bg-hover-color)] text-white transition-all duration-300">
-                    {submitMessage === "Processing" ? <MoonLoader color="#fff" size={14} className="mt-1" /> : method === "login" ? "Prijavite se" : "Registrujte se"}
+                    className="w-full p-2 shadow-md rounded-md grid place-items-center bg-[var(--ter-bg-color)] hover:bg-[var(--ter-bg-hover-color)] text-white transition-all duration-300">
+                    {submitMessage === "Processing" ? <MoonLoader color="#fff" size={14} className="my-[2px]" /> : method === "login" ? "Prijavite se" : "Registrujte se"}
                 </button>
 
                 <p className="text-sm">
