@@ -1,7 +1,7 @@
 import Container from "@/components/general/Container";
 import Logo from "@/components/header/Logo";
 import Head from "next/head";
-import { FC, ReactNode, useContext } from "react";
+import { FC, ReactNode, useContext, useEffect, useState } from "react";
 import { BiPackage, BiRefresh } from "react-icons/bi";
 import { BsReceipt } from "react-icons/bs";
 import { AiFillDelete } from "react-icons/ai";
@@ -13,6 +13,8 @@ import { useRouter } from "next/router";
 import UserContext from "@/lib/context/UserContext";
 import Forbidden from "@/components/general/Forbidden";
 import ActionButton from "@/components/general/ActionButton";
+import { TransactionObjType } from "@/lib/types/TransactionTypes";
+import { readTransactions } from "@/lib/transactions/transactions";
 
 interface ContainerProps {
     icon: ReactNode,
@@ -41,9 +43,44 @@ const ProductAccess = () => (
     <ContentContainer icon={<BiPackage className="text-4xl" />} title="Pristup proizvodu" description="" additionalContent={null} />
 )
 
-const Transactions = () => (
-    <ContentContainer icon={<BsReceipt className="text-4xl" />} title="Transakcije" description="" additionalContent={null} />
-)
+const Transactions = () => {
+    const { user } = useContext(UserContext);
+
+    const [transactions, setTransactions] = useState<Array<TransactionObjType>>([]);
+    
+    useEffect(() => {
+        const temp = async () => {
+            const data = await readTransactions(user?.uid!);
+            setTransactions(data);
+        }
+
+        temp();
+    }, []);
+
+    const Transaction = ({ key, transaction }: { key: number, transaction: TransactionObjType}) => (
+        <div className="w-full">
+            123
+        </div>
+    )
+
+    const Transactions = () => (
+        <div className="flex flex-col gap-2 w-full mt-4">
+            {
+                transactions.map((transaction, index) => (
+                    <Transaction key={index} transaction={transaction} />
+                ))
+            }
+        </div>
+    )
+
+    return (
+        <ContentContainer 
+            icon={<BsReceipt className="text-4xl" />} 
+            title="Transakcije" 
+            description="" 
+            additionalContent={Transactions()} />
+    );
+}
 
 const AccountData = () => {
     const resetAccountData = () => {
