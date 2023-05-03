@@ -4,7 +4,7 @@ import Head from "next/head";
 import { FC, ReactNode, useContext, useEffect, useState } from "react";
 import { BiPackage, BiRefresh } from "react-icons/bi";
 import { BsReceipt } from "react-icons/bs";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillCheckCircle, AiFillCloseCircle, AiFillDelete } from "react-icons/ai";
 import { MdLogout } from "react-icons/md";
 import { toast } from "react-toastify";
 import { deleteUser, signOut } from "firebase/auth";
@@ -15,6 +15,7 @@ import Forbidden from "@/components/general/Forbidden";
 import ActionButton from "@/components/general/ActionButton";
 import { TransactionObjType } from "@/lib/types/TransactionTypes";
 import { readTransactions } from "@/lib/transactions/transactions";
+import { getDifferenceInDaysFromToday } from "@/lib/util/dateUtil";
 
 interface ContainerProps {
     icon: ReactNode,
@@ -39,9 +40,49 @@ const Header = () => (
     </div>
 )
 
-const ProductAccess = () => (
-    <ContentContainer icon={<BiPackage className="text-4xl" />} title="Pristup proizvodu" description="" additionalContent={null} />
-)
+const ProductAccess = () => {
+    interface ProductProps {
+        name: string;
+        isPaid: boolean;
+        remainingTime: number;
+        icon: ReactNode;
+    }
+
+    const Product = ({ name, isPaid, remainingTime, icon }: ProductProps) => (
+        <div className="flex items-center justify-between shadow-md p-2 rounded-md bg-gray-50">
+            <p className="">
+                <span className="font-semibold">{ name }</span>
+                {isPaid && ` - preostalo ${remainingTime} dana`}
+            </p>
+            {icon}
+        </div>
+    )
+
+    const ProductSection = () => {
+        const { user } = useContext(UserContext);
+
+        const icon = () => (
+            user?.isCoursePaid ? 
+            <AiFillCheckCircle className="text-green-700 text-xl" /> : 
+            <AiFillCloseCircle className="text-red-700 text-xl" />
+        );
+
+        const paidDateTimestamp = user?.coursePaidDate;
+
+        if(!paidDateTimestamp) return null;
+        const remainingTime = getDifferenceInDaysFromToday(paidDateTimestamp); 
+
+        return (
+            <div className="mt-4">
+                <Product name="Python kurs" isPaid={user?.isCoursePaid!} remainingTime={remainingTime} icon={icon()} />
+            </div>
+        )
+    }
+
+    return (
+        <ContentContainer icon={<BiPackage className="text-4xl" />} title="Pristup proizvodu" description="" additionalContent={ProductSection()} />
+    );
+}
 
 const Transactions = () => {
     const { user } = useContext(UserContext);
@@ -59,33 +100,17 @@ const Transactions = () => {
 
     const TransactionsHeader = () => (
         <div className="flex items-center gap-4">
-            <p className="font-semibold w-1/4">
-                Transaction ID
-            </p>
-
-            <p className="w-1/12">
-                Amount
-            </p>            
-
-            <p className="w-8/12 text-center"> 
-                Date
-            </p>
+            <p className="font-semibold w-1/4">Transaction ID</p>
+            <p className="w-1/12">Amount</p>            
+            <p className="w-8/12 text-center">Date</p>
         </div>
     )
 
     const Transaction = ({ key, transaction }: { key: number, transaction: TransactionObjType}) => (
         <div className="w-full flex items-center text-sm gap-4 shadow-md bg-gray-50 p-2 rounded-md" key={key}>
-            <p className="font-semibold w-1/4">
-                {transaction.id}
-            </p>
-
-            <p className="w-1/12 font-semibold text-center">
-                {transaction.data.paidAmount}€
-            </p>            
-
-            <p className="w-8/12"> 
-                {transaction.data.__added_time.toDate().toString()}
-            </p>
+            <p className="font-semibold w-1/4">{transaction.id}</p>
+            <p className="w-1/12 font-semibold text-center">{transaction.data.paidAmount}€</p>            
+            <p className="w-8/12">{transaction.data.__added_time.toDate().toString()}</p>
         </div>
     )
 

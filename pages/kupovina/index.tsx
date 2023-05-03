@@ -17,6 +17,7 @@ import { buyCourse } from "@/lib/course/course";
 import UserContext from "@/lib/context/UserContext";
 import { differenceInCalendarDays } from "date-fns";
 import StripeContext from "@/lib/context/StripeContext";
+import { getDifferenceInDaysFromToday } from "@/lib/util/dateUtil";
 
 const PaymentForm = () => {
     const { user } = useContext(UserContext);
@@ -51,12 +52,7 @@ const PaymentForm = () => {
         const paidDateTimestamp = user?.coursePaidDate;
 
         if(!paidDateTimestamp) return null;
-
-        const currentDate = new Date();
-        const paidDate = paidDateTimestamp.toDate();
-        const expireDate = new Date(paidDate.getFullYear() + 1, paidDate.getMonth(), paidDate.getDate());
-
-        const remainingTime = differenceInCalendarDays(expireDate, currentDate);
+        const remainingTime = getDifferenceInDaysFromToday(paidDateTimestamp); 
 
         return (
             <div className="h-full flex flex-col items-center justify-center">
