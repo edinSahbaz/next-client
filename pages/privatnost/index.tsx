@@ -19,15 +19,6 @@ const VerticalLine = () => (
 )
 
 const PersonalInfo = () => {
-    const { user } = useContext(UserContext)
- 
-    const checkIfLoggedIn = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        if (!user) {
-            e.preventDefault();
-            toast.error('Prijavite se kako bi ste pristupili stranici profila.')
-        }
-    }
-
     return (
         <div className="bg-white w-full h-fit flex gap-4 rounded-md shadow-sm text-[var(--p-txt-color)]">
             <VerticalLine />
@@ -45,7 +36,7 @@ const PersonalInfo = () => {
 
                 <ol className="flex flex-col gap-2 ml-4">
                     <li>1. Idite na vaš profil, odnosno 
-                        <Link href="/profil" onClick={checkIfLoggedIn} className="ml-1 text-[var(--sec-txt-color)] font-[700] hover-underline-animation hover-underline-animation-red">stranicu za profil</Link>.
+                        <Link href="/profil" className="ml-1 text-[var(--sec-txt-color)] font-[700] hover-underline-animation hover-underline-animation-red">stranicu za profil</Link>.
                     </li>
                     <li>2. Idite do sekcije <span className="font-[700]">Brisanje računa</span>.</li>
                     <li>3. Kliknite na dugme <span className="font-[700]">Obriši račun</span>.</li>
