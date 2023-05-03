@@ -57,14 +57,41 @@ const Transactions = () => {
         temp();
     }, []);
 
+    const TransactionsHeader = () => (
+        <div className="flex items-center gap-4">
+            <p className="font-semibold w-1/4">
+                Transaction ID
+            </p>
+
+            <p className="w-1/12">
+                Amount
+            </p>            
+
+            <p className="w-8/12 text-center"> 
+                Date
+            </p>
+        </div>
+    )
+
     const Transaction = ({ key, transaction }: { key: number, transaction: TransactionObjType}) => (
-        <div className="w-full">
-            123
+        <div className="w-full flex items-center text-sm gap-4 shadow-md bg-gray-50 p-2 rounded-md" key={key}>
+            <p className="font-semibold w-1/4">
+                {transaction.id}
+            </p>
+
+            <p className="w-1/12 font-semibold text-center">
+                {transaction.data.paidAmount}€
+            </p>            
+
+            <p className="w-8/12"> 
+                {transaction.data.__added_time.toDate().toString()}
+            </p>
         </div>
     )
 
     const Transactions = () => (
         <div className="flex flex-col gap-2 w-full mt-4">
+            <TransactionsHeader />
             {
                 transactions.map((transaction, index) => (
                     <Transaction key={index} transaction={transaction} />
