@@ -100,7 +100,7 @@ const Modal = ({ onClose } : PopupProps) => {
 
                 <Logo simple={true} theme="dark" size={null} />
                 <p className="text-center text-[var(--bg-color)] text-sm font-light my-4">
-                    Prijavite se da spremite svoj rad. <br/>Mi nećemo postavljati ništa nigdje.
+                    Prijavite se kako bi mogli <br/>pristupiti kursu i spremiti svoj rad.
                 </p>
                 
                 <div className="absolute top-3 right-2 text-xl cursor-pointer" onClick={onClose}>
