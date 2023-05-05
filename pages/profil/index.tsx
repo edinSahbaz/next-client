@@ -16,6 +16,7 @@ import ActionButton from "@/components/general/ActionButton";
 import { TransactionObjType } from "@/lib/types/TransactionTypes";
 import { readTransactions } from "@/lib/transactions/transactions";
 import { getDifferenceInDaysFromToday } from "@/lib/util/dateUtil";
+import Link from "next/link";
 
 interface ContainerProps {
     icon: ReactNode,
@@ -49,9 +50,19 @@ const ProductAccess = () => {
     }
 
     const Product = ({ name, isPaid, remainingTime, icon }: ProductProps) => (
-        <div className="flex items-center justify-between shadow-md p-2 rounded-md bg-gray-50">
+        <div className="flex items-center justify-between shadow-md p-4 rounded-md bg-gray-50">
             <p className="">
-                <span className="font-semibold">{ name }</span>
+                <span className="font-semibold text-[var(--sec-txt-color)] text-lg">{ name }</span>
+                {
+                    !isPaid && (
+                        <p className="text-md">
+                            <Link href="/kupovina" className="mr-1 text-[var(--sec-txt-color)] hover-underline-animation-red hover-underline-animation">
+                                Kupi
+                            </Link> 
+                            nauciProgramiranje.ba kurs.
+                        </p>
+                    )
+                }
                 {isPaid && ` - preostalo ${remainingTime} dana`}
             </p>
             {icon}
@@ -63,18 +74,18 @@ const ProductAccess = () => {
 
         const icon = () => (
             user?.isCoursePaid ? 
-            <AiFillCheckCircle className="text-green-700 text-xl" /> : 
-            <AiFillCloseCircle className="text-red-700 text-xl" />
+            <AiFillCheckCircle className="text-green-700 text-2xl" /> : 
+            <AiFillCloseCircle className="text-[var(--sec-txt-color)] text-xl" />
         );
 
         const paidDateTimestamp = user?.coursePaidDate;
 
-        if(!paidDateTimestamp) return null;
-        const remainingTime = getDifferenceInDaysFromToday(paidDateTimestamp); 
+        let remainingTime = 0;
+        if(paidDateTimestamp) remainingTime = getDifferenceInDaysFromToday(paidDateTimestamp); 
 
         return (
             <div className="mt-4">
-                <Product name="Python kurs" isPaid={user?.isCoursePaid!} remainingTime={remainingTime} icon={icon()} />
+                <Product name="nauciProgramiranje.ba" isPaid={user?.isCoursePaid!} remainingTime={remainingTime} icon={icon()} />
             </div>
         )
     }
@@ -100,9 +111,9 @@ const Transactions = () => {
 
     const TransactionsHeader = () => (
         <div className="flex items-center gap-4">
-            <p className="font-semibold w-1/4">Transaction ID</p>
-            <p className="w-1/12">Amount</p>            
-            <p className="w-8/12 text-center">Date</p>
+            <p className="font-semibold w-1/4">ID Transakcije</p>
+            <p className="w-1/12">Cijena</p>            
+            <p className="w-8/12 text-center">Datum</p>
         </div>
     )
 
@@ -116,7 +127,13 @@ const Transactions = () => {
 
     const Transactions = () => (
         <div className="flex flex-col gap-2 w-full mt-4">
-            <TransactionsHeader />
+            {
+                transactions.length > 0 ? (
+                    <TransactionsHeader />
+                ) : (
+                    <p>Vaš račun ne posjeduje niti jednu transakciju.</p>
+                )
+            }
             {
                 transactions.map((transaction, index) => (
                     <Transaction key={index} transaction={transaction} />
