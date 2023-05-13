@@ -46,7 +46,7 @@ const Terminal = () => {
                 wrapper="span"
                 cursor={true}
                 deletionSpeed={0}
-                speed={5}
+                speed={3}
                 repeat={0}
                 style={{ 
                     whiteSpace: 'pre-line', 

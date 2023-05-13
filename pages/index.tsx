@@ -11,30 +11,30 @@ import { MdChecklistRtl } from 'react-icons/md';
 import { TbCertificate } from 'react-icons/tb';
 
 export default function Home() {
-    interface IntroElementProps {
-        title: string;
-        description: string;
-        link: string;
-        icon: ReactNode;
-    }
-
-    const IntroElement = ({title, description, link, icon}: IntroElementProps) => (
-        <div className='flex flex-col items-center gap-2 hover:cursor-pointer hover:shadow-xl border-[1px] border-transparent 
-        hover:border-gray-100 w-[calc(33.3%-1rem)] p-6 transition-all duration-300 text-center'>
-            {icon}
-
-            <h3 className='text-[var(--title-txt-color)] text-xl'>{title}</h3>
-            <p className='text-[var(--p-txt-color)] text-[15px]'>{description}</p>
-            
-            <Link href={link} className='hover-underline-animation hover-underline-animation-red text-[var(--sec-txt-color)]'>
-                Pogledaj više.
-            </Link>
-        </div>
-    )
-
     const Intro = () => {
+        interface IntroElementProps {
+            title: string;
+            description: string;
+            link: string;
+            icon: ReactNode;
+        }
+
+        const IntroElement = ({title, description, link, icon}: IntroElementProps) => (
+            <div className='flex flex-col items-center gap-2 hover:cursor-pointer hover:shadow-xl border-[1px] border-transparent 
+            hover:border-gray-100 w-[calc(33.3%-1rem)] p-6 transition-all duration-300 text-center'>
+                {icon}
+    
+                <h3 className='text-[var(--title-txt-color)] text-xl'>{title}</h3>
+                <p className='text-[var(--p-txt-color)] text-[15px]'>{description}</p>
+                
+                <Link href={link} className='hover-underline-animation hover-underline-animation-red text-[var(--sec-txt-color)]'>
+                    Pogledaj više.
+                </Link>
+            </div>
+        )
+
         const iconStyle = "text-[3rem] text-[var(--sec-txt-color)]";
-        
+      
         const cards: IntroElementProps[] = [
             {
                 title: 'Pogodnosti platforme',
@@ -108,6 +108,70 @@ export default function Home() {
             </div>
         );
     }
+
+    const Platform = () => {
+        const Table = () => {
+            return (
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Element</th>
+                            <th>Opis</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>HTML</td>
+                            <td>HTML je jezik za označavanje sadržaja. Koristi se za definisanje strukture i sadržaja web stranice.</td>
+                        </tr>
+                        <tr>
+                            <td>CSS</td>
+                            <td>CSS je jezik za stilizovanje web stranica. Koristi se za definisanje izgleda i dizajna web stranica.</td>
+                        </tr>
+                        <tr>
+                            <td>JavaScript</td>
+                            <td>JavaScript je programski jezik koji se koristi za kreiranje interaktivnih elemenata na web stranicama.</td>
+                        </tr>
+                        <tr>
+                            <td>React</td>
+                            <td>React je JavaScript biblioteka za kreiranje korisničkih interfejsa. Koristi se za kreiranje web i mobilnih aplikacija.</td>
+                        </tr>
+                        <tr>
+                            <td>Node.js</td>
+                            <td>Node.js je JavaScript okruženje za izvršavanje koda na strani servera. Koristi se za kreiranje web servera i API-ja.</td>
+                        </tr>
+                        <tr>
+                            <td>Express.js</td>
+                            <td>Express.js je Node.js framework za kreiranje web servera i API-ja. Koristi se za kreiranje web servera i API-ja.</td>
+                        </tr>
+                        <tr>
+                            <td>Git</td>
+                            <td>Git je sistem za upravljanje verzijama koda. Koristi se za praćenje promjena u kodu i saradnju na projektima.</td>
+                        </tr>
+                        <tr>
+                            <td>GitHub</td>
+                            <td>GitHub je platforma za hostovanje koda. Koristi se za hostovanje i dijeljenje koda sa drugim programerima.</td>
+                        </tr>
+                        <tr>
+                            <td>VS Code</td>
+                            <td>VS Code je besplatan tekst editor. Koristi se za pisanje i uređivanje koda.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            )
+        }
+
+
+        return (
+            <div>
+                <h2 className=''>Najbolja platforma za učenje programiranja</h2>
+                <p className=''>Jednostavno. Pristupačno. Kvalitetno. Sve na jednom mjestu.</p>
+
+                <Table />
+            </div>
+        )
+    }
     
     return (
         <>
@@ -132,6 +196,7 @@ export default function Home() {
 
                 <Container>
                     <Intro />
+                    <Platform />
                 </Container>
             </main>
         </>
