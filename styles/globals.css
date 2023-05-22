@@ -83,3 +83,8 @@ html, body {
 p {
     line-height: 1.6;
 }
+
+.editorImg {
+    transform: perspective(600px) rotateX(6deg) rotateY(-10deg);
+    box-shadow: 15px 15px 30px 10px rgba(0, 0, 0, 0.25);
+}

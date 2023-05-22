@@ -233,7 +233,12 @@ export default function Home() {
     }
 
     const Tasks = () => {
-        
+        const TaskCards = () => (
+            <div>
+
+            </div>
+        )
+
         return (
             <Wrapper
                 title='Veliki broj zadataka za vježbu'
@@ -246,11 +251,17 @@ export default function Home() {
                 }}
                 background='light'
                 textPosition='left'
+                graphic={<TaskCards />}
             />
         );
     }
 
     const Projects = () => {
+        const ProjectsCards = () => (
+            <div>
+
+            </div>
+        )
         
         return (
             <Wrapper        
@@ -264,12 +275,22 @@ export default function Home() {
                 }}
                 background='dark'
                 textPosition='right'
+                graphic={<ProjectsCards />}
             />
         );
     }
 
     const Editor = () => {
-        
+        const EditorImg = () => (
+            <Image 
+                alt='python'
+                src='/editor.png'
+                width={620}
+                height={200}
+                className='editorImg'
+            />
+        );
+
         return (
             <Wrapper 
                 title='Bogato programsko radno okruženje'
@@ -282,6 +303,7 @@ export default function Home() {
                 }}            
                 background='light'
                 textPosition='left'
+                graphic={EditorImg()}
             />
         );
     }
