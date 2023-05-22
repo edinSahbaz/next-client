@@ -1,6 +1,9 @@
 import Container from '@/components/general/Container';
+import RedButton from '@/components/general/RedButton';
 import PageDetails from '@/components/header/PageDetails'
+import { BtnType } from '@/lib/types/BtnType';
 import Head from 'next/head'
+import Image from 'next/image';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { AiOutlineDatabase } from 'react-icons/ai';
@@ -172,7 +175,117 @@ export default function Home() {
             </div>
         )
     }
-    
+
+    interface WrapperProps {
+        title: string;
+        description: string;
+        btnProps: BtnType;
+        textPosition: 'left' | 'right';
+        background: 'dark' | 'light';
+        graphic: React.ReactNode
+    }
+
+    const Wrapper = ({title, description, btnProps, textPosition, background, graphic}: WrapperProps) => {
+        const bg = background === 'dark' ? 'bg-[var(--bg-color)]' : 'bg-[var(--body-bg-color)]';
+        const txtColor = background === 'dark' ? 'text-white' : 'text-[var(--p-txt-color)]';
+        const style = `px-[15%] py-24 w-full grid grid-cols-2 ${txtColor} ${bg}`;
+
+        return (
+            <div className={style}>
+                <div className={`${textPosition === 'right' && 'order-last'} flex flex-col gap-10`}>
+                    <h2 className={`text-3xl ${background === 'light' && 'text-[var(--title-txt-color)]'}`}>{title}</h2>
+                    <p className=''>{description}</p>
+
+                    <RedButton btnAction={btnProps.btnAction} btnText={btnProps.btnText} btnIcon={btnProps.btnIcon}  />
+                </div>
+
+                <div className='grid place-items-center'>
+                    {graphic}
+                </div>
+            </div>
+        );
+    }
+
+    const Curiculum = () => {
+        const PythonImg = () => (
+            <Image 
+                alt='python'
+                src='/python.png'
+                width={560}
+                height={200}
+            />
+        );
+
+        return (
+            <Wrapper 
+                title='Obiman i sadržajan kurikulum'
+                description='Planski smišljen kurikulum za svaki kurs pokriva sve što treba motivisanom i vrijednom programeru da postane performantan softverski inžinjer, od osnova programiranja i objektno-orijentisanog programiranja, do naprednih programskih koncepata i metoda kao i alata za razvoj softvera.'
+                btnProps={{
+                    btnAction: '/sadrzaj',
+                    btnText: 'Istražite sadržaj',
+                    btnIcon: <BiBook />
+                }}
+                background='dark'
+                textPosition='left'
+                graphic={PythonImg()}
+            />
+        );
+    }
+
+    const Tasks = () => {
+        
+        return (
+            <Wrapper
+                title='Veliki broj zadataka za vježbu'
+                description='Kao što vrijedi za svaku vještinu, što više vježbate pisanje koda, postat ćete bolji. Tačno iz tog razloga nauciProgramiranje.ba nudi veliki broj zadataka za vježbu da bi ste kristalizovali svoje novostečena znanja iz programiranja.
+                Da vam ne bi bilo dosadno(što je nemoguće - programiranje je zabavno!), naši zadaci su pažljivo smišljeni i dolaze u više formata.'
+                btnProps={{
+                    btnAction: '/sadrzaj',
+                    btnText: 'Pogledajte kurs',
+                    btnIcon: <MdChecklistRtl />
+                }}
+                background='light'
+                textPosition='left'
+            />
+        );
+    }
+
+    const Projects = () => {
+        
+        return (
+            <Wrapper        
+                title='Praktični programski zadaci'
+                description='Svaki novi programer se eventualno zapita: "Okej, mogu čitati i pisati kod, i mogu rješavati male probleme kodom, ali da li mogu razviti real-world aplikacije?"
+                Na sreću Vas, budućeg programera, sa nauciProgramiranje.ba ne morate se to više pitati. Naši praktični projekti služe kao savršena tranzicija sa pisanja početničkog koda, ondosno skripti, na pravljenje naprednog softvera i aplikacija.'
+                btnProps={{
+                    btnAction: '/sadrzaj',
+                    btnText: 'Pogledajte kurs',
+                    btnIcon: <MdChecklistRtl />
+                }}
+                background='dark'
+                textPosition='right'
+            />
+        );
+    }
+
+    const Editor = () => {
+        
+        return (
+            <Wrapper 
+                title='Bogato programsko radno okruženje'
+                description='Mi vjerujemo da učenje i vježbanje pisanja koda treba biti što jednostavnije i pristupačnije. Sve treba biti pojednostavljeno da biste se mogli fokusirati na ono najbitnije: pisanje koda.
+                Dizajnirano sa jednostavnošću kao prioritetom, naše radno okruženje vam omogućava da primijenite svoje novostečene programerske vještine upravo na nauciProgramiranje.ba web stranici. Trenutno postoje radna okruženja za kurseve osnova web razvoja i programiranja, dok napredne kurseve podučavamo u postojećim alatima, smatrajući da je to najbolji način da vas pripremimo za buduću karijeru.'
+                btnProps={{
+                    btnAction: '/editor',
+                    btnText: 'Pogledajte radno okruženje',
+                    btnIcon: <BiCodeBlock />
+                }}            
+                background='light'
+                textPosition='left'
+            />
+        );
+    }
+
     return (
         <>
             <Head>
@@ -196,8 +309,13 @@ export default function Home() {
 
                 <Container>
                     <Intro />
-                    <Platform />
+                    {/* <Platform /> */}
                 </Container>
+
+                <Curiculum />
+                <Tasks />
+                <Projects />
+                <Editor />
             </main>
         </>
     )
