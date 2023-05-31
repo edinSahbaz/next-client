@@ -1,41 +1,34 @@
 import ActionButton from "@/components/general/ActionButton";
 import Container from "@/components/general/Container";
 import PageDetails from "@/components/header/PageDetails";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import { useEffect, useState } from "react";
 import { FaCreditCard } from "react-icons/fa";
 import { TbCertificate } from "react-icons/tb";
 
-const Content = () => {
-    interface Chapter {
-        id: { value: string };
-        title: string;
-        description: string;
-        chapterNumber: number;
-    }
+interface Chapter {
+    id: { value: string };
+    title: string;
+    description: string;
+    chapterNumber: number;
+}
 
-    const [chapters, setChapters] = useState<Array<Chapter>>();
+export const getServerSideProps: GetServerSideProps = async () => {
+    const response = await fetch(`${process.env.API_URL}/api/chapters`, {
+        method: 'GET',
+        mode: 'cors'
+    });
 
-    useEffect(() => { // Get course chapters data
-        async function getCourseData() {
-            try {
-                const response = await fetch('https://localhost:7051/api/chapters', {
-                    method: 'GET',
-                    mode: 'cors'
-                });
+    const chapters = await response.json();
 
-                if(!response.ok) throw new Error(`Error! status: ${response.status}`);
+    return {
+        props: {
+            "chapters": chapters || []
+        },
+    };
+};
 
-                const result = await response.json();
-                setChapters(result);
-            } catch (err) {
-                console.log(err); 
-            }
-        }
-        
-        getCourseData();
-    }, []);
+const Content = ({ chapters }: { chapters: Array<Chapter> }) => {
 
     const ChapterInfo = ({id, title, description, chapterNumber}: Chapter) => (
         // <Link href={`sadrzaj/${id.value}`}>
@@ -128,7 +121,7 @@ const Content = () => {
                 />
 
                 <Container>
-                    <div className="grid grid-cols-[260px_1fr] gap-6">
+                    <div className="grid grid-cols-[260px_1fr] gap-6 w-full">
                         <CourseProgress />
                         <ChaptersContainer />
                     </div>
