@@ -1,9 +1,11 @@
+import ActionButton from "@/components/general/ActionButton";
 import Container from "@/components/general/Container";
 import PageDetails from "@/components/header/PageDetails";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaCreditCard } from "react-icons/fa";
+import { TbCertificate } from "react-icons/tb";
 
 const Content = () => {
     interface Chapter {
@@ -36,14 +38,14 @@ const Content = () => {
     }, []);
 
     const ChapterInfo = ({id, title, description, chapterNumber}: Chapter) => (
-        <Link href={`sadrzaj/${id.value}`}>
-            <div className="bg-white shadow-md rounded-md p-6 flex flex-col gap-4">
+        // <Link href={`sadrzaj/${id.value}`}>
+            <div className="bg-white shadow-md rounded-md p-6 flex flex-col gap-4 h-64">
                 <h2 className="text-xl text-[var(--title-txt-color)]">{title}</h2>
                 <p>{description}</p>
             </div>
-        </Link>
+        // </Link>
     )
-
+    
     const ChaptersContainer = () => (
         <div className="flex flex-col gap-6">
             {
@@ -58,6 +60,51 @@ const Content = () => {
             }
         </div>
     )
+
+    const CourseProgress = () => {
+        const Progress = () => (
+            <div className="rounded-full border-[14px] w-36 h-36 grid place-items-center">  
+                <p className="text-2xl">0%</p>
+            </div>
+        )
+
+        interface StatsProps {
+            title: string;
+            completed: number;
+            total: number;
+        }
+
+        const Stats = ({title, completed, total}: StatsProps) => (
+            <div className="text-center">
+                <h3>{title}</h3>
+                <p className="font-semibold">{completed} / {total}</p>
+            </div>
+        )
+
+        return (
+            <div className="bg-white rounded-md shadow-md p-6 pt-28 h-fit flex flex-col items-center gap-6 sticky top-8 mt-6">
+                <div className="bg-[var(--ter-bg-color)] w-3/4 grid place-items-center h-28 absolute -top-6 shadow-md rounded-md">
+                    <TbCertificate className="text-white text-6xl" />
+                </div>
+
+                <h2 className="text-xl text-[var(--title-txt-color)]">Certifikat</h2>
+
+                <Progress />
+
+                <Stats title="Riješena pitanja" completed={0} total={156} />
+                <Stats title="Riješeni zadaci" completed={0} total={20} />
+
+                <p className="text-sm mb-8 font-light text-center italic">Otključajte nauciProgramiranje.ba certifikat kada uspješno završite sve zadatke na platformi.</p>
+ 
+                <div className="w-3/4 absolute -bottom-4">
+                    <ActionButton 
+                        text="Otključaj certifikat"
+                        action={() => {}} 
+                        disabled={true} />
+                </div>
+            </div>
+        )
+    }
 
     return ( 
         <>
@@ -81,7 +128,10 @@ const Content = () => {
                 />
 
                 <Container>
-                    <ChaptersContainer />
+                    <div className="grid grid-cols-[260px_1fr] gap-6">
+                        <CourseProgress />
+                        <ChaptersContainer />
+                    </div>
                 </Container>
             </main>
         </>
