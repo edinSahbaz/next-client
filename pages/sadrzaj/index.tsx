@@ -3,23 +3,51 @@ import Container from "@/components/general/Container";
 import PageDetails from "@/components/header/PageDetails";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
+import { ReactNode } from "react";
+import { AiOutlineClockCircle } from "react-icons/ai";
+import { BiMovie } from "react-icons/bi";
+import { BsListCheck, BsPencil } from "react-icons/bs";
 import { FaCreditCard } from "react-icons/fa";
 import { TbCertificate } from "react-icons/tb";
+import { PulseLoader } from "react-spinners";
 
 interface Chapter {
     id: { value: string };
     title: string;
     description: string;
     chapterNumber: number;
+    durationInHrs: number;
+    lessonsNumber: number;
+    tasksNumber: number;
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-    const response = await fetch(`${process.env.API_URL}/api/chapters`, {
-        method: 'GET',
-        mode: 'cors'
-    });
+    let chapters = [];
 
-    const chapters = await response.json();
+    try {
+        const response = await fetch(`${process.env.API_URL}/api/chapters`, {
+            method: 'GET',
+            mode: 'cors'
+        });
+    
+        chapters = await response.json();
+    
+        for (let i in chapters) {
+            const chapter = chapters[i];
+    
+            const res = await fetch(`${process.env.API_URL}/api/chapters/${chapter.id.value}/lessons`, {
+                method: 'GET',
+                mode: 'cors'
+            });
+    
+            const lessons = await res.json();
+    
+            chapters[i].lessonsNumber = lessons.length;
+            chapters[i].tasksNumber = lessons.length;
+        }
+    } catch (error) {
+        console.log(error);
+    }
 
     return {
         props: {
@@ -29,15 +57,99 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const Content = ({ chapters }: { chapters: Array<Chapter> }) => {
+    interface ChapterDetailProps {
+        icon: ReactNode;
+        stat: string;
+        value: number;
+    }
 
-    const ChapterInfo = ({id, title, description, chapterNumber}: Chapter) => (
-        // <Link href={`sadrzaj/${id.value}`}>
-            <div className="bg-white shadow-md rounded-md p-6 flex flex-col gap-4 h-64">
-                <h2 className="text-xl text-[var(--title-txt-color)]">{title}</h2>
-                <p>{description}</p>
+    const ChapterDetail = ({ icon, stat, value }: ChapterDetailProps) => (
+        <div className="flex items-center justify-center gap-2">
+            <div className="bg-[#f21b3f1a] grid place-items-center p-2 rounded-md shadow-md">
+                {icon}
             </div>
-        // </Link>
+            <span className="font-semibold">{value} {stat}</span>
+        </div>
     )
+
+    interface ProgressProps {
+        icon: ReactNode;
+        title: string;
+    }
+
+    const ChapterProgress = ({ icon, title }: ProgressProps) => {
+        const ProgressBar = () => (
+            <div className="flex items-center gap-4">
+                <div className="bg-white h-2 rounded-md w-full"></div> 
+                <span className="font-semibold">{"0%"}</span>
+            </div>
+        )
+
+        return (
+            <div className="p-4 bg-gray-100 rounded-md shadow-md grid grid-cols-2">
+                <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-4">
+                        {icon}
+                        <span className="text-lg text-[var(--title-txt-color)]">{title}</span>
+                    </div>
+                    <ProgressBar />
+                </div>
+            </div>
+        )
+    }
+
+    const ChapterInfo = ({ id, title, description, chapterNumber, durationInHrs, lessonsNumber, tasksNumber }: Chapter) => {
+        const detailIconStyle = "text-[var(--ter-txt-color)] text-lg";
+        const progressIconStyle = "text-[var(--title-txt-color)] text-4xl";
+
+        return (
+            <div className="bg-white shadow-md rounded-md p-6 flex flex-col gap-4">
+                <h2 className="text-2xl text-[var(--title-txt-color)]">{title}</h2>
+
+                <div className="flex items-center gap-8">
+                    {
+                        lessonsNumber > 0 ?
+                        (
+                            <>
+                                <ChapterDetail 
+                                    icon={<AiOutlineClockCircle className={detailIconStyle} />}
+                                    stat="Sati" 
+                                    value={durationInHrs} />
+                                <ChapterDetail 
+                                    icon={<BiMovie className={detailIconStyle} />}
+                                    stat="Lekcija" 
+                                    value={lessonsNumber} />
+                            </>
+                        ) : (
+                            <div className="py-4">
+                                <div className="flex items-end">
+                                    <h2 className="font-semibold text-2xl text-[var(--title-txt-color)]">USKORO</h2>
+                                    <PulseLoader size={4} className="pb-1" speedMultiplier={0.6} />
+                                </div>
+                                <p className="text-[var(--title-txt-color)]">Poglavlje u izradi.</p>
+                            </div>
+                        )
+                    }
+                    {
+                        tasksNumber > 0 && 
+                        <ChapterDetail 
+                            icon={<BsPencil className={detailIconStyle} />} 
+                            stat="Zadataka"
+                            value={tasksNumber} />
+                    }
+                </div>
+
+                <p>{description}</p>
+
+                {
+                    lessonsNumber > 0 && <ChapterProgress icon={<BiMovie className={progressIconStyle} />} title="Lekcije" />
+                }
+                {
+                    tasksNumber > 0 && <ChapterProgress icon={<BsListCheck className={progressIconStyle} />} title="Zadaci" />
+                }
+            </div>
+        )
+    }
     
     const ChaptersContainer = () => (
         <div className="flex flex-col gap-6">
@@ -48,7 +160,10 @@ const Content = ({ chapters }: { chapters: Array<Chapter> }) => {
                         id = {chapter.id}
                         title={chapter.title} 
                         description={chapter.description}
-                        chapterNumber={chapter.chapterNumber} />
+                        chapterNumber={chapter.chapterNumber}
+                        durationInHrs={chapter.durationInHrs}
+                        lessonsNumber={chapter.lessonsNumber}
+                        tasksNumber={chapter.tasksNumber} />
                 ))
             }
         </div>
@@ -84,8 +199,14 @@ const Content = ({ chapters }: { chapters: Array<Chapter> }) => {
 
                 <Progress />
 
-                <Stats title="Riješena pitanja" completed={0} total={156} />
-                <Stats title="Riješeni zadaci" completed={0} total={20} />
+                <Stats 
+                    title="Pređene lekcije" 
+                    completed={0} 
+                    total={chapters ? chapters.map(c => c.lessonsNumber).reduce((a, b) => a + b, 0) : 0} />
+                <Stats 
+                    title="Riješeni zadaci" 
+                    completed={0} 
+                    total={chapters ? chapters.map(c => c.tasksNumber).reduce((a, b) => a + b, 0) : 0} />
 
                 <p className="text-sm mb-8 font-light text-center italic">Otključajte nauciProgramiranje.ba certifikat kada uspješno završite sve zadatke na platformi.</p>
  

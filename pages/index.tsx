@@ -188,7 +188,7 @@ export default function Home() {
     const Wrapper = ({title, description, btnProps, textPosition, background, graphic}: WrapperProps) => {
         const bg = background === 'dark' ? 'bg-[var(--bg-color)]' : 'bg-[var(--body-bg-color)]';
         const txtColor = background === 'dark' ? 'text-white' : 'text-[var(--p-txt-color)]';
-        const style = `px-[15%] py-24 w-full grid grid-cols-2 ${txtColor} ${bg}`;
+        const style = `px-[15%] py-24 w-full grid grid-cols-2 gap-12 ${txtColor} ${bg}`;
 
         return (
             <div className={style}>
