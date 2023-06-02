@@ -52,7 +52,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
     return {
         props: {
             "chapters": chapters || [],
-            url: process.env.API_URL,
         },
     };
 };
@@ -243,7 +242,6 @@ const Content = ({ chapters, url }: { chapters: Array<Chapter>, url: string }) =
                 />
 
                 <Container>
-                    {url}
                     <div className="grid grid-cols-[260px_1fr] gap-6 w-full">
                         <CourseProgress />
                         <ChaptersContainer />
