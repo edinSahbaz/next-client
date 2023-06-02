@@ -1,7 +1,6 @@
 import ActionButton from "@/components/general/ActionButton";
 import Container from "@/components/general/Container";
 import PageDetails from "@/components/header/PageDetails";
-import { apiUrl } from "@/lib/apiUrl/apiUrl";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { ReactNode } from "react";
@@ -26,7 +25,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     let chapters = [];
 
     try {
-        const response = await fetch(`${apiUrl}/api/chapters`, {
+        const response = await fetch(`${process.env.API_URL}/api/chapters`, {
             method: 'GET',
             mode: 'cors'
         });
@@ -36,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
         for (let i in chapters) {
             const chapter = chapters[i];
     
-            const res = await fetch(`${apiUrl}/api/chapters/${chapter.id.value}/lessons`, {
+            const res = await fetch(`${process.env.API_URL}/api/lessons/chapter=${chapter.id.value}`, {
                 method: 'GET',
                 mode: 'cors'
             });
