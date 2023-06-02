@@ -7,7 +7,7 @@ import Header from './Header';
 interface DetailsProps {
     title: string;
     description: string;
-    btn: BtnType | null;
+    btn?: BtnType | null;
     hasCode: boolean;
 }
 
@@ -66,7 +66,7 @@ const PageDetails = (props: DetailsProps) => {
             <Header />
             <div className={`text-white flex flex-col gap-8 justify-center w-[540px] ${!hasCode && "items-center h-[320px]"}`}>
                 <h1 className="text-4xl font-[500]">{title}</h1>
-                <p className='text-lg'>{description}</p>
+                <p className={`text-lg ${!hasCode && "text-center"}`}>{description}</p>
 
                 {btn && <RedButton btnText={btn.btnText} btnIcon={btn.btnIcon} btnAction={btn.btnAction} />}
             </div>

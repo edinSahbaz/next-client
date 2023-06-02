@@ -1,25 +1,18 @@
 import ActionButton from "@/components/general/ActionButton";
 import Container from "@/components/general/Container";
 import PageDetails from "@/components/header/PageDetails";
+import { Chapter } from "@/lib/types/Chapter";
+import { Stats } from "@/lib/types/Stats";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { ReactNode } from "react";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { BiMovie } from "react-icons/bi";
-import { BsListCheck, BsPencil } from "react-icons/bs";
+import { BsArrowRight, BsListCheck, BsPencil } from "react-icons/bs";
 import { FaCreditCard } from "react-icons/fa";
 import { TbCertificate } from "react-icons/tb";
 import { PulseLoader } from "react-spinners";
-
-interface Chapter {
-    id: { value: string };
-    title: string;
-    description: string;
-    chapterNumber: number;
-    durationInHrs: number;
-    lessonsNumber: number;
-    tasksNumber: number;
-}
 
 export const getServerSideProps: GetServerSideProps = async () => {
     let chapters = [];
@@ -63,6 +56,12 @@ const Content = ({ chapters, url }: { chapters: Array<Chapter>, url: string }) =
         value: number;
     }
 
+    interface ProgressProps {
+        id: string;
+        icon: ReactNode;
+        title: string;
+    }
+
     const ChapterDetail = ({ icon, stat, value }: ChapterDetailProps) => (
         <div className="flex items-center justify-center gap-2">
             <div className="bg-[#f21b3f1a] grid place-items-center p-2 rounded-md shadow-md">
@@ -72,12 +71,14 @@ const Content = ({ chapters, url }: { chapters: Array<Chapter>, url: string }) =
         </div>
     )
 
-    interface ProgressProps {
-        icon: ReactNode;
-        title: string;
-    }
+    const AdvanceBtn = ({ id }: { id: string }) => (
+        <Link href={`/${id}`} className="flex items-center justify-center rounded-md shadow-md transition-all
+            gap-2 bg-[var(--bg-color)] hover:bg-[var(--ter-bg-color)] text-white px-4 py-2 w-fit h-fit">
+            Započni <BsArrowRight />
+        </Link>
+    )
 
-    const ChapterProgress = ({ icon, title }: ProgressProps) => {
+    const ChapterProgress = ({ id, icon, title }: ProgressProps) => {
         const ProgressBar = () => (
             <div className="flex items-center gap-4">
                 <div className="bg-white h-2 rounded-md w-full"></div> 
@@ -93,6 +94,10 @@ const Content = ({ chapters, url }: { chapters: Array<Chapter>, url: string }) =
                         <span className="text-lg text-[var(--title-txt-color)]">{title}</span>
                     </div>
                     <ProgressBar />
+                </div>
+
+                <div className="flex items-center justify-end">
+                    <AdvanceBtn id={id} /> 
                 </div>
             </div>
         )
@@ -142,10 +147,18 @@ const Content = ({ chapters, url }: { chapters: Array<Chapter>, url: string }) =
                 <p>{description}</p>
 
                 {
-                    lessonsNumber > 0 && <ChapterProgress icon={<BiMovie className={progressIconStyle} />} title="Lekcije" />
+                    lessonsNumber > 0 && 
+                        <ChapterProgress 
+                            id={id.value} 
+                            icon={<BiMovie className={progressIconStyle} />} 
+                            title="Lekcije" />
                 }
                 {
-                    tasksNumber > 0 && <ChapterProgress icon={<BsListCheck className={progressIconStyle} />} title="Zadaci" />
+                    tasksNumber > 0 && 
+                        <ChapterProgress 
+                            id={id.value} 
+                            icon={<BsListCheck className={progressIconStyle} />} 
+                            title="Zadaci" />
                 }
             </div>
         )
@@ -176,13 +189,7 @@ const Content = ({ chapters, url }: { chapters: Array<Chapter>, url: string }) =
             </div>
         )
 
-        interface StatsProps {
-            title: string;
-            completed: number;
-            total: number;
-        }
-
-        const Stats = ({title, completed, total}: StatsProps) => (
+        const Stats = ({title, completed, total}: Stats) => (
             <div className="text-center">
                 <h3>{title}</h3>
                 <p className="font-semibold">{completed} / {total}</p>
