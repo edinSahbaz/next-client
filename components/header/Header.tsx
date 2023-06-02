@@ -25,8 +25,8 @@ const Links = () => {
 
     return (
         <nav className="flex items-center justify-center gap-8 font-[400] text-sm text-[var(--txt-color)]">
-            <LinkComponent href="/" name="Šta je nauciProgramiranje.ba?" />
-            <LinkComponent href="/sadrzaj" name="Sadržaj" />
+            <LinkComponent href="/proizvod" name="Šta je nauciProgramiranje.ba?" />
+            <LinkComponent href="/" name="Sadržaj" />
             <LinkComponent href="/tim" name="Tim" />
             <LinkComponent href="/kupovina" name="Kupovina" />
         </nav>
