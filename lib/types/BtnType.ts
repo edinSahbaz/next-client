@@ -4,4 +4,5 @@ export type BtnType = {
     btnText: string;
     btnIcon: ReactNode | null;
     btnAction: string;
+    reversed?: boolean;
 }

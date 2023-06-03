@@ -1,4 +1,5 @@
 import Container from "@/components/general/Container";
+import RedButton from "@/components/general/RedButton";
 import PageDetails from "@/components/header/PageDetails";
 import HorizontalLine from "@/components/horizontalLine/HorizontalLine";
 import { Chapter } from "@/lib/types/Chapter";
@@ -11,8 +12,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { AiOutlineClockCircle } from "react-icons/ai";
-import { BsArrowLeft } from "react-icons/bs";
-import { MdOutlineCancel } from "react-icons/md";
+import { BsArrowLeft, BsArrowRight, BsCheckLg } from "react-icons/bs";
+import { MdChecklistRtl, MdOutlineCancel } from "react-icons/md";
 import ReactPlayer from "react-player/youtube";
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -189,8 +190,8 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
                 onClick={() => setLesson(lesson)}>
                     <BsArrowLeft className={`${orientation === "right" && "rotate-180"}`} />
                     <div className={`${orientation === "left" ? "text-left" : "text-right"}`}>
-                        <p className="font-light">Lekcija {lessonNumber}</p>
-                        <h3 className="-mt-2">{title}</h3>
+                        <p className="font-light text-sm">Lekcija {lessonNumber}</p>
+                        <h3 className="-mt-1">{title}</h3>
                     </div>
                 </button>
             )
@@ -205,6 +206,43 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
             </div>
         ) : null;
 
+        const Questions = () => (
+            <div className="flex flex-col gap-2">
+                <div className="text-xl text-[var(--title-txt-color)] flex items-center gap-2">
+                    <MdChecklistRtl className="text-3xl" />
+                    <h3 className="">Zadaci lekcije {lesson?.lessonNumber}</h3>
+                </div>
+
+                <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-4 w-full">
+                        <div className="bg-gray-100 h-2 rounded-md w-full"></div> 
+                        <span className="font-semibold">{"0%"}</span>
+                    </div>
+
+                    <RedButton 
+                        btnText="Zadaci"
+                        btnAction="solve-questions"
+                        btnIcon={<BsArrowRight />}
+                        reversed={true} />
+                </div>
+            </div>
+        )
+
+        const MarkAsWatched = () => {
+            const Checkbox = () => (
+                <div className="w-7 h-7 bg-[#f21b3f1a] rounded-sm shadow-sm grid place-items-center">
+                    <BsCheckLg className="text-[var(--ter-txt-color)] text-xl" />
+                </div>
+            )
+
+            return (
+                <label className="mt-2 flex items-center gap-2 cursor-pointer">
+                    Označi kao odgledano
+                    <Checkbox />
+                </label>
+            )
+        }
+
         return (
             <div className="w-full flex flex-col gap-8">
                 <BackBtn />
@@ -217,12 +255,20 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
 
                     <p className="text-lg">{lesson?.description}</p>
 
-                    <ReactPlayer 
-                        url={lesson?.videoUrl} 
-                        controls={false} 
-                        onDuration={duration => setDuration(secondsToMinutes(duration))}
-                        width={"100%"} 
-                        height={"500px"} />
+                    <div className="flex flex-col items-end">
+                        <ReactPlayer 
+                            url={lesson?.videoUrl} 
+                            controls={false} 
+                            onDuration={duration => setDuration(secondsToMinutes(duration))}
+                            width={"100%"} 
+                            height={"500px"} />
+
+                        <MarkAsWatched />
+                    </div>
+
+                    <HorizontalLine />
+
+                    <Questions />
                 </div>
 
                 <div className="flex items-center justify-between">
