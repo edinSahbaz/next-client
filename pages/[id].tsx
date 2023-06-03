@@ -11,7 +11,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { AiOutlineClockCircle } from "react-icons/ai";
-import { BiArrowBack } from "react-icons/bi";
 import { BsArrowLeft } from "react-icons/bs";
 import { MdOutlineCancel } from "react-icons/md";
 import ReactPlayer from "react-player/youtube";
@@ -101,7 +100,7 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
             hover:text-[var(--sec-txt-color)] cursor-pointer w-full hover:translate-x-2 transition-all duration-200 }`;
 
             return (
-                <div className="text-lg flex justify-between items-center">
+                <div className="text-md flex justify-between items-center">
                     <h3 className={style}
                         onClick={() => setLesson(data)}>
                         {lessonNumber} - {title}
@@ -185,11 +184,11 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
 
             return (
                 <button 
-                className={`py-4 px-8 rounded-md shadow-md text-xl flex items-center ${orientation === "right" && "flex-row-reverse"} 
+                className={`py-4 px-8 rounded-md shadow-md flex items-center ${orientation === "right" && "flex-row-reverse"} 
                 justify-center gap-4 w-fit bg-white text-[var(--title-txt-color)] font-semibold hover:bg-gray-100 transition-all`}
                 onClick={() => setLesson(lesson)}>
                     <BsArrowLeft className={`${orientation === "right" && "rotate-180"}`} />
-                    <div className={`text-[16px] ${orientation === "left" ? "text-left" : "text-right"}`}>
+                    <div className={`${orientation === "left" ? "text-left" : "text-right"}`}>
                         <p className="font-light">Lekcija {lessonNumber}</p>
                         <h3 className="-mt-2">{title}</h3>
                     </div>
