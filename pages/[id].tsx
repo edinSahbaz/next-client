@@ -30,7 +30,10 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
     
     const [chapter, setChapter] = useState<Chapter>();
     const [lessons, setLessons] = useState<Array<Lesson>>();
+
     const [lesson, setLesson] = useState<Lesson>();
+    const [prevLesson, setPrevLesson] = useState<Lesson>();
+    const [nextLesson, setNextLesson] = useState<Lesson>();
 
     useEffect(() => { // Get chapter data from API
         const getChapterData = async () => {
@@ -73,9 +76,19 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
         setLesson(lessons?.[0]);
     }, [lessons]);
 
+    useEffect(() => { // Sets previous and next lesson based on current lesson
+        if (!lesson) return;
+
+        const prevLesson = lessons?.find(l => l.lessonNumber === lesson.lessonNumber - 1);
+        const nextLesson = lessons?.find(l => l.lessonNumber === lesson.lessonNumber + 1);
+
+        setPrevLesson(prevLesson);
+        setNextLesson(nextLesson);
+    }, [lesson])
+
     const LessonsList = () => {
         const LessonButton = (data: Lesson) => {
-            const { id, title } = data;
+            const { id, title, lessonNumber } = data;
 
             const style = `${lesson?.id.value === id.value && "text-[var(--sec-txt-color)] font-semibold"} 
             hover:text-[var(--sec-txt-color)] cursor-pointer w-full hover:translate-x-2 transition-all duration-200 }`;
@@ -84,7 +97,7 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
                 <div className="text-lg flex justify-between items-center">
                     <h3 className={style}
                         onClick={() => setLesson(data)}>
-                        {title}
+                        {lessonNumber} - {title}
                     </h3>
                     <MdOutlineCancel className="text-[var(--sec-txt-color)] mr-2" />
                 </div>    
@@ -152,12 +165,30 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
         const [duration, setDuration ]  = useState<number>(0);
         
         const BackBtn = () => (
-            <Link href="/" className="py-4 px-8 rounded-md shadow-md text-xl flex items-center justify-center gap-2 
+            <Link href="/" className="py-4 px-8 rounded-md shadow-md text-xl flex items-center justify-center gap-3 
             w-fit bg-white text-[var(--title-txt-color)] font-semibold hover:bg-gray-100 transition-all">
                 <BsArrowLeft />
                 Nazad na poglavlja
             </Link>
         )
+
+        const SwitchLessonBtn = ({ lesson, orientation }: { lesson: Lesson, orientation: "left" | "right" }) => {
+            if(!lesson) return null;
+            const { title, lessonNumber } = lesson;
+
+            return (
+                <button 
+                className={`py-4 px-8 rounded-md shadow-md text-xl flex items-center ${orientation === "right" && "flex-row-reverse"} 
+                justify-center gap-4 w-fit bg-white text-[var(--title-txt-color)] font-semibold hover:bg-gray-100 transition-all`}
+                onClick={() => setLesson(lesson)}>
+                    <BsArrowLeft className={`${orientation === "right" && "rotate-180"}`} />
+                    <div className={`text-[16px] ${orientation === "left" ? "text-left" : "text-right"}`}>
+                        <p className="font-light">Lekcija {lessonNumber}</p>
+                        <h3 className="-mt-2">{title}</h3>
+                    </div>
+                </button>
+            )
+        }
 
         const DurationDisplay = () => duration ? (
             <div className="flex items-center justify-center gap-2">
@@ -180,13 +211,17 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
 
                     <p className="text-lg">{lesson?.description}</p>
 
-
                     <ReactPlayer 
                         url={lesson?.videoUrl} 
                         controls={false} 
                         onDuration={duration => setDuration(secondsToMinutes(duration))}
                         width={"100%"} 
                         height={"500px"} />
+                </div>
+
+                <div className="flex items-center justify-between">
+                    { prevLesson ? <SwitchLessonBtn lesson={prevLesson} orientation="left" /> : <div></div>}
+                    { nextLesson ? <SwitchLessonBtn lesson={nextLesson} orientation="right" /> : <div></div>}
                 </div>
             </div>
         )
