@@ -79,8 +79,15 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
     useEffect(() => { // Sets previous and next lesson based on current lesson
         if (!lesson) return;
 
-        const prevLesson = lessons?.find(l => l.lessonNumber === lesson.lessonNumber - 1);
-        const nextLesson = lessons?.find(l => l.lessonNumber === lesson.lessonNumber + 1);
+        const compare = (l: Lesson, position: "prev" | "next") => {
+            if (lesson == undefined) return false;
+            if (lesson.lessonNumber == undefined) return false;
+
+            return l.lessonNumber === lesson.lessonNumber + (position === "prev" ? -1 : 1);
+        }   
+
+        const prevLesson = lessons?.find(l => compare(l, "prev"));
+        const nextLesson = lessons?.find(l => compare(l, "next"));
 
         setPrevLesson(prevLesson);
         setNextLesson(nextLesson);
