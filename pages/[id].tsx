@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 const Chapter = ({ apiUrl }: { apiUrl: string }) => {
     const router = useRouter();
-    const { id } = router.query;
+    const { id, selectedLesson } = router.query;
     
     const [chapter, setChapter] = useState<Chapter>();
     const [lessons, setLessons] = useState<Array<Lesson>>();
@@ -72,7 +72,9 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
     }, []);
 
     useEffect(() => { // Sets first lesson as default
-        if (lesson) return;
+        if (!lessons) return;
+        if (!selectedLesson) return;
+
         setLesson(lessons?.[0]);
     }, [lessons]);
 
@@ -92,6 +94,14 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
         setPrevLesson(prevLesson);
         setNextLesson(nextLesson);
     }, [lesson])
+
+    useEffect(() => { // Sets selectedLesson based on selectedLesson query param
+        if (!selectedLesson) return;
+        if (!lessons) return;
+
+        const lesson = lessons.find(l => l.id.value === selectedLesson);
+        setLesson(lesson);
+    }, [selectedLesson, lessons])
 
     const LessonsList = () => {
         const LessonButton = (data: Lesson) => {

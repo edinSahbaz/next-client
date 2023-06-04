@@ -1,11 +1,14 @@
 import Header from "@/components/editor/Header";
+import Logo from "@/components/header/Logo";
 import { Lesson } from "@/lib/types/Lesson";
 import { Question } from "@/lib/types/Question";
 import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { MdChecklistRtl } from "react-icons/md";
 const CodeEnviroment = dynamic(() => import('@/components/editor/CodeEnviroment'), { ssr: false })
 
 const SolvedStatus = ({ isCompleted }: { isCompleted: boolean }) => (
@@ -156,8 +159,17 @@ const QuestionsPage = ({ apiUrl }: { apiUrl: string }) => {
     }
 
     const MainHeader = () => (
-        <div>
+        <div className="flex gap-4">
+            <div className="h-full bg-[var(--sec-txt-color)] rounded-b-md shadow-md">
+                <Logo simple={true} theme="light" size="small" />
+            </div>
 
+            <Link className="h-full bg-[var(--bg-sec-editor)] rounded-b-md shadow-md text-white font-semibold px-8 
+            hover:bg-[var(--sec-txt-color)] cursor-pointer flex items-center justify-center gap-2"
+            href={`/${lesson?.chapterId?.value}?selectedLesson=${lesson?.id.value}`}>
+                <MdChecklistRtl className="text-2xl" />
+                {lesson?.title}
+            </Link>
         </div>
     )
 
@@ -170,7 +182,7 @@ const QuestionsPage = ({ apiUrl }: { apiUrl: string }) => {
             </Head>
 
 
-            <div className="bg-[var(--bg-color)] w-full h-screen grid grid-rows-[2.5rem_2.5rem_1fr] gap-4 p-4">
+            <div className="bg-[var(--bg-color)] w-full h-screen grid grid-rows-[3rem_2.5rem_1fr] gap-4 p-4 pt-0">
                 <MainHeader />
                 <QuestionsPicker />
                 <div className="w-full grid grid-cols-2 gap-4">

@@ -11,14 +11,14 @@ const jura = Jura({
 interface LogoProps { 
     simple: boolean
     theme: "light" | "dark"
-    size: "small" | "normal" | null | undefined
+    size: "small" | "normal" | "smaller" | null | undefined
 }
 
 const Logo: FC<LogoProps> = ({ simple, theme, size }) => {
     const textColor = theme === "dark" ? "text-[var(--title-txt-color)]" : "text-[var(--txt-color)]";
 
     return (
-        <Link href="/" className={`${jura.className} ${size === "small" && "scale-75"} flex items-center justify-center gap-4 ${textColor}`}>
+        <Link href="/" className={`${jura.className} ${size === "small" ? "scale-75" : size === "smaller" ? "scale-50" : ""} flex items-center justify-center gap-4 ${textColor}`}>
             <Image className="hover:transform hover:rotate-90 transition-all duration-[800ms] fill-white"
                 src={theme === "dark" ? "/logo-dark.svg" : "/logo-white.svg"} height={40} width={40} alt="logo" />
 
