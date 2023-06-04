@@ -196,7 +196,11 @@ export default function Home() {
                     <h2 className={`text-3xl ${background === 'light' && 'text-[var(--title-txt-color)]'}`}>{title}</h2>
                     <p className=''>{description}</p>
 
-                    <RedButton btnAction={btnProps.btnAction} btnText={btnProps.btnText} btnIcon={btnProps.btnIcon}  />
+                    <RedButton 
+                        btnAction={btnProps.btnAction} 
+                        btnText={btnProps.btnText} 
+                        btnIcon={btnProps.btnIcon}
+                        animated={true}  />
                 </div>
 
                 <div className='grid place-items-center'>

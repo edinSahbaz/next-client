@@ -68,7 +68,11 @@ const PageDetails = (props: DetailsProps) => {
                 <h1 className="text-4xl font-[500]">{title}</h1>
                 <p className={`text-lg ${!hasCode && "text-center"}`}>{description}</p>
 
-                {btn && <RedButton btnText={btn.btnText} btnIcon={btn.btnIcon} btnAction={btn.btnAction} />}
+                {btn && <RedButton 
+                    btnText={btn.btnText} 
+                    btnIcon={btn.btnIcon} 
+                    btnAction={btn.btnAction}
+                    animated={true} />}
             </div>
 
             {hasCode && <Terminal />}

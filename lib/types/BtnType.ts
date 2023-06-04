@@ -5,4 +5,5 @@ export type BtnType = {
     btnIcon: ReactNode | null;
     btnAction: string;
     reversed?: boolean;
+    animated?: boolean;
 }

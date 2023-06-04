@@ -2,54 +2,13 @@ import Editor, { OnMount, BeforeMount } from "@monaco-editor/react";
 import { ReactNode, useEffect, useRef } from "react";
 import { usePython } from "react-py";
 import { BarLoader, MoonLoader } from "react-spinners";
+import Header from "./Header";
 
 interface ConsoleProps {
     stdout: string;
     stderr: string;
     isLoading: boolean;
     isRunning: boolean;
-}
-
-interface HeaderProps {
-    tabs: string[];
-    btn: {
-        content: ReactNode | string,
-        bg: string,
-        bg_hover: string,
-        action: () => void,
-    } | null;
-}
-
-const Tab = (props: { tab: string, first: boolean, last: boolean }) => {
-    const { tab, first, last } = props;
-    
-    return (
-        <div className={`bg-[var(--editor-bg)] w-fit px-6 h-full cursor-pointer shadow-md grid place-items-center ${first && "rounded-tl-md"} ${last && "rounded-tr-md"}`}>
-            <p>{tab}</p>
-        </div>
-    );
-}
-
-const Header = (props: HeaderProps) => {
-    const { tabs, btn } = props;
-
-    return (
-        <div className="bg-[var(--bg-sec-editor)] w-full h-10 flex justify-between shadow-md rounded-t-md">
-            <div className="h-full flex">
-            { tabs.map((tab, index) => (
-                <Tab key={index} tab={tab} first={index === 0} last={index === tabs.length - 1} />
-            ))}
-            </div>
-
-            {
-                btn && (
-                    <div onClick={btn.action} className={`${btn.bg} ${btn.bg_hover} transition-all duration-300 cursor-pointer px-6 grid place-items-center rounded-tr-md`}>
-                        {btn.content}
-                    </div>
-                )
-            }
-        </div>
-    );
 }
 
 const Console = (props: ConsoleProps) => {
@@ -64,7 +23,7 @@ const Console = (props: ConsoleProps) => {
 
     return (
         <div className="bg-[var(--editor-bg)] relative rounded-md h-[30%] shadow-md">
-            <Header tabs={["Output"]} btn={null} />
+            <Header tabs={["Output"]} />
             <pre className="max-h-[calc(100%-2.5rem)] h-[calc(100%-2.5rem)] overflow-y-auto py-2 px-4">
                 {
                     isRunning && <div className="w-[50%] absolute top-3 grid place-items-center bg-[#1c2736] p-2 rounded-md left-[25%]">
@@ -108,7 +67,7 @@ const CodeEnviroment = () => {
     }
 
     return !isLoading ? ( 
-        <div className="text-white flex flex-col gap-4 h-full max-h-screen p-4">
+        <div className="text-white flex flex-col gap-4 h-full max-h-screen">
             <div className="h-[70%] rounded-md shadow-md">
                 <Header tabs={["Input"]} btn={{
                     content: "Submit",

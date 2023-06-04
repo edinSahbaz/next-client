@@ -109,7 +109,7 @@ const Content = ({ chapters, url }: { chapters: Array<Chapter>, url: string }) =
 
         return (
             <div className="bg-white shadow-md rounded-md p-6 flex flex-col gap-4">
-                <h2 className="text-2xl text-[var(--title-txt-color)]">{title}</h2>
+                <h2 className="text-2xl text-[var(--title-txt-color)]">{chapterNumber} - {title}</h2>
 
                 <div className="flex items-center gap-8">
                     {

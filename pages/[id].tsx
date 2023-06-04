@@ -221,9 +221,10 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
 
                     <RedButton 
                         btnText="Zadaci"
-                        btnAction="solve-questions"
+                        btnAction={`/zadaci/${lesson?.id.value}`}
                         btnIcon={<BsArrowRight />}
-                        reversed={true} />
+                        reversed={true}
+                        animated={false} />
                 </div>
             </div>
         )
@@ -291,7 +292,7 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
 
             <main>
                 <PageDetails
-                    title={chapter?.title || ""}
+                    title={`${chapter?.chapterNumber} - ${chapter?.title}`}
                     description={`${chapter?.description.slice(0, 79)}...` || ""}
                     hasCode={false}
                 />
