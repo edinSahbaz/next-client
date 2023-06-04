@@ -7,4 +7,5 @@ export type Question = {
     answer: string;
     questionNumber: number;
     isCodeQuestion: boolean;
+    possibleAnswers: string;
 }
