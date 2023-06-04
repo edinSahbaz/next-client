@@ -72,8 +72,8 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
     }, []);
 
     useEffect(() => { // Sets first lesson as default
+        if (selectedLesson) return;
         if (!lessons) return;
-        if (!selectedLesson) return;
 
         setLesson(lessons?.[0]);
     }, [lessons]);
