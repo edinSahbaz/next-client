@@ -188,7 +188,7 @@ export default function Home() {
     const Wrapper = ({title, description, btnProps, textPosition, background, graphic}: WrapperProps) => {
         const bg = background === 'dark' ? 'bg-[var(--bg-color)]' : 'bg-[var(--body-bg-color)]';
         const txtColor = background === 'dark' ? 'text-white' : 'text-[var(--p-txt-color)]';
-        const style = `px-[15%] py-24 w-full grid grid-cols-2 gap-12 ${txtColor} ${bg}`;
+        const style = `px-[15%] py-24 w-full grid grid-cols-2 items-center gap-12 ${txtColor} ${bg}`;
 
         return (
             <div className={style}>
@@ -215,7 +215,7 @@ export default function Home() {
             <Image 
                 alt='python'
                 src='/python.png'
-                width={560}
+                width={520}
                 height={200}
             />
         );
@@ -230,16 +230,33 @@ export default function Home() {
                     btnIcon: <BiBook />
                 }}
                 background='dark'
-                textPosition='left'
+                textPosition='right'
                 graphic={PythonImg()}
             />
         );
     }
 
     const Tasks = () => {
-        const TaskCards = () => (
-            <div>
+        const numbersOfTasks = [1, 2, 5, 12, 18, 21, 26, 39];
 
+        const Task = ({ taskNumber }: { taskNumber: number }) => (
+            <div className='bg-white pl-4 w-[280px] rounded-md shadow-md flex items-center 
+            justify-between animate__animated animate__fadeIn hover:scale-110 transition-all'>
+                <h3 className='font-semibold text-sm text-[var(--sec-txt-color)]'>
+                    Zadatak {taskNumber}
+                </h3>
+                <div className='bg-[var(--sec-txt-color)] w-10 h-10 rounded-r-md relative'>
+                    <div className='bg-[var(--ter-txt-color)] w-2 h-10 rounded-r-md absolute right-0 top-0'>
+                    </div>
+                </div>
+            </div>
+        )
+
+        const TaskCards = () => (
+            <div className='flex flex-col gap-3'>
+                {numbersOfTasks.map((taskNumber, index) => (
+                    <Task key={index} taskNumber={taskNumber} />
+                ))}
             </div>
         )
 
@@ -249,7 +266,7 @@ export default function Home() {
                 description='Kao što vrijedi za svaku vještinu, što više vježbate pisanje koda, postat ćete bolji. Tačno iz tog razloga nauciProgramiranje.ba nudi veliki broj zadataka za vježbu da bi ste kristalizovali svoje novostečena znanja iz programiranja.
                 Da vam ne bi bilo dosadno(što je nemoguće - programiranje je zabavno!), naši zadaci su pažljivo smišljeni i dolaze u više formata.'
                 btnProps={{
-                    btnAction: '/',
+                    btnAction: '/kurs',
                     btnText: 'Pogledajte kurs',
                     btnIcon: <MdChecklistRtl />
                 }}
@@ -261,9 +278,20 @@ export default function Home() {
     }
 
     const Projects = () => {
-        const ProjectsCards = () => (
-            <div>
+        const projects = ['Caesar Cipher and Hacker', 'Hangman and Guillotine', 'Rock, Paper, Scissors', 'Number System Converter', 'Blackjack Card Game'];
 
+        const Project = ({ projectName }: { projectName: string }) => (
+            <div className='bg-[var(--bg-sec-editor)] w-[420px] py-4 border-gray-500 
+            border-[2px] rounded-md shadow-md'>
+                <h3 className='text-center font-semibold'>{projectName}</h3>
+            </div>
+        )
+
+        const ProjectsCards = () => (
+            <div className='flex flex-col gap-4'>
+                {projects.map((projectName, index) => (
+                    <Project key={index} projectName={projectName} />
+                ))}
             </div>
         )
         
@@ -273,7 +301,7 @@ export default function Home() {
                 description='Svaki novi programer se eventualno zapita: "Okej, mogu čitati i pisati kod, i mogu rješavati male probleme kodom, ali da li mogu razviti real-world aplikacije?"
                 Na sreću Vas, budućeg programera, sa nauciProgramiranje.ba ne morate se to više pitati. Naši praktični projekti služe kao savršena tranzicija sa pisanja početničkog koda, ondosno skripti, na pravljenje naprednog softvera i aplikacija.'
                 btnProps={{
-                    btnAction: '/',
+                    btnAction: '/kurs',
                     btnText: 'Pogledajte kurs',
                     btnIcon: <MdChecklistRtl />
                 }}
@@ -301,7 +329,7 @@ export default function Home() {
                 description='Mi vjerujemo da učenje i vježbanje pisanja koda treba biti što jednostavnije i pristupačnije. Sve treba biti pojednostavljeno da biste se mogli fokusirati na ono najbitnije: pisanje koda.
                 Dizajnirano sa jednostavnošću kao prioritetom, naše radno okruženje vam omogućava da primijenite svoje novostečene programerske vještine upravo na nauciProgramiranje.ba web stranici. Trenutno postoje radna okruženja za kurseve osnova web razvoja i programiranja, dok napredne kurseve podučavamo u postojećim alatima, smatrajući da je to najbolji način da vas pripremimo za buduću karijeru.'
                 btnProps={{
-                    btnAction: '/editor',
+                    btnAction: '/zadaci/94e50028-a554-47e6-aa33-f192cd5880eb',
                     btnText: 'Pogledajte radno okruženje',
                     btnIcon: <BiCodeBlock />
                 }}            
