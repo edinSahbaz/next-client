@@ -6,50 +6,58 @@ import { Stats } from "@/lib/types/Stats";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { BiMovie } from "react-icons/bi";
 import { BsArrowRight, BsListCheck, BsPencil } from "react-icons/bs";
 import { FaCreditCard } from "react-icons/fa";
 import { TbCertificate } from "react-icons/tb";
-import { PulseLoader } from "react-spinners";
+import { MoonLoader, PulseLoader } from "react-spinners";
 
 export const getServerSideProps: GetServerSideProps = async () => {
-    let chapters = [];
-
-    try {
-        const response = await fetch(`${process.env.API_URL}/api/chapters`, {
-            method: 'GET',
-            mode: 'cors'
-        });
-    
-        chapters = await response.json();
-    
-        for (let i in chapters) {
-            const chapter = chapters[i];
-    
-            const res = await fetch(`${process.env.API_URL}/api/lessons/chapter=${chapter.id.value}`, {
-                method: 'GET',
-                mode: 'cors'
-            });
-    
-            const lessons = await res.json();
-    
-            chapters[i].lessonsNumber = lessons.length;
-            chapters[i].tasksNumber = lessons.length;
-        }
-    } catch (error) {
-        console.log(error);
-    }
-
     return {
         props: {
-            "chapters": chapters || [],
+            apiUrl: process.env.API_URL
         },
     };
 };
 
-const Content = ({ chapters, url }: { chapters: Array<Chapter>, url: string }) => {
+const Content = ({ apiUrl }: { apiUrl: string }) => {
+    const [chapters, setChapters] = useState<Array<Chapter>>();
+
+    useEffect(() => { // Get chapters
+        const getChapters = async () => {
+            try {
+                const response = await fetch(`${apiUrl}/api/chapters`, {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+            
+                const chaptersRes = await response.json();
+            
+                for (let i in chaptersRes) {
+                    const chapter = chaptersRes[i];
+            
+                    const res = await fetch(`${apiUrl}/api/lessons/chapter=${chapter.id.value}`, {
+                        method: 'GET',
+                        mode: 'cors'
+                    });
+            
+                    const lessons = await res.json();
+            
+                    chaptersRes[i].lessonsNumber = lessons.length;
+                    chaptersRes[i].tasksNumber = lessons.length;
+                }
+
+                setChapters(chaptersRes);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        getChapters();
+    }, [])
+
     interface ChapterDetailProps {
         icon: ReactNode;
         stat: string;
@@ -167,7 +175,7 @@ const Content = ({ chapters, url }: { chapters: Array<Chapter>, url: string }) =
     const ChaptersContainer = () => (
         <div className="flex flex-col gap-6">
             {
-                chapters?.map((chapter, index) => (
+                chapters ? chapters.map((chapter, index) => (
                     <ChapterInfo 
                         key={index} 
                         id = {chapter.id}
@@ -177,7 +185,11 @@ const Content = ({ chapters, url }: { chapters: Array<Chapter>, url: string }) =
                         durationInHrs={chapter.durationInHrs}
                         lessonsNumber={chapter.lessonsNumber}
                         tasksNumber={chapter.tasksNumber} />
-                ))
+                )) : (
+                    <div className="w-full h-full grid place-items-center">
+                        <MoonLoader color="#f21b3f" size={90} speedMultiplier={0.75} />
+                    </div>
+                )
             }
         </div>
     )
