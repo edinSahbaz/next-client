@@ -12,6 +12,7 @@ import { BsPersonCheck } from 'react-icons/bs';
 import { FaCreditCard } from 'react-icons/fa';
 import { MdChecklistRtl } from 'react-icons/md';
 import { TbCertificate } from 'react-icons/tb';
+import { HiXMark, HiCheck } from 'react-icons/hi2';
 
 export default function Home() {
     const Intro = () => {
@@ -42,49 +43,49 @@ export default function Home() {
             {
                 title: 'Pogodnosti platforme',
                 description: 'Učenje programiranja je nesumnjivo zastrašujuće. nauciProgramiranje.ba vam pruža najjednostavniju, najmoderniju platformu, sa svime što vam je potrebno da naučite programiranje lako i bez stresa.',
-                link: '',
+                link: '#platforma',
                 icon: <BiDesktop className={iconStyle}/>
             },
             {
                 title: 'Sadržajan kurikulum',
                 description: 'Ispravno, pravo učenje programiranja zahtijeva detaljno planiran i kreiran kurikulum fokusiran na sve bitne elemente programiranja, što je upravo ono čime se nauciProgramiranje.ba može pohvaliti.',
-                link: '',
+                link: '#kurikulum',
                 icon: <BiBook className={iconStyle}/>
             },
             {
                 title: 'Dizajnirano od strane stručnjaka',
                 description: 'Programiranje možete učiti iz mnogih resursa i izvora ili možete učiti iz kurikuluma koji su sastavili i kreirali stručnjaci, programeri, sa dugogodišnjim iskustvom u IT industriji i podučavanju progamiranja.',
-                link: '',
+                link: '#kurikulum',
                 icon: <BsPersonCheck className={iconStyle}/>
             },
             {
                 title: 'Instrukcije visokog kvaliteta',
                 description: 'Učenje programiranja mnogo je lakše i mnogo ugodnije kada imate pristup videima i meet-ovima visoke kvalitete gdje je objašnjen svaki detalj potreban da shvatite neki koncpet.',
-                link: '',
+                link: '#kurikulum',
                 icon: <BiMovie className={iconStyle}/>
             },
             {
                 title: 'Pitanja za provjeru',
                 description: 'Praksa čini savršenim, posebno kada se uči programirati. Većina naših lekcija sadrži pitanja za vježbu kako biste učvrstili vaše razumijevanje svake teme. To su stotine pitanja koja će vas učiniti profesionalcem.',
-                link: '',
+                link: '#pitanja',
                 icon: <MdChecklistRtl className={iconStyle}/>
             },
             {
                 title: 'Velika baza zadataka',
                 description: 'Super je znati programirati. Još je zgodnije znati kako napraviti sjajne projekte uz programiranje. Naših 5 praktičnih projekata programiranja će vas provesti kroz to i približiti pravom svijetu programiranja.',
-                link: '',
+                link: '#projekti',
                 icon: <AiOutlineDatabase className={iconStyle}/>
             },
             {
                 title: 'Vrhunsko radno okruženje',
                 description: 'U svojoj srži, programiranje je primijenjena vještina. Zato sve naše lekcije dolaze sa radnim okruženjem za programiranje bogatim funkcijama gdje možete pisati i izvršavati kod, otklanjati greške i čuvati kod.',
-                link: '',
+                link: '#editor',
                 icon: <BiCodeBlock className={iconStyle}/>
             },
             {
                 title: 'Certifikat',
                 description: 'Ako ste uspješno uradili sve zadatke i pitanja sa platforme, onda vi definitivno znate programirati! Iz tog razloga zaslužujete certifikat koji potvrđuje vaše stečeno znanje iz programiranja.',
-                link: '',
+                link: '#certifikat',
                 icon: <TbCertificate className={iconStyle}/>
             },
         ]
@@ -114,69 +115,140 @@ export default function Home() {
 
     const Platform = () => {
         const Table = () => {
+            const Th = ({ children }: { children?: React.ReactNode }) => (
+                <th className="px-4 py-10 border-b-[1px] w-1/5 h-20 relative text-lg">
+                    {children}
+                </th>
+            );
+
+            const Td = ({ children }: { children?: React.ReactNode }) => (
+                <td className="p-4 border-b-[1px] w-1/5 h-20 font-semibold">
+                    {children}
+                </td>
+            );
+
+            const XmarkTd = () => (
+                <Td>
+                    <div className='w-full h-full grid place-items-center'>
+                        <div className='bg-red-100 w-3/4 py-2 grid place-items-center rounded-md'>
+                            <HiXMark className='text-2xl text-red-600' />
+                        </div>
+                    </div>
+                </Td>
+            )
+
+            const CheckmarkTd = () => (
+                <Td>
+                    <div className='w-full h-full grid place-items-center'>
+                        <div className='bg-green-100 w-3/4 py-2 grid place-items-center rounded-md'>
+                            <HiCheck className='text-2xl text-green-600' />
+                        </div>
+                    </div>
+                </Td>
+            )
+
             return (
-                <table>
+                <table className='bg-white rounded-md w-full'>
                     <thead>
                         <tr>
-                            <th>Element</th>
-                            <th>Opis</th>
+                            <Th></Th>
+                            <Th>YouTube</Th>
+                            <Th>Coding Bootcamps</Th>
+                            <Th>Ostale online platforme</Th>
+                            <Th>
+                                <div className='bg-[var(--sec-txt-color)] absolute top-0 right-0 w-full h-full flex 
+                                flex-col items-center justify-center rounded-tr-md'>
+                                    <Image 
+                                        src={"/logo-white.svg"} 
+                                        alt='logo' 
+                                        width={36} 
+                                        height={36} />
+                                    <p className='text-white'>nauciProgramiranje.ba</p>
+                                </div>
+                            </Th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>HTML</td>
-                            <td>HTML je jezik za označavanje sadržaja. Koristi se za definisanje strukture i sadržaja web stranice.</td>
-                        </tr>
-                        <tr>
-                            <td>CSS</td>
-                            <td>CSS je jezik za stilizovanje web stranica. Koristi se za definisanje izgleda i dizajna web stranica.</td>
-                        </tr>
-                        <tr>
-                            <td>JavaScript</td>
-                            <td>JavaScript je programski jezik koji se koristi za kreiranje interaktivnih elemenata na web stranicama.</td>
-                        </tr>
-                        <tr>
-                            <td>React</td>
-                            <td>React je JavaScript biblioteka za kreiranje korisničkih interfejsa. Koristi se za kreiranje web i mobilnih aplikacija.</td>
-                        </tr>
-                        <tr>
-                            <td>Node.js</td>
-                            <td>Node.js je JavaScript okruženje za izvršavanje koda na strani servera. Koristi se za kreiranje web servera i API-ja.</td>
-                        </tr>
-                        <tr>
-                            <td>Express.js</td>
-                            <td>Express.js je Node.js framework za kreiranje web servera i API-ja. Koristi se za kreiranje web servera i API-ja.</td>
-                        </tr>
-                        <tr>
-                            <td>Git</td>
-                            <td>Git je sistem za upravljanje verzijama koda. Koristi se za praćenje promjena u kodu i saradnju na projektima.</td>
-                        </tr>
-                        <tr>
-                            <td>GitHub</td>
-                            <td>GitHub je platforma za hostovanje koda. Koristi se za hostovanje i dijeljenje koda sa drugim programerima.</td>
-                        </tr>
-                        <tr>
-                            <td>VS Code</td>
-                            <td>VS Code je besplatan tekst editor. Koristi se za pisanje i uređivanje koda.</td>
-                        </tr>
+                       <tr>
+                            <Td>Pristupačno</Td>
+
+                            <CheckmarkTd></CheckmarkTd>
+                            <XmarkTd></XmarkTd>
+                            <CheckmarkTd></CheckmarkTd>
+                            <CheckmarkTd></CheckmarkTd>
+                       </tr>
+
+                       <tr>
+                            <Td>Mali ulog vremena</Td>
+
+                            <CheckmarkTd></CheckmarkTd>
+                            <XmarkTd></XmarkTd>
+                            <CheckmarkTd></CheckmarkTd>
+                            <CheckmarkTd></CheckmarkTd>
+                       </tr>
+
+                       <tr>
+                            <Td>Guided format podučavanja</Td>
+
+                            <XmarkTd></XmarkTd>
+                            <CheckmarkTd></CheckmarkTd>
+                            <CheckmarkTd></CheckmarkTd>
+                            <CheckmarkTd></CheckmarkTd>
+                       </tr>
+
+                       <tr>
+                            <Td>Premium okruženje za pisanje koda</Td>
+
+                            <XmarkTd></XmarkTd>
+                            <XmarkTd></XmarkTd>
+                            <XmarkTd></XmarkTd>
+                            <CheckmarkTd></CheckmarkTd>
+                       </tr>
+
+                       <tr>
+                            <Td>Instrukcije visokog kvaliteta</Td>
+
+                            <XmarkTd></XmarkTd>
+                            <XmarkTd></XmarkTd>
+                            <XmarkTd></XmarkTd>
+                            <CheckmarkTd></CheckmarkTd>
+                       </tr>
+
+                       <tr>
+                            <Td>Ekstremna jednostavnost</Td>
+
+                            <XmarkTd></XmarkTd>
+                            <XmarkTd></XmarkTd>
+                            <XmarkTd></XmarkTd>
+                            <CheckmarkTd></CheckmarkTd>
+                       </tr>
+
+                       <tr>
+                            <Td>Najbolja cjelokupna vrijednost</Td>
+
+                            <XmarkTd></XmarkTd>
+                            <XmarkTd></XmarkTd>
+                            <XmarkTd></XmarkTd>
+                            <CheckmarkTd></CheckmarkTd>
+                       </tr>
                     </tbody>
                 </table>
             )
         }
 
-
         return (
-            <div>
-                <h2 className=''>Najbolja platforma za učenje programiranja</h2>
+            <div id='platforma' className='py-12 flex flex-col gap-4 items-center w-full'>
+                <h2 className='text-3xl text-[var(--title-txt-color)]'>Najbolja platforma za učenje programiranja</h2>
                 <p className=''>Jednostavno. Pristupačno. Kvalitetno. Sve na jednom mjestu.</p>
+                <p className=''>To je nauciProgramiranje.ba.</p>
 
                 <Table />
             </div>
         )
     }
-
     interface WrapperProps {
+        id: string;
         title: string;
         description: string;
         btnProps: BtnType;
@@ -185,16 +257,16 @@ export default function Home() {
         graphic: React.ReactNode
     }
 
-    const Wrapper = ({title, description, btnProps, textPosition, background, graphic}: WrapperProps) => {
+    const Wrapper = ({ id, title, description, btnProps, textPosition, background, graphic }: WrapperProps) => {
         const bg = background === 'dark' ? 'bg-[var(--bg-color)]' : 'bg-[var(--body-bg-color)]';
         const txtColor = background === 'dark' ? 'text-white' : 'text-[var(--p-txt-color)]';
         const style = `px-[15%] py-24 w-full grid grid-cols-2 items-center gap-12 ${txtColor} ${bg}`;
 
         return (
-            <div className={style}>
+            <div id={id} className={style}>
                 <div className={`${textPosition === 'right' && 'order-last'} flex flex-col gap-10`}>
                     <h2 className={`text-3xl ${background === 'light' && 'text-[var(--title-txt-color)]'}`}>{title}</h2>
-                    <p className=''>{description}</p>
+                    <p>{description}</p>
 
                     <RedButton 
                         btnAction={btnProps.btnAction} 
@@ -222,6 +294,7 @@ export default function Home() {
 
         return (
             <Wrapper 
+                id='kurikulum'
                 title='Obiman i sadržajan kurikulum'
                 description='Planski smišljen kurikulum za svaki kurs pokriva sve što treba motivisanom i vrijednom programeru da postane performantan softverski inžinjer, od osnova programiranja i objektno-orijentisanog programiranja, do naprednih programskih koncepata i metoda kao i alata za razvoj softvera.'
                 btnProps={{
@@ -262,6 +335,7 @@ export default function Home() {
 
         return (
             <Wrapper
+                id='pitanja'
                 title='Veliki broj zadataka za vježbu'
                 description='Kao što vrijedi za svaku vještinu, što više vježbate pisanje koda, postat ćete bolji. Tačno iz tog razloga nauciProgramiranje.ba nudi veliki broj zadataka za vježbu da bi ste kristalizovali svoje novostečena znanja iz programiranja.
                 Da vam ne bi bilo dosadno(što je nemoguće - programiranje je zabavno!), naši zadaci su pažljivo smišljeni i dolaze u više formata.'
@@ -296,7 +370,8 @@ export default function Home() {
         )
         
         return (
-            <Wrapper        
+            <Wrapper
+                id='projekti'        
                 title='Praktični programski zadaci'
                 description='Svaki novi programer se eventualno zapita: "Okej, mogu čitati i pisati kod, i mogu rješavati male probleme kodom, ali da li mogu razviti real-world aplikacije?"
                 Na sreću Vas, budućeg programera, sa nauciProgramiranje.ba ne morate se to više pitati. Naši praktični projekti služe kao savršena tranzicija sa pisanja početničkog koda, ondosno skripti, na pravljenje naprednog softvera i aplikacija.'
@@ -325,6 +400,7 @@ export default function Home() {
 
         return (
             <Wrapper 
+                id='editor'
                 title='Bogato programsko radno okruženje'
                 description='Mi vjerujemo da učenje i vježbanje pisanja koda treba biti što jednostavnije i pristupačnije. Sve treba biti pojednostavljeno da biste se mogli fokusirati na ono najbitnije: pisanje koda.
                 Dizajnirano sa jednostavnošću kao prioritetom, naše radno okruženje vam omogućava da primijenite svoje novostečene programerske vještine upravo na nauciProgramiranje.ba web stranici. Trenutno postoje radna okruženja za kurseve osnova web razvoja i programiranja, dok napredne kurseve podučavamo u postojećim alatima, smatrajući da je to najbolji način da vas pripremimo za buduću karijeru.'
@@ -338,6 +414,29 @@ export default function Home() {
                 graphic={EditorImg()}
             />
         );
+    }
+
+    const Certificate = () => {
+        return (
+            <div id='certifikat' className='bg-[var(--bg-color)] px-[15%] py-24 flex items-center justify-center flex-col gap-4 text-white'>
+                <h2 className='text-3xl'>Certifikat o završenom kursu</h2>
+                <p>Kada završite sve lekcija i sva pitanja na nauciProgramiranje.ba platformi, dobijate certifikat.</p>
+
+                <Image 
+                    alt='certifikat'
+                    src='/certificate.png'
+                    width={800}
+                    height={240}
+                    className='shadow-2xl border-[1px] border-gray-600 my-8'
+                />
+
+                <RedButton
+                    btnAction='/kurs'
+                    btnText='Pogledajte kurs'
+                    btnIcon={<MdChecklistRtl />}
+                />
+            </div>
+        )
     }
 
     return (
@@ -363,13 +462,14 @@ export default function Home() {
 
                 <Container>
                     <Intro />
-                    {/* <Platform /> */}
+                    <Platform />
                 </Container>
 
                 <Curiculum />
                 <Tasks />
                 <Projects />
                 <Editor />
+                <Certificate />
             </main>
         </>
     )

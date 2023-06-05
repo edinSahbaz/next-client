@@ -1,7 +1,7 @@
 import Link from "next/link";
 import HorizontalLine from "../horizontalLine/HorizontalLine";
 
-const Footer = () => {
+const Footer = ({ isDark }: { isDark?: boolean }) => {
     const year = new Date().getFullYear();
 
     const FooterLink = ({ href, text }: { href: string; text: string }) => (
@@ -13,7 +13,7 @@ const Footer = () => {
     );
 
     return ( 
-        <footer className="w-full pb-12 flex flex-col items-center text-[var(--p-txt-color)] text-[15px]">
+        <footer className={`w-full pb-12 flex flex-col items-center text-[15px] ${isDark ? "bg-[var(--bg-color)] text-white" : "text-[var(--p-txt-color)]"}`}>
             <HorizontalLine height="h-[1px]" width="w-[80%]" color="bg-[#e3e3e3]" />
         
             <div className="flex h-[18px] items-center gap-4 mt-12">
