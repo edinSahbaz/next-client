@@ -1,236 +1,321 @@
-import ActionButton from "@/components/general/ActionButton";
-import Container from "@/components/general/Container";
-import PageDetails from "@/components/header/PageDetails";
-import { Chapter } from "@/lib/types/Chapter";
-import { Stats } from "@/lib/types/Stats";
-import { GetServerSideProps } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import { ReactNode } from "react";
-import { AiOutlineClockCircle } from "react-icons/ai";
-import { BiMovie } from "react-icons/bi";
-import { BsArrowRight, BsListCheck, BsPencil } from "react-icons/bs";
-import { FaCreditCard } from "react-icons/fa";
-import { TbCertificate } from "react-icons/tb";
-import { PulseLoader } from "react-spinners";
+import Container from '@/components/general/Container';
+import RedButton from '@/components/general/RedButton';
+import PageDetails from '@/components/header/PageDetails'
+import { BtnType } from '@/lib/types/BtnType';
+import Head from 'next/head'
+import Image from 'next/image';
+import Link from 'next/link';
+import { ReactNode } from 'react';
+import { AiOutlineDatabase } from 'react-icons/ai';
+import { BiBook, BiCodeBlock, BiDesktop, BiMovie } from 'react-icons/bi';
+import { BsPersonCheck } from 'react-icons/bs';
+import { FaCreditCard } from 'react-icons/fa';
+import { MdChecklistRtl } from 'react-icons/md';
+import { TbCertificate } from 'react-icons/tb';
 
-export const getServerSideProps: GetServerSideProps = async () => {
-    let chapters = [];
-
-    try {
-        const response = await fetch(`${process.env.API_URL}/api/chapters`, {
-            method: 'GET',
-            mode: 'cors'
-        });
-    
-        chapters = await response.json();
-    
-        for (let i in chapters) {
-            const chapter = chapters[i];
-    
-            const res = await fetch(`${process.env.API_URL}/api/lessons/chapter=${chapter.id.value}`, {
-                method: 'GET',
-                mode: 'cors'
-            });
-    
-            const lessons = await res.json();
-    
-            chapters[i].lessonsNumber = lessons.length;
-            chapters[i].tasksNumber = lessons.length;
+export default function Home() {
+    const Intro = () => {
+        interface IntroElementProps {
+            title: string;
+            description: string;
+            link: string;
+            icon: ReactNode;
         }
-    } catch (error) {
-        console.log(error);
-    }
 
-    return {
-        props: {
-            "chapters": chapters || [],
-        },
-    };
-};
-
-const Content = ({ chapters, url }: { chapters: Array<Chapter>, url: string }) => {
-    interface ChapterDetailProps {
-        icon: ReactNode;
-        stat: string;
-        value: number;
-    }
-
-    interface ProgressProps {
-        id: string;
-        icon: ReactNode;
-        title: string;
-    }
-
-    const ChapterDetail = ({ icon, stat, value }: ChapterDetailProps) => (
-        <div className="flex items-center justify-center gap-2">
-            <div className="bg-[#f21b3f1a] grid place-items-center p-2 rounded-md shadow-md">
+        const IntroElement = ({title, description, link, icon}: IntroElementProps) => (
+            <div className='flex flex-col items-center gap-2 hover:cursor-pointer hover:shadow-xl border-[1px] border-transparent 
+            hover:border-gray-100 w-[calc(33.3%-1rem)] p-6 transition-all duration-300 text-center'>
                 {icon}
-            </div>
-            <span className="font-semibold">{value} {stat}</span>
-        </div>
-    )
-
-    const AdvanceBtn = ({ id }: { id: string }) => (
-        <Link href={`/${id}`} className="flex items-center justify-center rounded-md shadow-md transition-all
-            gap-2 bg-[var(--bg-color)] hover:bg-[var(--ter-bg-color)] text-white px-4 py-2 w-fit h-fit">
-            Započni <BsArrowRight />
-        </Link>
-    )
-
-    const ChapterProgress = ({ id, icon, title }: ProgressProps) => {
-        const ProgressBar = () => (
-            <div className="flex items-center gap-4">
-                <div className="bg-white h-2 rounded-md w-full"></div> 
-                <span className="font-semibold">{"0%"}</span>
-            </div>
-        )
-
-        return (
-            <div className="p-4 bg-gray-100 rounded-md shadow-md grid grid-cols-2">
-                <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-4">
-                        {icon}
-                        <span className="text-lg text-[var(--title-txt-color)]">{title}</span>
-                    </div>
-                    <ProgressBar />
-                </div>
-
-                <div className="flex items-center justify-end">
-                    <AdvanceBtn id={id} /> 
-                </div>
-            </div>
-        )
-    }
-
-    const ChapterInfo = ({ id, title, description, chapterNumber, durationInHrs, lessonsNumber, tasksNumber }: Chapter) => {
-        const detailIconStyle = "text-[var(--ter-txt-color)] text-lg";
-        const progressIconStyle = "text-[var(--title-txt-color)] text-4xl";
-
-        return (
-            <div className="bg-white shadow-md rounded-md p-6 flex flex-col gap-4">
-                <h2 className="text-2xl text-[var(--title-txt-color)]">{chapterNumber} - {title}</h2>
-
-                <div className="flex items-center gap-8">
-                    {
-                        lessonsNumber > 0 ?
-                        (
-                            <>
-                                <ChapterDetail 
-                                    icon={<AiOutlineClockCircle className={detailIconStyle} />}
-                                    stat="Sati" 
-                                    value={durationInHrs} />
-                                <ChapterDetail 
-                                    icon={<BiMovie className={detailIconStyle} />}
-                                    stat="Lekcija" 
-                                    value={lessonsNumber} />
-                            </>
-                        ) : (
-                            <div className="py-4">
-                                <div className="flex items-end">
-                                    <h2 className="font-semibold text-2xl text-[var(--title-txt-color)]">USKORO</h2>
-                                    <PulseLoader size={4} className="pb-1" speedMultiplier={0.6} />
-                                </div>
-                                <p className="text-[var(--title-txt-color)]">Poglavlje u izradi.</p>
-                            </div>
-                        )
-                    }
-                    {
-                        tasksNumber > 0 && 
-                        <ChapterDetail 
-                            icon={<BsPencil className={detailIconStyle} />} 
-                            stat="Zadataka"
-                            value={tasksNumber} />
-                    }
-                </div>
-
-                <p>{description}</p>
-
-                {
-                    lessonsNumber > 0 && 
-                        <ChapterProgress 
-                            id={id.value} 
-                            icon={<BiMovie className={progressIconStyle} />} 
-                            title="Lekcije" />
-                }
-                {
-                    tasksNumber > 0 && 
-                        <ChapterProgress 
-                            id={id.value} 
-                            icon={<BsListCheck className={progressIconStyle} />} 
-                            title="Zadaci" />
-                }
-            </div>
-        )
-    }
     
-    const ChaptersContainer = () => (
-        <div className="flex flex-col gap-6">
+                <h3 className='text-[var(--title-txt-color)] text-xl'>{title}</h3>
+                <p className='text-[var(--p-txt-color)] text-[15px]'>{description}</p>
+                
+                <Link href={link} className='hover-underline-animation hover-underline-animation-red text-[var(--sec-txt-color)]'>
+                    Pogledaj više.
+                </Link>
+            </div>
+        )
+
+        const iconStyle = "text-[3rem] text-[var(--sec-txt-color)]";
+      
+        const cards: IntroElementProps[] = [
             {
-                chapters?.map((chapter, index) => (
-                    <ChapterInfo 
-                        key={index} 
-                        id = {chapter.id}
-                        title={chapter.title} 
-                        description={chapter.description}
-                        chapterNumber={chapter.chapterNumber}
-                        durationInHrs={chapter.durationInHrs}
-                        lessonsNumber={chapter.lessonsNumber}
-                        tasksNumber={chapter.tasksNumber} />
-                ))
-            }
-        </div>
-    )
-
-    const CourseProgress = () => {
-        const Progress = () => (
-            <div className="rounded-full border-[14px] w-36 h-36 grid place-items-center">  
-                <p className="text-2xl">0%</p>
-            </div>
-        )
-
-        const Stats = ({title, completed, total}: Stats) => (
-            <div className="text-center">
-                <h3>{title}</h3>
-                <p className="font-semibold">{completed} / {total}</p>
-            </div>
-        )
+                title: 'Pogodnosti platforme',
+                description: 'Učenje programiranja je nesumnjivo zastrašujuće. nauciProgramiranje.ba vam pruža najjednostavniju, najmoderniju platformu, sa svime što vam je potrebno da naučite programiranje lako i bez stresa.',
+                link: '',
+                icon: <BiDesktop className={iconStyle}/>
+            },
+            {
+                title: 'Sadržajan kurikulum',
+                description: 'Ispravno, pravo učenje programiranja zahtijeva detaljno planiran i kreiran kurikulum fokusiran na sve bitne elemente programiranja, što je upravo ono čime se nauciProgramiranje.ba može pohvaliti.',
+                link: '',
+                icon: <BiBook className={iconStyle}/>
+            },
+            {
+                title: 'Dizajnirano od strane stručnjaka',
+                description: 'Programiranje možete učiti iz mnogih resursa i izvora ili možete učiti iz kurikuluma koji su sastavili i kreirali stručnjaci, programeri, sa dugogodišnjim iskustvom u IT industriji i podučavanju progamiranja.',
+                link: '',
+                icon: <BsPersonCheck className={iconStyle}/>
+            },
+            {
+                title: 'Instrukcije visokog kvaliteta',
+                description: 'Učenje programiranja mnogo je lakše i mnogo ugodnije kada imate pristup videima i meet-ovima visoke kvalitete gdje je objašnjen svaki detalj potreban da shvatite neki koncpet.',
+                link: '',
+                icon: <BiMovie className={iconStyle}/>
+            },
+            {
+                title: 'Pitanja za provjeru',
+                description: 'Praksa čini savršenim, posebno kada se uči programirati. Većina naših lekcija sadrži pitanja za vježbu kako biste učvrstili vaše razumijevanje svake teme. To su stotine pitanja koja će vas učiniti profesionalcem.',
+                link: '',
+                icon: <MdChecklistRtl className={iconStyle}/>
+            },
+            {
+                title: 'Velika baza zadataka',
+                description: 'Super je znati programirati. Još je zgodnije znati kako napraviti sjajne projekte uz programiranje. Naših 5 praktičnih projekata programiranja će vas provesti kroz to i približiti pravom svijetu programiranja.',
+                link: '',
+                icon: <AiOutlineDatabase className={iconStyle}/>
+            },
+            {
+                title: 'Vrhunsko radno okruženje',
+                description: 'U svojoj srži, programiranje je primijenjena vještina. Zato sve naše lekcije dolaze sa radnim okruženjem za programiranje bogatim funkcijama gdje možete pisati i izvršavati kod, otklanjati greške i čuvati kod.',
+                link: '',
+                icon: <BiCodeBlock className={iconStyle}/>
+            },
+            {
+                title: 'Certifikat',
+                description: 'Ako ste uspješno uradili sve zadatke i pitanja sa platforme, onda vi definitivno znate programirati! Iz tog razloga zaslužujete certifikat koji potvrđuje vaše stečeno znanje iz programiranja.',
+                link: '',
+                icon: <TbCertificate className={iconStyle}/>
+            },
+        ]
 
         return (
-            <div className="bg-white rounded-md shadow-md p-6 pt-28 h-fit flex flex-col items-center gap-6 sticky top-8 mt-6">
-                <div className="bg-[var(--ter-bg-color)] w-3/4 grid place-items-center h-28 absolute -top-6 shadow-md rounded-md">
-                    <TbCertificate className="text-white text-6xl" />
+            <div>
+                <h2 className='text-4xl text-[var(--title-txt-color)] text-center my-10'>
+                    Šta je nauciProgramiranje.ba?
+                </h2>
+
+                <div className='flex flex-wrap gap-6 items-center justify-center'>
+                    {
+                        cards.map((card, index) => (
+                            <IntroElement
+                                key={index}
+                                title={card.title}
+                                description={card.description}
+                                link={card.link}
+                                icon={card.icon}
+                            />
+                        ))
+                    }
                 </div>
+            </div>
+        );
+    }
 
-                <h2 className="text-xl text-[var(--title-txt-color)]">Certifikat</h2>
+    const Platform = () => {
+        const Table = () => {
+            return (
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Element</th>
+                            <th>Opis</th>
+                        </tr>
+                    </thead>
 
-                <Progress />
+                    <tbody>
+                        <tr>
+                            <td>HTML</td>
+                            <td>HTML je jezik za označavanje sadržaja. Koristi se za definisanje strukture i sadržaja web stranice.</td>
+                        </tr>
+                        <tr>
+                            <td>CSS</td>
+                            <td>CSS je jezik za stilizovanje web stranica. Koristi se za definisanje izgleda i dizajna web stranica.</td>
+                        </tr>
+                        <tr>
+                            <td>JavaScript</td>
+                            <td>JavaScript je programski jezik koji se koristi za kreiranje interaktivnih elemenata na web stranicama.</td>
+                        </tr>
+                        <tr>
+                            <td>React</td>
+                            <td>React je JavaScript biblioteka za kreiranje korisničkih interfejsa. Koristi se za kreiranje web i mobilnih aplikacija.</td>
+                        </tr>
+                        <tr>
+                            <td>Node.js</td>
+                            <td>Node.js je JavaScript okruženje za izvršavanje koda na strani servera. Koristi se za kreiranje web servera i API-ja.</td>
+                        </tr>
+                        <tr>
+                            <td>Express.js</td>
+                            <td>Express.js je Node.js framework za kreiranje web servera i API-ja. Koristi se za kreiranje web servera i API-ja.</td>
+                        </tr>
+                        <tr>
+                            <td>Git</td>
+                            <td>Git je sistem za upravljanje verzijama koda. Koristi se za praćenje promjena u kodu i saradnju na projektima.</td>
+                        </tr>
+                        <tr>
+                            <td>GitHub</td>
+                            <td>GitHub je platforma za hostovanje koda. Koristi se za hostovanje i dijeljenje koda sa drugim programerima.</td>
+                        </tr>
+                        <tr>
+                            <td>VS Code</td>
+                            <td>VS Code je besplatan tekst editor. Koristi se za pisanje i uređivanje koda.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            )
+        }
 
-                <Stats 
-                    title="Pređene lekcije" 
-                    completed={0} 
-                    total={chapters ? chapters.map(c => c.lessonsNumber).reduce((a, b) => a + b, 0) : 0} />
-                <Stats 
-                    title="Riješeni zadaci" 
-                    completed={0} 
-                    total={chapters ? chapters.map(c => c.tasksNumber).reduce((a, b) => a + b, 0) : 0} />
 
-                <p className="text-sm mb-8 font-light text-center italic">Otključajte nauciProgramiranje.ba certifikat kada uspješno završite sve zadatke na platformi.</p>
- 
-                <div className="w-3/4 absolute -bottom-4">
-                    <ActionButton 
-                        text="Otključaj certifikat"
-                        action={() => {}} 
-                        disabled={true} />
-                </div>
+        return (
+            <div>
+                <h2 className=''>Najbolja platforma za učenje programiranja</h2>
+                <p className=''>Jednostavno. Pristupačno. Kvalitetno. Sve na jednom mjestu.</p>
+
+                <Table />
             </div>
         )
     }
 
-    return ( 
+    interface WrapperProps {
+        title: string;
+        description: string;
+        btnProps: BtnType;
+        textPosition: 'left' | 'right';
+        background: 'dark' | 'light';
+        graphic: React.ReactNode
+    }
+
+    const Wrapper = ({title, description, btnProps, textPosition, background, graphic}: WrapperProps) => {
+        const bg = background === 'dark' ? 'bg-[var(--bg-color)]' : 'bg-[var(--body-bg-color)]';
+        const txtColor = background === 'dark' ? 'text-white' : 'text-[var(--p-txt-color)]';
+        const style = `px-[15%] py-24 w-full grid grid-cols-2 gap-12 ${txtColor} ${bg}`;
+
+        return (
+            <div className={style}>
+                <div className={`${textPosition === 'right' && 'order-last'} flex flex-col gap-10`}>
+                    <h2 className={`text-3xl ${background === 'light' && 'text-[var(--title-txt-color)]'}`}>{title}</h2>
+                    <p className=''>{description}</p>
+
+                    <RedButton 
+                        btnAction={btnProps.btnAction} 
+                        btnText={btnProps.btnText} 
+                        btnIcon={btnProps.btnIcon}
+                        animated={true}  />
+                </div>
+
+                <div className='grid place-items-center'>
+                    {graphic}
+                </div>
+            </div>
+        );
+    }
+
+    const Curiculum = () => {
+        const PythonImg = () => (
+            <Image 
+                alt='python'
+                src='/python.png'
+                width={560}
+                height={200}
+            />
+        );
+
+        return (
+            <Wrapper 
+                title='Obiman i sadržajan kurikulum'
+                description='Planski smišljen kurikulum za svaki kurs pokriva sve što treba motivisanom i vrijednom programeru da postane performantan softverski inžinjer, od osnova programiranja i objektno-orijentisanog programiranja, do naprednih programskih koncepata i metoda kao i alata za razvoj softvera.'
+                btnProps={{
+                    btnAction: '/',
+                    btnText: 'Istražite sadržaj',
+                    btnIcon: <BiBook />
+                }}
+                background='dark'
+                textPosition='left'
+                graphic={PythonImg()}
+            />
+        );
+    }
+
+    const Tasks = () => {
+        const TaskCards = () => (
+            <div>
+
+            </div>
+        )
+
+        return (
+            <Wrapper
+                title='Veliki broj zadataka za vježbu'
+                description='Kao što vrijedi za svaku vještinu, što više vježbate pisanje koda, postat ćete bolji. Tačno iz tog razloga nauciProgramiranje.ba nudi veliki broj zadataka za vježbu da bi ste kristalizovali svoje novostečena znanja iz programiranja.
+                Da vam ne bi bilo dosadno(što je nemoguće - programiranje je zabavno!), naši zadaci su pažljivo smišljeni i dolaze u više formata.'
+                btnProps={{
+                    btnAction: '/',
+                    btnText: 'Pogledajte kurs',
+                    btnIcon: <MdChecklistRtl />
+                }}
+                background='light'
+                textPosition='left'
+                graphic={<TaskCards />}
+            />
+        );
+    }
+
+    const Projects = () => {
+        const ProjectsCards = () => (
+            <div>
+
+            </div>
+        )
+        
+        return (
+            <Wrapper        
+                title='Praktični programski zadaci'
+                description='Svaki novi programer se eventualno zapita: "Okej, mogu čitati i pisati kod, i mogu rješavati male probleme kodom, ali da li mogu razviti real-world aplikacije?"
+                Na sreću Vas, budućeg programera, sa nauciProgramiranje.ba ne morate se to više pitati. Naši praktični projekti služe kao savršena tranzicija sa pisanja početničkog koda, ondosno skripti, na pravljenje naprednog softvera i aplikacija.'
+                btnProps={{
+                    btnAction: '/',
+                    btnText: 'Pogledajte kurs',
+                    btnIcon: <MdChecklistRtl />
+                }}
+                background='dark'
+                textPosition='right'
+                graphic={<ProjectsCards />}
+            />
+        );
+    }
+
+    const Editor = () => {
+        const EditorImg = () => (
+            <Image 
+                alt='python'
+                src='/editor.png'
+                width={620}
+                height={200}
+                className='editorImg'
+            />
+        );
+
+        return (
+            <Wrapper 
+                title='Bogato programsko radno okruženje'
+                description='Mi vjerujemo da učenje i vježbanje pisanja koda treba biti što jednostavnije i pristupačnije. Sve treba biti pojednostavljeno da biste se mogli fokusirati na ono najbitnije: pisanje koda.
+                Dizajnirano sa jednostavnošću kao prioritetom, naše radno okruženje vam omogućava da primijenite svoje novostečene programerske vještine upravo na nauciProgramiranje.ba web stranici. Trenutno postoje radna okruženja za kurseve osnova web razvoja i programiranja, dok napredne kurseve podučavamo u postojećim alatima, smatrajući da je to najbolji način da vas pripremimo za buduću karijeru.'
+                btnProps={{
+                    btnAction: '/editor',
+                    btnText: 'Pogledajte radno okruženje',
+                    btnIcon: <BiCodeBlock />
+                }}            
+                background='light'
+                textPosition='left'
+                graphic={EditorImg()}
+            />
+        );
+    }
+
+    return (
         <>
             <Head>
-                <title>Sadržaj | nauciProgramiranje.ba</title>
+                <title>nauciProgramiranje.ba | Postani softverski inžinjer!</title>
                 <meta name="description" content="Prva domaća platforma posvećena podučavanju programiranja. Najbolji način da što prije postanete softverski inžinjer." />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
@@ -238,25 +323,26 @@ const Content = ({ chapters, url }: { chapters: Array<Chapter>, url: string }) =
 
             <main>
                 <PageDetails
-                    title='Ultimativna platforma'
-                    description='Sve što treba da naučite programirati na jednom mjestu. Stvarno.'
-                    hasCode={false}
-                    btn={{
-                        btnText: 'Upiši se na kurs',
-                        btnIcon: <FaCreditCard />,
-                        btnAction: '/kupovina'
-                    }}
+                title='nauciProgramiranje.ba'
+                description='Prva domaća platforma posvećena podučavanju programiranja. Najbolji način da što prije postanete softverski inžinjer.'
+                hasCode={true}
+                btn={{
+                    btnText: 'Upiši se na kurs',
+                    btnIcon: <FaCreditCard />,
+                    btnAction: '/kupovina'
+                }}
                 />
 
                 <Container>
-                    <div className="grid grid-cols-[260px_1fr] gap-6 w-full">
-                        <CourseProgress />
-                        <ChaptersContainer />
-                    </div>
+                    <Intro />
+                    {/* <Platform /> */}
                 </Container>
+
+                <Curiculum />
+                <Tasks />
+                <Projects />
+                <Editor />
             </main>
         </>
-     );
+    )
 }
- 
-export default Content;

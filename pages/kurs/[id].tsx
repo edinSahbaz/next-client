@@ -182,7 +182,7 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
         const [duration, setDuration ]  = useState<number>(0);
         
         const BackBtn = () => (
-            <Link href="/" className="py-4 px-8 rounded-md shadow-md text-xl flex items-center justify-center gap-3 
+            <Link href="/kurs" className="py-4 px-8 rounded-md shadow-md text-xl flex items-center justify-center gap-3 
             w-fit bg-white text-[var(--title-txt-color)] font-semibold hover:bg-gray-100 transition-all">
                 <BsArrowLeft />
                 Nazad na poglavlja

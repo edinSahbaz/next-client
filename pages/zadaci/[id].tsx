@@ -166,7 +166,7 @@ const QuestionsPage = ({ apiUrl }: { apiUrl: string }) => {
 
             <Link className="h-full bg-[var(--bg-sec-editor)] rounded-b-md shadow-md text-white font-semibold px-8 
             hover:bg-[var(--sec-txt-color)] cursor-pointer flex items-center justify-center gap-2"
-            href={`/${lesson?.chapterId?.value}?selectedLesson=${lesson?.id.value}`}>
+            href={`/kurs/${lesson?.chapterId?.value}?selectedLesson=${lesson?.id.value}`}>
                 <MdChecklistRtl className="text-2xl" />
                 {lesson?.title}
             </Link>
