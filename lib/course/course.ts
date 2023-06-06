@@ -23,23 +23,6 @@ export const isCoursePaid = async (usersID: string, course: 'python') => {
     };
 }
 
-export const buyCourse = async (userID: string, course: 'python') => {
-    const colRef = doc(db, courseURL(userID, course));
-
-    fetch('https://api.stripe.com/v1/charges', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-    })
-
-    await addTransaction(userID, {
-        __added_time: Timestamp.now(),
-        paidAmount: 99
-    })
-
-    setDoc(colRef, {
-        paid: true,
-        __paid_date: Timestamp.now()
-    }, { merge: true })
+export const buyCourse = async (userID: string, paymentId: string) => {
+    console.log(userID, paymentId);
 }

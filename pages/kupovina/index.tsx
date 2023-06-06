@@ -64,7 +64,7 @@ const PaymentForm = () => {
             setIsLoading(true);
             e.preventDefault();
 
-            if (!stripe || !elements) {
+            if (!stripe || !elements || !user) {
                 setIsLoading(false);
                 return;
             }
@@ -84,10 +84,12 @@ const PaymentForm = () => {
                 } else {
                     // The payment has been processed!
                     if (result.paymentIntent.status !== "succeeded") return;
-                    
-                    // TODO: Implement payment success
-                    toast.success("Kupili ste nauciProgramiranje.ba kurs!");
                     setPaymentSuccessful(true);
+                    
+                    const paymentId = result.paymentIntent.id;
+                    await buyCourse(user?.uid, paymentId);
+
+                    toast.success("Kupili ste nauciProgramiranje.ba kurs!");
                 }
             });
         };
@@ -96,9 +98,8 @@ const PaymentForm = () => {
             <>
                 {
                     paymentSuccessful ? (
-                        <div>
-                            {/* TODO: implement UI */}
-                            Placeno
+                        <div className="w-full h-full flex flex-col items-center justify-center">
+                            <h2>Platili ste kurs!</h2>
                         </div>
                     ) : (
                         <form id="payment-form" onSubmit={(e) => {
