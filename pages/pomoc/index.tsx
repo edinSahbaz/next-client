@@ -73,7 +73,6 @@ const Help = () => {
                     }}
                 />
                 
-                
                 <Container>
                     <Heading />
                     <Cards cards={cards} />

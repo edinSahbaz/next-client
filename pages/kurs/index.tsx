@@ -1,6 +1,7 @@
 import ActionButton from "@/components/general/ActionButton";
 import Container from "@/components/general/Container";
 import PageDetails from "@/components/header/PageDetails";
+import { getChapters } from "@/lib/chapters/chapters";
 import { Chapter } from "@/lib/types/Chapter";
 import { Stats } from "@/lib/types/Stats";
 import { GetServerSideProps } from "next";
@@ -14,48 +15,11 @@ import { FaCreditCard } from "react-icons/fa";
 import { TbCertificate } from "react-icons/tb";
 import { MoonLoader, PulseLoader } from "react-spinners";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-    return {
-        props: {
-            apiUrl: process.env.API_URL
-        },
-    };
-};
-
-const Content = ({ apiUrl }: { apiUrl: string }) => {
+const Content = () => {
     const [chapters, setChapters] = useState<Array<Chapter>>();
 
     useEffect(() => { // Get chapters
-        const getChapters = async () => {
-            try {
-                const response = await fetch(`${apiUrl}/api/chapters`, {
-                    method: 'GET',
-                    mode: 'cors'
-                });
-            
-                const chaptersRes = await response.json();
-            
-                for (let i in chaptersRes) {
-                    const chapter = chaptersRes[i];
-            
-                    const res = await fetch(`${apiUrl}/api/lessons/chapter=${chapter.id.value}`, {
-                        method: 'GET',
-                        mode: 'cors'
-                    });
-            
-                    const lessons = await res.json();
-            
-                    chaptersRes[i].lessonsNumber = lessons.length;
-                    chaptersRes[i].tasksNumber = lessons.length;
-                }
-
-                setChapters(chaptersRes);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        getChapters();
+        getChapters(setChapters);
     }, [])
 
     interface ChapterDetailProps {

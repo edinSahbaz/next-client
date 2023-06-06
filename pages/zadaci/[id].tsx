@@ -1,5 +1,7 @@
 import Header from "@/components/editor/Header";
 import Logo from "@/components/header/Logo";
+import { getLessonById } from "@/lib/lessons/lessons";
+import { getQuestions } from "@/lib/questions/questions";
 import { Lesson } from "@/lib/types/Lesson";
 import { Question } from "@/lib/types/Question";
 import { GetServerSideProps } from "next";
@@ -72,15 +74,7 @@ const Prompt = ({ selectedQuestion }: { selectedQuestion?: Question }) => {
     );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
-    return {
-        props: {
-            apiUrl: process.env.API_URL
-        },
-    };
-};
-
-const QuestionsPage = ({ apiUrl }: { apiUrl: string }) => {
+const QuestionsPage = () => {
     const router = useRouter();
     const { id } = router.query;
 
@@ -88,47 +82,11 @@ const QuestionsPage = ({ apiUrl }: { apiUrl: string }) => {
     const [questions, setQuestions] = useState<Array<Question>>();
     const [selectedQuestion, setSelectedQuestion] = useState<Question>();
 
-    useEffect(() => { // Gets lesson data based on the lesson id
+    useEffect(() => { // Gets lesson data and questions based on the lesson id
         if (!id) return;
-        if (!apiUrl) return;
 
-        const getLessonData = async () => {
-            try {
-                const response = await fetch(`${apiUrl}/api/lessons/${id}`, {
-                    method: 'GET',
-                    mode: 'cors'
-                });
-            
-                const lessonRes = await response.json();
-                setLesson(lessonRes);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        getLessonData();
-    }, [id]);
-
-    useEffect(() => { // Gets the questions based on the lesson id
-        if (!id) return;
-        if (!apiUrl) return;
-
-        const getLessonQuestions = async () => {
-            try {
-                const response = await fetch(`${apiUrl}/api/questions/lesson=${id}`, {
-                    method: 'GET',
-                    mode: 'cors'
-                });
-            
-                const questionsRes = await response.json();
-                console.log(questionsRes);
-                setQuestions(questionsRes);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        getLessonQuestions();
+        getLessonById(id as string, setLesson);
+        getQuestions(id as string, setQuestions);
     }, [id]);
 
     useEffect(() => {

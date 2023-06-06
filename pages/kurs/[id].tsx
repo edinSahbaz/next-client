@@ -2,11 +2,12 @@ import Container from "@/components/general/Container";
 import RedButton from "@/components/general/RedButton";
 import PageDetails from "@/components/header/PageDetails";
 import HorizontalLine from "@/components/horizontalLine/HorizontalLine";
+import { getChapterById } from "@/lib/chapters/chapters";
+import { getLessons } from "@/lib/lessons/lessons";
 import { Chapter } from "@/lib/types/Chapter";
 import { Lesson } from "@/lib/types/Lesson";
 import { Stats } from "@/lib/types/Stats";
 import { secondsToMinutes } from "date-fns";
-import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -16,15 +17,7 @@ import { BsArrowLeft, BsArrowRight, BsCheckLg } from "react-icons/bs";
 import { MdChecklistRtl, MdOutlineCancel } from "react-icons/md";
 import ReactPlayer from "react-player/youtube";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-    return {
-        props: {
-            apiUrl: process.env.API_URL
-        },
-    };
-};
-
-const Chapter = ({ apiUrl }: { apiUrl: string }) => {
+const Chapter = () => {
     const router = useRouter();
     const { id, selectedLesson } = router.query;
     
@@ -35,41 +28,12 @@ const Chapter = ({ apiUrl }: { apiUrl: string }) => {
     const [prevLesson, setPrevLesson] = useState<Lesson>();
     const [nextLesson, setNextLesson] = useState<Lesson>();
 
-    useEffect(() => { // Get chapter data from API
-        const getChapterData = async () => {
-            try {
-                const response = await fetch(`${apiUrl}/api/chapters/${id}`, {
-                    method: 'GET',
-                    mode: 'cors'
-                });
-            
-                const chapterRes = await response.json();
-                setChapter(chapterRes);
-            } catch (error) {
-                console.log(error);
-            }
-        }
+    useEffect(() => { // Get chapter and lessons data from API
+        if (!id) return;
 
-        getChapterData();
-    }, []);
-
-    useEffect(() => { // Get lessons data from API
-        const getLessonsData = async () => {
-            try {
-                const response = await fetch(`${apiUrl}/api/lessons/chapter=${id}`, {
-                    method: 'GET',
-                    mode: 'cors'
-                });
-            
-                const lessonsRes = await response.json();
-                setLessons(lessonsRes);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        getLessonsData();
-    }, []);
+        getChapterById(id as string, setChapter);
+        getLessons(id as string, setLessons);
+    }, [id]);
 
     useEffect(() => { // Sets first lesson as default
         if (selectedLesson) return;
