@@ -5,7 +5,8 @@ type UserType = {
     email: string | null,
     displayName: string | null,
     isCoursePaid: boolean | null,
-    coursePaidDate: Timestamp | null,
+    coursePaidDate: Date | null,
+    remainingDays: number | null,
 }
 
 export default UserType;

@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import UserContext from "@/lib/context/UserContext";
 import Forbidden from "@/components/general/Forbidden";
 import ActionButton from "@/components/general/ActionButton";
-import { TransactionObjType } from "@/lib/types/TransactionTypes";
+import { TransactionObjType } from "@/lib/types/UserTransaction";
 import { readTransactions } from "@/lib/transactions/transactions";
 import { getDifferenceInDaysFromToday } from "@/lib/util/dateUtil";
 import Link from "next/link";

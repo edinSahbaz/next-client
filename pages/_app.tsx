@@ -17,6 +17,7 @@ import UserType from '@/lib/types/UserType';
 import { isCoursePaid } from '@/lib/course/course';
 import { Timestamp } from 'firebase/firestore';
 import StripeContext from '@/lib/context/StripeContext';
+import { getDifferenceInDaysFromToday } from '@/lib/util/dateUtil';
 
 const PythonProvider = dynamic(
     () => import('react-py').then((module) => module.PythonProvider), { ssr: false }
@@ -47,14 +48,20 @@ export default function App({ Component, pageProps }: AppProps) {
             //User is logged in
             setLoading(true);
 
-            const retData: {isPaid: boolean, paidDate: Timestamp | null} = await isCoursePaid(userVar.uid, 'python');
+            const retData: { addedDate: Date | null } = await isCoursePaid(userVar.uid);
+
+            const addedDate = retData?.addedDate && new Date(retData.addedDate);
             
+            const diff = addedDate && getDifferenceInDaysFromToday(addedDate);
+            const isPaid = diff ? diff > 0 : false;
+
             const user: UserType = {
                 uid: userVar.uid,
                 email: userVar.email,
                 displayName: userVar.displayName ? userVar.displayName : userVar.email,
-                isCoursePaid: retData.isPaid,
-                coursePaidDate: retData.paidDate,
+                isCoursePaid: isPaid,
+                coursePaidDate: addedDate,
+                remainingDays: diff
             }
 
             setUser(user);

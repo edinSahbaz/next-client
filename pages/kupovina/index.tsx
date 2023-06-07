@@ -6,20 +6,20 @@ import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-
 import { loadStripe } from "@stripe/stripe-js";
 import Head from "next/head";
 import Link from "next/link";
-import { FormEvent, ReactNode, useContext, useEffect, useState } from "react";
+import { FormEvent, ReactNode, useContext, useState } from "react";
 import { BiBook, BiCodeBlock, BiDesktop } from "react-icons/bi";
 import { BsGearWide, BsPersonVideo2 } from "react-icons/bs";
 import { TbCertificate } from "react-icons/tb";
 import { MoonLoader } from "react-spinners";
 import { FaChalkboardTeacher, FaTasks } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { buyCourse } from "@/lib/course/course";
 import UserContext from "@/lib/context/UserContext";
 import StripeContext from "@/lib/context/StripeContext";
+import { addTransaction } from "@/lib/transactions/transactions";
 import { getDifferenceInDaysFromToday } from "@/lib/util/dateUtil";
 
 const PaymentForm = () => {
-    const { user } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
     const { clientSecret } = useContext(StripeContext);
 
     const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
@@ -40,15 +40,10 @@ const PaymentForm = () => {
     );
 
     const SubscriptionRemainingTime = () => {
-        const paidDateTimestamp = user?.coursePaidDate;
-
-        if(!paidDateTimestamp) return null;
-        const remainingTime = getDifferenceInDaysFromToday(paidDateTimestamp); 
-
         return (
             <div className="h-full flex flex-col items-center justify-center">
                 <p className="text-center text-3xl text-[var(--title-txt-color)]">Kurs je plaćen!</p>
-                <p className="text-center text-lg text-[var(--sec-txt-color)]">Preostalo vrijeme: {remainingTime} dana.</p>
+                <p className="text-center text-lg text-[var(--sec-txt-color)]">Preostalo vrijeme: {user?.remainingDays} dana.</p>
             </div>
         );
     }
@@ -58,7 +53,6 @@ const PaymentForm = () => {
         const elements = useElements();
 
         const [isLoading, setIsLoading] = useState(false);
-        const [paymentSuccessful, setPaymentSuccessful] = useState(false);
 
         const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
             setIsLoading(true);
@@ -83,40 +77,39 @@ const PaymentForm = () => {
                     else toast.error("An unexpected error occurred.");
                 } else {
                     // The payment has been processed!
-                    if (result.paymentIntent.status !== "succeeded") return;
-                    setPaymentSuccessful(true);
-                    
-                    const paymentId = result.paymentIntent.id;
-                    await buyCourse(user?.uid, paymentId);
+                    if (result.paymentIntent.status !== "succeeded") return;                    
+                    const retData = await addTransaction(user.uid, 99);
 
+                    if (!retData) return;
+
+                    const addedDate = new Date(retData.addedDate);
+                    const diff = getDifferenceInDaysFromToday(addedDate)
+
+                    setUser({
+                        ...user,
+                        isCoursePaid: true,
+                        remainingDays: diff,
+                        coursePaidDate: addedDate
+                    })
+                 
                     toast.success("Kupili ste nauciProgramiranje.ba kurs!");
                 }
             });
         };
 
         return (
-            <>
-                {
-                    paymentSuccessful ? (
-                        <div className="w-full h-full flex flex-col items-center justify-center">
-                            <h2>Platili ste kurs!</h2>
-                        </div>
-                    ) : (
-                        <form id="payment-form" onSubmit={(e) => {
-                            handleSubmit(e);
-                        }}>
-                            <h2 className="text-center text-3xl text-[var(--title-txt-color)]">Za nevjerovatnu cijenu</h2>
-                            <Price/>
-                            <PaymentElement />
-                            <LegalInfo />
-                            <ActionButton 
-                                text="Kupi kurs" 
-                                isSubmit={true} 
-                                disabled={isLoading || !stripe || !elements} />
-                        </form>
-                    )
-                }
-            </>
+            <form id="payment-form" onSubmit={(e) => {
+                handleSubmit(e);
+            }}>
+                <h2 className="text-center text-3xl text-[var(--title-txt-color)]">Za nevjerovatnu cijenu</h2>
+                <Price/>
+                <PaymentElement />
+                <LegalInfo />
+                <ActionButton 
+                    text="Kupi kurs" 
+                    isSubmit={true} 
+                    disabled={isLoading || !stripe || !elements} />
+            </form>
         )
     }
     

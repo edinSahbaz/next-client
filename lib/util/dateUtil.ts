@@ -1,10 +1,8 @@
-import { differenceInCalendarDays } from "date-fns";
-import { Timestamp } from "firebase/firestore";
+import { addYears, differenceInCalendarDays } from "date-fns";
 
-export const getDifferenceInDaysFromToday = (paidDateTimestamp: Timestamp) => {
+export const getDifferenceInDaysFromToday = (paidDate: Date) => {
     const currentDate = new Date();
-    const paidDate = paidDateTimestamp.toDate();
-    const expireDate = new Date(paidDate.getFullYear() + 1, paidDate.getMonth(), paidDate.getDate());
+    const expireDate = addYears(paidDate, 1);
 
     const remainingTime = differenceInCalendarDays(expireDate, currentDate);
 

@@ -1,36 +1,33 @@
-import { Timestamp, addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
-import { db } from "../firebase/firebase";
-import { TransactionDataType, TransactionObjType } from "../types/TransactionTypes";
+import { UserTransaction } from "../types/UserTransaction";
 
 export const transactionsURL = (usersID: string) => {
     return `users/${usersID}/transactions`
 }
 
-export const addTransaction = async (usersID: string, transaction: TransactionDataType) => {
-    const colRef = collection(db, transactionsURL(usersID));
-
-    return addDoc(colRef, transaction);
+export const addTransaction = async (userID: string, amount: number) => {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/transactions`, {
+            method: 'post',
+            mode: 'cors',
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: userID,
+                amount: amount
+            }),
+        });
+    
+        const transactionRes = await response.json();
+        return transactionRes;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
-export const readTransactions = async (usersID: string) => {
-    const colRef = collection(db, transactionsURL(usersID));
-    const q = query(colRef, orderBy('__added_time', 'desc'));
-
-    const data = await getDocs(q);
-
-    const transactions: Array<TransactionObjType> = [];
-
-    data.forEach((doc) => {
-        const objToPush: TransactionObjType = {
-            id: doc.id,
-            data: {
-                __added_time: doc.data()?.__added_time,
-                paidAmount: doc.data()?.paidAmount,
-            }
-        }
-
-        transactions.push(objToPush);
-    });
+export const readTransactions = async (userID: string) => {
+    const transactions: Array<UserTransaction> = [];
 
     return transactions;
 }
