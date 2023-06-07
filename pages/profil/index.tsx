@@ -13,10 +13,9 @@ import { useRouter } from "next/router";
 import UserContext from "@/lib/context/UserContext";
 import Forbidden from "@/components/general/Forbidden";
 import ActionButton from "@/components/general/ActionButton";
-import { TransactionObjType } from "@/lib/types/UserTransaction";
 import { readTransactions } from "@/lib/transactions/transactions";
-import { getDifferenceInDaysFromToday } from "@/lib/util/dateUtil";
 import Link from "next/link";
+import { UserTransaction } from "@/lib/types/UserTransaction";
 
 interface ContainerProps {
     icon: ReactNode,
@@ -78,14 +77,9 @@ const ProductAccess = () => {
             <AiFillCloseCircle className="text-[var(--sec-txt-color)] text-xl" />
         );
 
-        const paidDateTimestamp = user?.coursePaidDate;
-
-        let remainingTime = 0;
-        if(paidDateTimestamp) remainingTime = getDifferenceInDaysFromToday(paidDateTimestamp); 
-
         return (
             <div className="mt-4">
-                <Product name="nauciProgramiranje.ba" isPaid={user?.isCoursePaid!} remainingTime={remainingTime} icon={icon()} />
+                <Product name="nauciProgramiranje.ba" isPaid={user?.isCoursePaid!} remainingTime={user?.remainingDays || 0} icon={icon()} />
             </div>
         )
     }
@@ -98,30 +92,26 @@ const ProductAccess = () => {
 const Transactions = () => {
     const { user } = useContext(UserContext);
 
-    const [transactions, setTransactions] = useState<Array<TransactionObjType>>([]);
+    const [transactions, setTransactions] = useState<Array<UserTransaction>>([]);
     
     useEffect(() => {
-        const temp = async () => {
-            const data = await readTransactions(user?.uid!);
-            setTransactions(data);
-        }
-
-        temp();
+        if(!user) return;
+        readTransactions(user?.uid, setTransactions);
     }, []);
 
     const TransactionsHeader = () => (
         <div className="flex items-center gap-4">
-            <p className="font-semibold w-1/4">ID Transakcije</p>
-            <p className="w-1/12">Cijena</p>            
-            <p className="w-8/12 text-center">Datum</p>
+            <p className="font-semibold w-1/2">ID Transakcije</p>
+            <p className="w-1/4 text-center">Iznos</p>            
+            <p className="w-1/4 text-center">Datum</p>
         </div>
     )
 
-    const Transaction = ({ key, transaction }: { key: number, transaction: TransactionObjType}) => (
+    const Transaction = ({ key, transaction }: { key: number, transaction: UserTransaction}) => (
         <div className="w-full flex items-center text-sm gap-4 shadow-md bg-gray-50 p-2 rounded-md" key={key}>
-            <p className="font-semibold w-1/4">{transaction.id}</p>
-            <p className="w-1/12 font-semibold text-center">{transaction.data.paidAmount}€</p>            
-            <p className="w-8/12">{transaction.data.__added_time.toDate().toString()}</p>
+            <p className="font-semibold w-1/2">{transaction.id.value}</p>
+            <p className="w-1/5 font-semibold text-center">{transaction.amount}€</p>            
+            <p className="w-1/4 text-center">{transaction.addedDate.toLocaleDateString()} - {transaction.addedDate.toLocaleTimeString()}</p>
         </div>
     )
 

@@ -15,7 +15,6 @@ import UserContext from '@/lib/context/UserContext';
 import { auth } from '@/lib/firebase/firebase';
 import UserType from '@/lib/types/UserType';
 import { isCoursePaid } from '@/lib/course/course';
-import { Timestamp } from 'firebase/firestore';
 import StripeContext from '@/lib/context/StripeContext';
 import { getDifferenceInDaysFromToday } from '@/lib/util/dateUtil';
 
@@ -48,20 +47,15 @@ export default function App({ Component, pageProps }: AppProps) {
             //User is logged in
             setLoading(true);
 
-            const retData: { addedDate: Date | null } = await isCoursePaid(userVar.uid);
-
-            const addedDate = retData?.addedDate && new Date(retData.addedDate);
-            
-            const diff = addedDate && getDifferenceInDaysFromToday(addedDate);
-            const isPaid = diff ? diff > 0 : false;
+            const retData: { isPaid: boolean, addedDate: Date, diff: number } = await isCoursePaid(userVar.uid);
 
             const user: UserType = {
                 uid: userVar.uid,
                 email: userVar.email,
                 displayName: userVar.displayName ? userVar.displayName : userVar.email,
-                isCoursePaid: isPaid,
-                coursePaidDate: addedDate,
-                remainingDays: diff
+                isCoursePaid: retData.isPaid,
+                coursePaidDate: retData.addedDate,
+                remainingDays: retData.diff
             }
 
             setUser(user);

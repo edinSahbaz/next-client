@@ -1,17 +1,22 @@
+import { getLatestTransaction } from "../transactions/transactions"
+import { UserTransaction } from "../types/UserTransaction";
+import { getDifferenceInDaysFromToday } from "../util/dateUtil";
+
 export const courseURL = (usersID: string, course: 'python') => {
     return `users/${usersID}/courses/${course}`
 }
 
 export const isCoursePaid = async (userID: string) => {
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/transactions/user=${userID}/getLatest`, {
-            method: 'GET',
-            mode: 'cors'
-        });
-    
-        const resData = await response.json();
-        return resData;
-    } catch (error) {
-        console.log(error);
-    }
+    const resData: UserTransaction = await getLatestTransaction(userID);
+
+    const addedDate = resData?.addedDate && new Date(resData.addedDate);
+            
+    const diff = addedDate && getDifferenceInDaysFromToday(addedDate);
+    const isPaid = diff ? diff > 0 : false;
+
+    return {
+        isPaid,
+        addedDate,
+        diff
+    };
 }
