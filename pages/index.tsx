@@ -31,7 +31,7 @@ export default function Home() {
                 <h3 className='text-[var(--title-txt-color)] text-xl'>{title}</h3>
                 <p className='text-[var(--p-txt-color)] text-[15px]'>{description}</p>
                 
-                <Link href={link} className='hover-underline-animation hover-underline-animation-red text-[var(--sec-txt-color)]'>
+                <Link href={link} scroll={false} className='hover-underline-animation hover-underline-animation-red text-[var(--sec-txt-color)]'>
                     Pogledaj više.
                 </Link>
             </div>
