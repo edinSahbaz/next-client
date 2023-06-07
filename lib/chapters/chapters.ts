@@ -13,15 +13,29 @@ export const getChapters = async (setFunction: Dispatch<SetStateAction<Chapter[]
         for (let i in chaptersRes) {
             const chapter = chaptersRes[i];
     
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/lessons/chapter=${chapter.id.value}`, {
+            const lessonsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/lessons/chapter=${chapter.id.value}`, {
                 method: 'GET',
                 mode: 'cors'
             });
     
-            const lessons = await res.json();
-    
+            const lessons = await lessonsRes.json();
+
+            let tasksNumber = 0;
+            for (let j in lessons) {
+                const lesson = lessons[j];
+                
+                const tasksRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/questions/lesson=${lesson.id.value}`, {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+            
+                const tasks = await tasksRes.json();
+
+                tasksNumber += tasks.length;
+            }
+
             chaptersRes[i].lessonsNumber = lessons.length;
-            chaptersRes[i].tasksNumber = lessons.length;
+            chaptersRes[i].tasksNumber = tasksNumber;
         }
 
         setFunction(chaptersRes);

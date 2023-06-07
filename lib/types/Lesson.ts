@@ -7,4 +7,5 @@ export type Lesson = {
     description?: string;
     lessonNumber?: number;
     videoUrl?: string;
+    questionsNumber?: number;
 }

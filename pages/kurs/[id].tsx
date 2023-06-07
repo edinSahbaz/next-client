@@ -18,6 +18,7 @@ import { AiOutlineClockCircle } from "react-icons/ai";
 import { BsArrowLeft, BsArrowRight, BsCheckLg } from "react-icons/bs";
 import { MdChecklistRtl, MdOutlineCancel } from "react-icons/md";
 import ReactPlayer from "react-player/youtube";
+import { MoonLoader } from "react-spinners";
 
 const Chapter = () => {
     const router = useRouter();
@@ -90,8 +91,7 @@ const Chapter = () => {
         }
             
         return (
-            <div className="w-full scroll flex flex-col gap-2 max-h-[calc(100%-32rem)]
-                ">
+            <div className="w-full scroll flex flex-col gap-2 max-h-[calc(100%-32rem)]">
                 {lessons?.map((lesson, index) => (
                     <LessonButton 
                         key={index}
@@ -100,7 +100,8 @@ const Chapter = () => {
                         title={lesson.title}
                         description={lesson.description}
                         lessonNumber={lesson.lessonNumber}
-                        videoUrl={lesson.videoUrl} /> 
+                        videoUrl={lesson.videoUrl}
+                        questionsNumber={lesson.questionsNumber} /> 
                 ))}
             </div>
         )
@@ -134,7 +135,7 @@ const Chapter = () => {
                     <Stats 
                         title="Riješeni zadaci" 
                         completed={0} 
-                        total={lessons?.length || 0} />
+                        total={lessons?.map(l => l.questionsNumber || 0).reduce((a, b) => a + b) || 0} />
                 </div>
 
                 <HorizontalLine />
@@ -184,7 +185,7 @@ const Chapter = () => {
             </div>
         ) : null;
 
-        const Questions = () => (
+        const Questions = () => lesson?.questionsNumber ? (
             <div className="flex flex-col gap-2">
                 <div className="text-xl text-[var(--title-txt-color)] flex items-center gap-2">
                     <MdChecklistRtl className="text-3xl" />
@@ -205,7 +206,11 @@ const Chapter = () => {
                         animated={false} />
                 </div>
             </div>
-        )
+        ) : (
+            <div className="">
+                Ova lekcija nema zadataka.
+            </div>
+        );
 
         const MarkAsWatched = () => {
             const Checkbox = () => (
@@ -276,8 +281,18 @@ const Chapter = () => {
 
                 <Container>
                     <div className="grid grid-cols-[320px_1fr] gap-8 w-full">
-                        <ChapterProgress />
-                        <LessonContainer />
+                        {
+                            lessons ? (
+                                <>
+                                    <ChapterProgress />
+                                    <LessonContainer />
+                                </>
+                            ) : (
+                                <div className="w-full h-[320px] grid place-items-center col-span-2">
+                                    <MoonLoader color="#f21b3f" size={80} speedMultiplier={0.75} />
+                                </div>
+                            )
+                        }
                     </div>
                 </Container>
             </main>
