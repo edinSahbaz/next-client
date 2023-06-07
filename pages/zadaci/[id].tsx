@@ -1,15 +1,16 @@
 import Header from "@/components/editor/Header";
+import Forbidden from "@/components/general/Forbidden";
 import Logo from "@/components/header/Logo";
+import UserContext from "@/lib/context/UserContext";
 import { getLessonById } from "@/lib/lessons/lessons";
 import { getQuestions } from "@/lib/questions/questions";
 import { Lesson } from "@/lib/types/Lesson";
 import { Question } from "@/lib/types/Question";
-import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MdChecklistRtl } from "react-icons/md";
 const CodeEnviroment = dynamic(() => import('@/components/editor/CodeEnviroment'), { ssr: false })
 
@@ -78,6 +79,8 @@ const QuestionsPage = () => {
     const router = useRouter();
     const { id } = router.query;
 
+    const { user } = useContext(UserContext);
+
     const [lesson, setLesson] = useState<Lesson>();
     const [questions, setQuestions] = useState<Array<Question>>();
     const [selectedQuestion, setSelectedQuestion] = useState<Question>();
@@ -131,7 +134,7 @@ const QuestionsPage = () => {
         </div>
     )
 
-    return ( 
+    return user?.isCoursePaid ? ( 
         <>
             <Head>
                 <title>Zadaci - Lekcija {lesson?.lessonNumber} | nauciProgramiranje.ba</title>
@@ -149,7 +152,9 @@ const QuestionsPage = () => {
                 </div>
             </div> 
         </>
-    );
+    ) : (
+        <Forbidden />
+    )
 }
  
 export default QuestionsPage;

@@ -1,8 +1,10 @@
 import Container from "@/components/general/Container";
+import Forbidden from "@/components/general/Forbidden";
 import RedButton from "@/components/general/RedButton";
 import PageDetails from "@/components/header/PageDetails";
 import HorizontalLine from "@/components/horizontalLine/HorizontalLine";
 import { getChapterById } from "@/lib/chapters/chapters";
+import UserContext from "@/lib/context/UserContext";
 import { getLessons } from "@/lib/lessons/lessons";
 import { Chapter } from "@/lib/types/Chapter";
 import { Lesson } from "@/lib/types/Lesson";
@@ -11,7 +13,7 @@ import { secondsToMinutes } from "date-fns";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { BsArrowLeft, BsArrowRight, BsCheckLg } from "react-icons/bs";
 import { MdChecklistRtl, MdOutlineCancel } from "react-icons/md";
@@ -20,6 +22,8 @@ import ReactPlayer from "react-player/youtube";
 const Chapter = () => {
     const router = useRouter();
     const { id, selectedLesson } = router.query;
+
+    const { user } = useContext(UserContext);
     
     const [chapter, setChapter] = useState<Chapter>();
     const [lessons, setLessons] = useState<Array<Lesson>>();
@@ -254,7 +258,7 @@ const Chapter = () => {
         )
     }
 
-    return ( 
+    return user?.isCoursePaid ? ( 
         <>
             <Head>
                 <title>{chapter?.title} | nauciProgramiranje.ba</title>
@@ -262,7 +266,6 @@ const Chapter = () => {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
 
             <main>
                 <PageDetails
@@ -279,7 +282,8 @@ const Chapter = () => {
                 </Container>
             </main>
         </>
-
+     ) : (
+        <Forbidden />
      );
 }
  

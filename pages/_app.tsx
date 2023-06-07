@@ -95,7 +95,7 @@ export default function App({ Component, pageProps }: AppProps) {
                             <div className={`${ubuntu.className} bg-[var(--bg-body-color)]`}>
                                 <ToastContainer />
                                 <Component {...pageProps} />
-                                { !router.pathname.includes("zadaci") 
+                                { (!router.pathname.includes("zadaci") || !user?.isCoursePaid)
                                     && <Footer isDark={router.pathname === "/"} /> }
                             </div>
                         )}
