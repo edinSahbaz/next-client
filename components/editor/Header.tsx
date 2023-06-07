@@ -2,13 +2,20 @@ import { HeaderProps } from "@/lib/types/HeaderProps";
 import Tab from "./Tab";
 
 const Header = (props: HeaderProps) => {
-    const { tabs, btn } = props;
+    const { tabs, btn, setActiveTab } = props;
+
+    const empty = () => {};
 
     return (
         <div className="bg-[var(--bg-sec-editor)] w-full h-10 flex justify-between shadow-md rounded-t-md">
             <div className="h-full flex">
             { tabs.map((tab, index) => (
-                <Tab key={index} tab={tab} first={index === 0} last={index === tabs.length - 1} />
+                <Tab 
+                    key={index} 
+                    tab={tab} 
+                    setActiveTab={setActiveTab || empty}
+                    first={index === 0} 
+                    last={index === tabs.length - 1} />
             ))}
             </div>
 
