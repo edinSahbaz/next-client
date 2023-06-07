@@ -2,12 +2,12 @@ import ActionButton from "@/components/general/ActionButton";
 import Container from "@/components/general/Container";
 import PageDetails from "@/components/header/PageDetails";
 import { getChapters } from "@/lib/chapters/chapters";
+import UserContext from "@/lib/context/UserContext";
 import { Chapter } from "@/lib/types/Chapter";
 import { Stats } from "@/lib/types/Stats";
-import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState, useContext } from "react";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { BiMovie } from "react-icons/bi";
 import { BsArrowRight, BsListCheck, BsPencil } from "react-icons/bs";
@@ -16,6 +16,8 @@ import { TbCertificate } from "react-icons/tb";
 import { MoonLoader, PulseLoader } from "react-spinners";
 
 const Content = () => {
+    const { user } = useContext(UserContext)
+
     const [chapters, setChapters] = useState<Array<Chapter>>();
 
     useEffect(() => { // Get chapters
@@ -44,8 +46,9 @@ const Content = () => {
     )
 
     const AdvanceBtn = ({ id }: { id: string }) => (
-        <Link href={`/kurs/${id}`} className="flex items-center justify-center rounded-md shadow-md transition-all
-            gap-2 bg-[var(--bg-color)] hover:bg-[var(--ter-bg-color)] text-white px-4 py-2 w-fit h-fit">
+        <Link href={user?.isCoursePaid ? `/kurs/${id}` : ""} className={`flex items-center justify-center
+        gap-2 text-white px-4 py-2 w-fit h-fit shadow-md transition-all rounded-md 
+        ${user?.isCoursePaid ? "bg-[var(--bg-color)] hover:bg-[var(--ter-bg-color)]" : "cursor-not-allowed bg-[var(--disabled-btn-color)]"}`}>
             Započni <BsArrowRight />
         </Link>
     )
