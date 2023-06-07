@@ -3,7 +3,7 @@ const Tab = (props: { tab: string, first: boolean, last: boolean, setActiveTab: 
     
     return (
         <div onClick={() => setActiveTab(tab)}
-            className={`bg-[var(--editor-bg)] w-fit px-6 h-full cursor-pointer shadow-md grid place-items-center ${first && "rounded-tl-md"} ${last && "rounded-tr-md"}`}>
+            className={`bg-[var(--editor-bg)] hover:bg-[var(--bg-color)] w-fit px-6 h-full cursor-pointer shadow-md grid place-items-center ${first && "rounded-tl-md"} ${last && "rounded-tr-md"}`}>
             <p>{tab}</p>
         </div>
     );

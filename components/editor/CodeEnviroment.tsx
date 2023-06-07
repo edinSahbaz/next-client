@@ -70,7 +70,7 @@ const CodeEnviroment = () => {
         <div className="text-white flex flex-col gap-4 h-full max-h-screen">
             <div className="h-[70%] rounded-md shadow-md">
                 <Header tabs={["Input"]} btn={{
-                    content: "Pokreni kod",
+                    content: "Pokreni",
                     bg: "bg-[#00852a]",
                     bg_hover: "hover:bg-[#006c21]",
                     action: runCode,

@@ -103,6 +103,7 @@ const Prompt = ({ selectedQuestion }: { selectedQuestion?: Question }) => {
                     loading={<MoonLoader color="#f21b3f" size={50} speedMultiplier={0.75} />}
                     options={{
                         fontSize: 16,
+                        readOnly: true,
                         minimap: { enabled: false },
                     }}
                 /> 
